@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CouchInsert", "CouchInsert.csproj", "{3DCD7329-57C9-4611-BE4E-8D96F2F1D498}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3DCD7329-57C9-4611-BE4E-8D96F2F1D498}.Debug|x64.ActiveCfg = Debug|x64
+		{3DCD7329-57C9-4611-BE4E-8D96F2F1D498}.Debug|x64.Build.0 = Debug|x64
+		{3DCD7329-57C9-4611-BE4E-8D96F2F1D498}.Release|x64.ActiveCfg = Release|x64
+		{3DCD7329-57C9-4611-BE4E-8D96F2F1D498}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF3A7CCC-6849-4DCF-ADD0-BDE5882FF825}
+	EndGlobalSection
+EndGlobal

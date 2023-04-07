@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="CouchInsert.UserControl1"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CouchInsert"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="LightCoral">
+        <Label Content="Y Axis Location :" HorizontalAlignment="Left" Height="28" Margin="78,108,0,0" VerticalAlignment="Top" Width="109" Foreground="Maroon" FontSize="14"/>
+        <Button Content="APPLY⏳" HorizontalAlignment="Left" Height="24" Margin="276,112,0,0" VerticalAlignment="Top" Width="67" Click="Button_CouchPosition" Cursor="Hand"/>
+        <TextBox HorizontalAlignment="Left" Height="27" Margin="192,109,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="70"  Foreground="Black" FontSize="14"  Text="{Binding MarkerLocationY}"/>
+        <Label Content="STEP1 : Please Check the Marker Position" HorizontalAlignment="Left" Height="28" Margin="26,40,0,0" VerticalAlignment="Top" Width="338" Foreground="White" FontWeight="Bold" FontSize="16"/>
+        <Label Content="Marker : " HorizontalAlignment="Left" Height="28" Margin="78,73,0,0" VerticalAlignment="Top" Width="80" Foreground="Maroon" FontSize="14"/>
+        <ComboBox Name="marker" HorizontalAlignment="Left" Height="28" Margin="156,76,0,0" VerticalAlignment="Top" Width="106" ItemsSource="{Binding MarkerNames}" FontSize="14"/>
+        <Label Content="STEP2 : Please Check the FIRST BB Position" HorizontalAlignment="Left" Height="28" Margin="26,186,0,0" VerticalAlignment="Top" Width="338" Foreground="White" FontWeight="Bold" FontSize="16"/>
+        <Label Content="Position : " HorizontalAlignment="Left" Height="28" Margin="78,225,0,0" VerticalAlignment="Top" Width="80" Foreground="Maroon" FontSize="14"/>
+        <ComboBox x:Name="marker_position" HorizontalAlignment="Left" Height="28" Margin="156,227,0,0" VerticalAlignment="Top" Width="106" ItemsSource="{Binding MarkerPositions}" FontSize="14"/>
+        <Button Content="APPLY⏳" HorizontalAlignment="Left" Height="24" Margin="276,228,0,0" VerticalAlignment="Top" Width="67" Click="Button_Click" Cursor="Hand"/>
+
+
+    </Grid>
+</UserControl>
