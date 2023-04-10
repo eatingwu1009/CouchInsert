@@ -36,7 +36,7 @@ namespace VMS.TPS
 
             window.Content = mainView;
             window.Title = "CouchInsert";
-            window.Height = 385;//465
+            window.Height = 340;//465
             window.Width = 415;
             window.Top = 400;
             window.Left = 1200;

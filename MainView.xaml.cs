@@ -33,5 +33,10 @@ namespace CouchInsert
         {
 
         }
+
+        private void marker_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -472,8 +472,8 @@ namespace CouchInsert
                 MarkerLocationZZ = MarkerLocationItem.CenterPoint.z;
                 //this is the value of finding z locztion corresponded to z slice
                 //MessageBox.Show(Convert.ToInt32((MarkerLocationZZ-ScriptContext.Image.Origin.z)/ ScriptContext.Image.ZRes).ToString());
-                Start = new VVector(MarkerLocationItem.CenterPoint.x - 60, MarkerLocationItem.CenterPoint.y, MarkerLocationItem.CenterPoint.z);
-                Stop = new VVector(MarkerLocationItem.CenterPoint.x + 5, MarkerLocationItem.CenterPoint.y, MarkerLocationItem.CenterPoint.z);
+                Start = new VVector(MarkerLocationItem.CenterPoint.x - 60, MarkerLocationItem.CenterPoint.y, MarkerLocationItem.CenterPoint.z);//60
+                Stop = new VVector(MarkerLocationItem.CenterPoint.x + 5, MarkerLocationItem.CenterPoint.y, MarkerLocationItem.CenterPoint.z);//5
                 PreallocatedBuffer = new double[1000];
                 XProfile = ScriptContext.Image.GetImageProfile(Start, Stop, PreallocatedBuffer);
                 SelectedMarkerPosition = PeakDetect(XProfile);
@@ -489,13 +489,13 @@ namespace CouchInsert
         public ICommand ButtonCommand_AddCouch { get => new Command(AddCouch); }
         private void AddCouch()
         {
-            string filePathOuter = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\contour.csv";
-
-            if (!File.Exists(filePathOuter))
-            {
-                System.Windows.MessageBox.Show($"No file exists at path {filePathOuter}");
-                return;
-            }
+            ProgressVisibility = Visibility.Visible;
+            //string filePathOuter = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\contour.csv";
+            //if (!File.Exists(filePathOuter))
+            //{
+            //    System.Windows.MessageBox.Show($"No file exists at path {filePathOuter}");
+            //    return;
+            //}
 
             // add Mesh from here
             //Positions = "-1 -1 0  1 -1 0  -1 1 0  1 1 0";
@@ -521,7 +521,7 @@ namespace CouchInsert
             //    System.Windows.MessageBox.Show("There was an error when reading the file.  Please make sure that all rows are in the form: number, number, number");
             //    return;
             //}
-
+            CurrentProgress = 5;
             string[] Basiclines = File.ReadAllLines(FilePathBasic);
             List<string> sourceAxis = Basiclines[1].Trim().Split(',').Select(s => s.Trim()).ToList();
             HSpace = Double.Parse(sourceAxis[0]);
@@ -548,7 +548,6 @@ namespace CouchInsert
             double Multiple = ScriptContext.Image.ZRes;
             bool is_integer = unchecked(Multiple == (int)Multiple); //confirm the z after
 
-
             if (CrossSurface != null) StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == "CrossSurface"));
             CrossSurface = ScriptContext.StructureSet.AddStructure("CONTROL", "CrossSurface");
 
@@ -561,6 +560,7 @@ namespace CouchInsert
             {
                 CrossSurface.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
+            CurrentProgress = 15;
 
             Array.Clear(TempFilelines, 0, TempFilelines.Length);
             CSVVector.Clear();
@@ -589,6 +589,7 @@ namespace CouchInsert
             {
                 CrossInterior.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
+            CurrentProgress = 25;
             //CrossSurface.SegmentVolume = CrossSurface.SegmentVolume.Sub(CrossInterior.SegmentVolume);
 
             //string[] filelines3 = File.ReadAllLines(FilePathCI_TI);
@@ -626,10 +627,9 @@ namespace CouchInsert
             int b = Convert.ToInt32(NewVVector.Max(p => p.z));
 
             List<VVector> Loop = new List<VVector>();
-            //ProgressVisibility = Visibility.Visible;
+
             for (int i = a; i <= b; i++)
             {
-                //CurrentProgress = 100 * (i - a) / (b - a);
                 Loop.Clear();
                 if (is_integer == true)
                 {
@@ -663,7 +663,7 @@ namespace CouchInsert
                 }
                 CouchSurface.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
-            //ProgressVisibility = Visibility.Hidden;
+            CurrentProgress = 85;
 
             Array.Clear(TempFilelines, 0, TempFilelines.Length);
             TempFilelines = File.ReadAllLines(FilePathCI);
@@ -723,12 +723,16 @@ namespace CouchInsert
                 }
                 CouchInterior.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
-            CouchSurface.SegmentVolume = CouchSurface.SegmentVolume.Or(CrossSurface.SegmentVolume);
+            CurrentProgress = 99;
             CouchInterior.SegmentVolume = CouchInterior.SegmentVolume.Or(CrossInterior.SegmentVolume);
+            CouchSurface.SegmentVolume = CouchSurface.SegmentVolume.Or(CrossSurface.SegmentVolume);
+            CouchSurface.SegmentVolume = CouchSurface.SegmentVolume.Sub(CouchInterior.SegmentVolume);
             CouchInterior.SetAssignedHU(CIHU);
             CouchSurface.SetAssignedHU(CSHU);
             StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == "CrossSurface"));
             StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == "CrossInterior"));
+            CurrentProgress = 100;
+            //ProgressVisibility = Visibility.Hidden;
         }
 
         public VVector Interpolate(VVector Input, VVector Next)
@@ -919,8 +923,16 @@ namespace CouchInsert
         public String PeakDetect(ImageProfile XProfile)
         {
             List<VVector> Twopoint = new List<VVector>();
-            double HalfTrend = (XProfile.Where(p => !Double.IsNaN(p.Value)).Max(p => p.Value)) * 2;
-
+            double HalfTrend = 0;
+            double Maximum = XProfile.Where(p => !Double.IsNaN(p.Value)).Max(p => p.Value);
+            if (Maximum < 0)
+            {
+                HalfTrend = Maximum * 2;
+            }
+            else 
+            {
+                HalfTrend = Maximum / 2;
+            }
             for (int i = 1; i < XProfile.Count - 1; i++)
             {
 
@@ -935,18 +947,18 @@ namespace CouchInsert
             if (Twopoint.Count > 1)
             {
                 double distance = VVector.Distance(Twopoint[0], Twopoint[1]);
-                if (Math.Round(distance) > 5)// length unit by mm
+                if (Math.Round((distance / 10)) > 0.5)// length unit by mm
                 {
                     var map = new Dictionary<int, string>()
                 {
-                    {10, "H1"},
-                    {20, "H2"},
-                    {30, "H3"},
-                    {40, "H4"},
-                    {50, "H5"},
+                    {1, "H1"},
+                    {2, "H2"},
+                    {3, "H3"},
+                    {4, "H4"},
+                    {5, "H5"},
                 };
                     string output;
-                    return map.TryGetValue(Convert.ToInt32(Math.Round(distance)), out output) ? output : null;
+                    return map.TryGetValue(Convert.ToInt32(Math.Round((distance / 10))), out output) ? output : null;
                 }
                 else return "";
             }
