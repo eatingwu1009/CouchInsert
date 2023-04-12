@@ -23,6 +23,7 @@ using System.Windows.Forms;
 using System.Diagnostics.Eventing.Reader;
 using System.Windows.Documents;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace CouchInsert
 {
@@ -186,38 +187,17 @@ namespace CouchInsert
             }
         }
 
-        private String _filePathpoint;
-        public String FilePathCI_point
+        private String _sliceThickness;
+        public String SliceThickness
         {
-            get => _filePathpoint;
+            get => _sliceThickness;
             set
             {
-                _filePathpoint = value;
-                NotifyPropertyChanged(nameof(FilePathCI_point));
+                _sliceThickness = value;
+                NotifyPropertyChanged(nameof(SliceThickness));
             }
         }
 
-        private String _filePathCIvector;
-        public String FilePathCI_vector
-        {
-            get => _filePathCIvector;
-            set
-            {
-                _filePathCIvector = value;
-                NotifyPropertyChanged(nameof(FilePathCI_vector));
-            }
-        }
-
-        private String _filePathCITI;
-        public String FilePathCI_TI
-        {
-            get => _filePathCITI;
-            set
-            {
-                _filePathCITI = value;
-                NotifyPropertyChanged(nameof(FilePathCI_TI));
-            }
-        }
 
         private String _filePathCI;
         public String FilePathCI
@@ -263,14 +243,58 @@ namespace CouchInsert
             }
         }
 
+        private String _modelfilePathCI;
+        public String ModelFilePathCI
+        {
+            get => _modelfilePathCI;
+            set
+            {
+                _modelfilePathCI = value;
+                NotifyPropertyChanged(nameof(ModelFilePathCI));
+            }
+        }
+
+        private String _modelfilePathCS;
+        public String ModelFilePathCS
+        {
+            get => _modelfilePathCS;
+            set
+            {
+                _modelfilePathCS = value;
+                NotifyPropertyChanged(nameof(FilePathCS));
+            }
+        }
+
+        private String _modelfilePathCSI;
+        public String ModelFilePathCSI
+        {
+            get => _modelfilePathCSI;
+            set
+            {
+                _modelfilePathCSI = value;
+                NotifyPropertyChanged(nameof(ModelFilePathCSI));
+            }
+        }
+
+        private String _modelfilePathCSS;
+        public String ModelFilePathCSS
+        {
+            get => _modelfilePathCSS;
+            set
+            {
+                _modelfilePathCSS = value;
+                NotifyPropertyChanged(nameof(ModelFilePathCSS));
+            }
+        }
+
         private String _filePathAxis;
-        public String FilePathBasic
+        public String ModelFilePathBasic
         {
             get => _filePathAxis;
             set
             {
                 _filePathAxis = value;
-                NotifyPropertyChanged(nameof(FilePathBasic));
+                NotifyPropertyChanged(nameof(ModelFilePathBasic));
             }
         }
 
@@ -388,6 +412,7 @@ namespace CouchInsert
             ScriptContext = scriptContext;
             SIU = scriptContext.Image.UserOrigin;
             StructureSet = scriptContext.StructureSet;
+            SliceThickness = ScriptContext.Image.ZRes.ToString() + "mm";
 
             var MulMarker = StructureSet.Structures.Where(s => s.DicomType == "MARKER").ToList();
             if (MulMarker.Count > 0)
@@ -401,17 +426,7 @@ namespace CouchInsert
             }
             else throw new Exception("There is no marker.  At least one marker DICOM type is required.");
 
-            FilePathCI = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\CouchInterior.csv";
-            FilePathCI_point = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\CouchInterior.csv";
-            FilePathCI_vector = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\CouchInterior.csv";
-            FilePathCI_TI = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\CouchInterior.csv";
 
-            FilePathCS = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\CouchSurface.csv";
-            FilePathCSI = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\CrossInterior.csv";
-            FilePathCSS = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\CrossSurface.csv";
-            FilePathBasic = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\BasicInformation.csv";
-            //CouchInterior = StructureSet.Structures.FirstOrDefault(e => e.Id == "CouchInterior");
-            //CouchSurface = StructureSet.Structures.FirstOrDefault(e => e.Id == "CouchSurface");
             CrossInterior = StructureSet.Structures.FirstOrDefault(e => e.Id == "CrossInterior");
             CrossSurface = StructureSet.Structures.FirstOrDefault(e => e.Id == "CrossSurface");
             CouchInterior = StructureSet.Structures.FirstOrDefault(e => e.Id == "CouchInterior");
@@ -435,10 +450,9 @@ namespace CouchInsert
 
             //ScriptContext.Patient.BeginModifications();
             ////Below is shift 3D structure from Segshifter.cs
-            //Structure struc = StructureSet.Structures.Single(s => s.Id == "kVue Outer");
+            //Structure struc = StructureSet.Structures.Single(s => s.Id == "XYZ");
             //SegShift segShift = new SegShift(new VVector(1, 2, 3), scriptContext.StructureSet, struc);
-            //segShift.MoveStructure();
-            
+
             ////Below is for AddCouch From ESAPI
             //PatientOrientation orientation = ScriptContext.Image.ImagingOrientation;
             //bool imageResized = true;
@@ -521,8 +535,13 @@ namespace CouchInsert
             //    System.Windows.MessageBox.Show("There was an error when reading the file.  Please make sure that all rows are in the form: number, number, number");
             //    return;
             //}
-            CurrentProgress = 5;
-            string[] Basiclines = File.ReadAllLines(FilePathBasic);
+            string[] Basiclines = File.ReadAllLines(@"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\PathInformation.csv");
+            string FileFolder = Basiclines[0].ToString() + SliceThickness;
+            //FilePathCI_point = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\CouchInterior.csv";
+            //FilePathCI_vector = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\CouchInterior.csv";
+            //FilePathCI_TI = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\CouchInterior.csv";
+            string FilePathBasic = System.IO.Path.Combine(new string[] { FileFolder, "BasicInformation.csv" });
+            Basiclines = File.ReadAllLines(FilePathBasic);
             List<string> sourceAxis = Basiclines[1].Trim().Split(',').Select(s => s.Trim()).ToList();
             HSpace = Double.Parse(sourceAxis[0]);
             XBaseAxis = Double.Parse(sourceAxis[1]);
@@ -530,6 +549,13 @@ namespace CouchInsert
             ZBaseAxis = Double.Parse(sourceAxis[3]);
             CSHU = Double.Parse(sourceAxis[4]);
             CIHU = Double.Parse(sourceAxis[5]);
+
+            FilePathCI = System.IO.Path.Combine(new string[] { FileFolder, "CouchInterior.csv" });
+            FilePathCS = System.IO.Path.Combine(new string[] { FileFolder, "CouchSurface.csv" });
+            FilePathCSI = System.IO.Path.Combine(new string[] { FileFolder, "CrossInterior.csv" });
+            FilePathCSS = System.IO.Path.Combine(new string[] { FileFolder, "CrossSurface.csv" });
+
+            CurrentProgress = 5;
 
             List<VVector> NewVVector = new List<VVector>();
             List<VVector> CSVVector = new List<VVector>();
@@ -556,7 +582,7 @@ namespace CouchInsert
                 VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ);
                 NewVVector.Add(new VVector(vv.x, vv.y, vv.z));
             }
-            for (int i = 0; i < NewVVector.Max(p => p.z); i++)
+            for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i++)
             {
                 CrossSurface.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
@@ -616,7 +642,7 @@ namespace CouchInsert
                     CSVVector.Add(new VVector(x, y, z));
                 }
             }
-            MMX = MaxMinDetect(CSVVector)[0]; MMY = MaxMinDetect(CSVVector)[1]; MMZ = MaxMinDetect(CSVVector)[2];
+            //MMX = MaxMinDetect(CSVVector)[0]; MMY = MaxMinDetect(CSVVector)[1]; MMZ = MaxMinDetect(CSVVector)[2];
             NewVVector.Clear();
             foreach (VVector vec in CSVVector)
             {
@@ -743,48 +769,48 @@ namespace CouchInsert
             return new VVector(x, y, z);
         }
 
-        public static void CreateSphere(MeshGeometry3D mesh, double radius, int subdivisions)
-        {
-            if (mesh.Positions == null) mesh.Positions = new Point3DCollection();
-            if (mesh.TriangleIndices == null) mesh.TriangleIndices = new Int32Collection();
-            mesh.Positions.Clear();
-            mesh.TriangleIndices.Clear();
+        //public static void CreateSphere(MeshGeometry3D mesh, double radius, int subdivisions)
+        //{
+        //    if (mesh.Positions == null) mesh.Positions = new Point3DCollection();
+        //    if (mesh.TriangleIndices == null) mesh.TriangleIndices = new Int32Collection();
+        //    mesh.Positions.Clear();
+        //    mesh.TriangleIndices.Clear();
 
-            for (int i = 0; i <= subdivisions; i++)
-            {
-                double v = i / (double)subdivisions;
-                double phi = v * Math.PI;
+        //    for (int i = 0; i <= subdivisions; i++)
+        //    {
+        //        double v = i / (double)subdivisions;
+        //        double phi = v * Math.PI;
 
-                for (int j = 0; j <= subdivisions; j++)
-                {
-                    double u = j / (double)subdivisions;
-                    double theta = u * 2 * Math.PI;
+        //        for (int j = 0; j <= subdivisions; j++)
+        //        {
+        //            double u = j / (double)subdivisions;
+        //            double theta = u * 2 * Math.PI;
 
-                    double x = Math.Cos(theta) * Math.Sin(phi);
-                    double y = Math.Cos(phi);
-                    double z = Math.Sin(theta) * Math.Sin(phi);
+        //            double x = Math.Cos(theta) * Math.Sin(phi);
+        //            double y = Math.Cos(phi);
+        //            double z = Math.Sin(theta) * Math.Sin(phi);
 
-                    mesh.Positions.Add(new Point3D(radius * x, radius * y, radius * z));
-                }
-            }
+        //            mesh.Positions.Add(new Point3D(radius * x, radius * y, radius * z));
+        //        }
+        //    }
 
-            for (int i = 0; i < subdivisions; i++)
-            {
-                for (int j = 0; j < subdivisions; j++)
-                {
-                    int index1 = i * (subdivisions + 1) + j;
-                    int index2 = index1 + subdivisions + 1;
+        //    for (int i = 0; i < subdivisions; i++)
+        //    {
+        //        for (int j = 0; j < subdivisions; j++)
+        //        {
+        //            int index1 = i * (subdivisions + 1) + j;
+        //            int index2 = index1 + subdivisions + 1;
 
-                    mesh.TriangleIndices.Add(index1);
-                    mesh.TriangleIndices.Add(index2);
-                    mesh.TriangleIndices.Add(index1 + 1);
+        //            mesh.TriangleIndices.Add(index1);
+        //            mesh.TriangleIndices.Add(index2);
+        //            mesh.TriangleIndices.Add(index1 + 1);
 
-                    mesh.TriangleIndices.Add(index1 + 1);
-                    mesh.TriangleIndices.Add(index2);
-                    mesh.TriangleIndices.Add(index2 + 1);
-                }
-            }
-        }
+        //            mesh.TriangleIndices.Add(index1 + 1);
+        //            mesh.TriangleIndices.Add(index2);
+        //            mesh.TriangleIndices.Add(index2 + 1);
+        //        }
+        //    }
+        //}
         public ICommand ButtonCommand_FilePath { get => new Command(GetFilePath); }
         private void GetFilePath()
         {
@@ -793,20 +819,19 @@ namespace CouchInsert
             {
                 System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
                 dialog.Description = "Please Choose the input Folder for Couch Model";
-                FilePath = string.Empty;
+
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    FilePath = dialog.SelectedPath;
-                    string[] PathCI = new string[] { dialog.SelectedPath, "CouchInterior.csv" };
-                    string[] PathCS = new string[] { dialog.SelectedPath, "CouchSurface.csv" };
-                    string[] PathCSI = new string[] { dialog.SelectedPath, "CrossInterior.csv" };
-                    string[] PathCSS = new string[] { dialog.SelectedPath, "CrossSurface.csv" };
-                    string[] PathBasic = new string[] { dialog.SelectedPath, "BasicInformation.csv" };
-                    FilePathCI = System.IO.Path.Combine(PathCI);
-                    FilePathCS = System.IO.Path.Combine(PathCS);
-                    FilePathCSI = System.IO.Path.Combine(PathCSI);
-                    FilePathCSS = System.IO.Path.Combine(PathCSS);
-                    FilePathBasic = System.IO.Path.Combine(PathBasic);
+                    string[] ModelPathCI = new string[] { dialog.SelectedPath, SliceThickness, "CouchInterior.csv" };
+                    string[] ModelPathCS = new string[] { dialog.SelectedPath, SliceThickness, "CouchSurface.csv" };
+                    string[] ModelPathCSI = new string[] { dialog.SelectedPath, SliceThickness, "CrossInterior.csv" };
+                    string[] ModelPathCSS = new string[] { dialog.SelectedPath, SliceThickness, "CrossSurface.csv" };
+
+                    ModelFilePathCI = System.IO.Path.Combine(ModelPathCI);
+                    ModelFilePathCS = System.IO.Path.Combine(ModelPathCS);
+                    ModelFilePathCSI = System.IO.Path.Combine(ModelPathCSI);
+                    ModelFilePathCSS = System.IO.Path.Combine(ModelPathCSS);
+
                 }
             }
         }
@@ -833,7 +858,7 @@ namespace CouchInsert
                     //{
                     //    foreach (Int32 t in TriangleIndices) writer.WriteLine(t);
                     //}
-                    using (StreamWriter writer = new StreamWriter(FilePathCI))
+                    using (StreamWriter writer = new StreamWriter(ModelFilePathCI))
                     {
                         for (int i = 0; i < ScriptContext.Image.ZSize; i++)
                         {
@@ -847,7 +872,7 @@ namespace CouchInsert
                 if (CouchSurface != null)
                 {
                     //VVector contours = CouchSurface.MeshGeometry.Points.Select(e => new VVector(e.x, e.y, e.z));
-                    using (StreamWriter writer = new StreamWriter(FilePathCS))
+                    using (StreamWriter writer = new StreamWriter(ModelFilePathCS))
                     {
                         {
                             for (int i = 0; i < ScriptContext.Image.ZSize; i++)
@@ -862,7 +887,7 @@ namespace CouchInsert
                 }
                 if (CrossInterior != null)
                 {
-                    using (StreamWriter writer = new StreamWriter(FilePathCSI))
+                    using (StreamWriter writer = new StreamWriter(ModelFilePathCSI))
                     {
                         for (int i = 0; i < ScriptContext.Image.ZSize; i++)
                         {
@@ -875,7 +900,7 @@ namespace CouchInsert
                 }
                 if (CrossSurface != null)
                 {
-                    using (StreamWriter writer = new StreamWriter(FilePathCSS))
+                    using (StreamWriter writer = new StreamWriter(ModelFilePathCSS))
                     {
                         for (int i = 0; i < ScriptContext.Image.ZSize; i++)
                         {
@@ -900,15 +925,6 @@ namespace CouchInsert
             {
                 CouchLine.AddContourOnImagePlane(GetpseudoLine(MarkerLocationYY), i);
             }
-
-            //string filePath = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\contour.txt";
-            //foreach (VVector vector in GetpseudoLine(MarkerLocationYY, MarkerLocationXX))
-            //{
-            //    using (StreamWriter writer = new StreamWriter(filePath))
-            //    {
-            //        writer.WriteLine(String.Join(",", $"{vector.x}, {vector.y},\n "));
-            //    }
-            //}
         }
         public VVector[] GetpseudoLine(double yPlane)
         {

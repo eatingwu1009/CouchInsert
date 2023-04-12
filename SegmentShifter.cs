@@ -15,7 +15,7 @@ namespace CouchInsert
         public Structure Structure { get; set; }
         public StructureSet SS { get; set; }
 
-        public IDictionary<int, IEnumerable<IEnumerable<VVector>>> Contours { get; private set; }
+        public IDictionary<int, IEnumerable<IEnumerable<VVector>>> Contours { get; set; }
 
         public readonly IDictionary<int, IEnumerable<IEnumerable<VVector>>> OriginalContours;
 

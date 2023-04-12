@@ -48,7 +48,7 @@
 
     </UserControl.Resources>
     <StackPanel Background="LightCoral">
-        <Label Content="STEP1 : Please Check the Marker Position" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Foreground="White" FontWeight="Bold" FontSize="16"/>
+        <Label Content="STEP1 : Please Choose one Marker" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Foreground="White" FontWeight="Bold" FontSize="16"/>
         <Grid Margin="50,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="110"/>
