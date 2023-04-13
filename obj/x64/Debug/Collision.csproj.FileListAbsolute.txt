@@ -1,0 +1,11 @@
+C:\Users\aria\source\repos\plugins\Collision.esapi.dll
+C:\Users\aria\source\repos\plugins\Collision.esapi.pdb
+C:\Users\aria\source\repos\Projects\Collision\obj\x64\Debug\Collision.csproj.AssemblyReference.cache
+C:\Users\aria\source\repos\Projects\Collision\obj\x64\Debug\UserControl1.g.cs
+C:\Users\aria\source\repos\Projects\Collision\obj\x64\Debug\Collision.esapi_MarkupCompile.cache
+C:\Users\aria\source\repos\Projects\Collision\obj\x64\Debug\Collision.esapi_MarkupCompile.lref
+C:\Users\aria\source\repos\Projects\Collision\obj\x64\Debug\UserControl1.baml
+C:\Users\aria\source\repos\Projects\Collision\obj\x64\Debug\Collision.esapi.g.resources
+C:\Users\aria\source\repos\Projects\Collision\obj\x64\Debug\Collision.csproj.CoreCompileInputs.cache
+C:\Users\aria\source\repos\Projects\Collision\obj\x64\Debug\Collision.esapi.dll
+C:\Users\aria\source\repos\Projects\Collision\obj\x64\Debug\Collision.esapi.pdb

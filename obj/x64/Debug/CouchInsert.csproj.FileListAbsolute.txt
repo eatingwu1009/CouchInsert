@@ -1,0 +1,32 @@
+C:\Users\aria\source\repos\CouchInsert - Daniel\obj\x64\Debug\CouchInsert.csproj.AssemblyReference.cache
+C:\Users\aria\source\repos\CouchInsert - Daniel\obj\x64\Debug\MainView.g.cs
+C:\Users\aria\source\repos\CouchInsert - Daniel\obj\x64\Debug\CouchInsert.esapi_MarkupCompile.cache
+C:\Users\aria\source\repos\CouchInsert - Daniel\obj\x64\Debug\CouchInsert.esapi_MarkupCompile.lref
+C:\Users\aria\source\repos\CouchInsert - Daniel\obj\x64\Debug\CouchInsert.esapi.pdb
+C:\Users\aria\source\repos\CouchInsert - Daniel\obj\x64\Debug\MainView.baml
+C:\Users\aria\source\repos\CouchInsert - Daniel\obj\x64\Debug\CouchInsert.esapi.g.resources
+C:\Users\aria\source\repos\CouchInsert - Daniel\obj\x64\Debug\CouchInsert.csproj.CoreCompileInputs.cache
+C:\Users\aria\source\repos\CouchInsert - Daniel\obj\x64\Debug\CouchInsert.csproj.CopyComplete
+C:\Users\aria\source\repos\CouchInsert - Daniel\obj\x64\Debug\CouchInsert.esapi.dll
+C:\Users\aria\source\repos\CouchInsert - Daniel - Copy\obj\x64\Debug\CouchInsert.csproj.AssemblyReference.cache
+C:\Users\aria\source\repos\CouchInsert - Daniel - Copy\obj\x64\Debug\MainView.g.cs
+C:\Users\aria\source\repos\CouchInsert - Daniel - Copy\obj\x64\Debug\CouchInsert.esapi_MarkupCompile.cache
+C:\Users\aria\source\repos\CouchInsert - Daniel - Copy\obj\x64\Debug\CouchInsert.esapi_MarkupCompile.lref
+C:\Users\aria\source\repos\CouchInsert - Daniel - Copy\obj\x64\Debug\MainView.baml
+C:\Users\aria\source\repos\CouchInsert - Daniel - Copy\obj\x64\Debug\CouchInsert.esapi.g.resources
+C:\Users\aria\source\repos\CouchInsert - Daniel - Copy\obj\x64\Debug\CouchInsert.csproj.CoreCompileInputs.cache
+C:\Users\aria\source\repos\CouchInsert - Daniel - Copy\obj\x64\Debug\CouchInsert.csproj.CopyComplete
+C:\Users\aria\source\repos\CouchInsert - Daniel - Copy\obj\x64\Debug\CouchInsert.esapi.pdb
+C:\Users\aria\source\repos\CouchInsert - Daniel - Copy\obj\x64\Debug\CouchInsert.esapi.dll
+C:\Users\aria\source\plugins\CouchInsert.esapi.dll
+C:\Users\aria\source\plugins\CouchInsert.esapi.pdb
+C:\Users\aria\source\repos\CouchInsert\obj\x64\Debug\CouchInsert.csproj.AssemblyReference.cache
+C:\Users\aria\source\repos\CouchInsert\obj\x64\Debug\MainView.g.cs
+C:\Users\aria\source\repos\CouchInsert\obj\x64\Debug\CouchInsert.esapi_MarkupCompile.cache
+C:\Users\aria\source\repos\CouchInsert\obj\x64\Debug\CouchInsert.esapi_MarkupCompile.lref
+C:\Users\aria\source\repos\CouchInsert\obj\x64\Debug\MainView.baml
+C:\Users\aria\source\repos\CouchInsert\obj\x64\Debug\CouchInsert.esapi.g.resources
+C:\Users\aria\source\repos\CouchInsert\obj\x64\Debug\CouchInsert.csproj.CoreCompileInputs.cache
+C:\Users\aria\source\repos\CouchInsert\obj\x64\Debug\CouchInsert.csproj.CopyComplete
+C:\Users\aria\source\repos\CouchInsert\obj\x64\Debug\CouchInsert.esapi.dll
+C:\Users\aria\source\repos\CouchInsert\obj\x64\Debug\CouchInsert.esapi.pdb

@@ -432,7 +432,6 @@ namespace CouchInsert
             CouchInterior = StructureSet.Structures.FirstOrDefault(e => e.Id == "CouchInterior");
             CouchSurface = StructureSet.Structures.FirstOrDefault(e => e.Id == "CouchSurface");
 
-            double AA_Z = MarkerLocationZZ - ZBaseAxis;
             ScriptContext.Patient.BeginModifications();
             //XYZ = StructureSet.Structures.FirstOrDefault(s => s.Id == "XYZ");
             //XYZ.MeshGeometry.Positions.Clear();
@@ -485,7 +484,6 @@ namespace CouchInsert
                 MarkerLocationYY = MarkerLocationItem.CenterPoint.y;
                 MarkerLocationZZ = MarkerLocationItem.CenterPoint.z;
                 //this is the value of finding z locztion corresponded to z slice
-                //MessageBox.Show(Convert.ToInt32((MarkerLocationZZ-ScriptContext.Image.Origin.z)/ ScriptContext.Image.ZRes).ToString());
                 Start = new VVector(MarkerLocationItem.CenterPoint.x - 60, MarkerLocationItem.CenterPoint.y, MarkerLocationItem.CenterPoint.z);//60
                 Stop = new VVector(MarkerLocationItem.CenterPoint.x + 5, MarkerLocationItem.CenterPoint.y, MarkerLocationItem.CenterPoint.z);//5
                 PreallocatedBuffer = new double[1000];
@@ -572,6 +570,7 @@ namespace CouchInsert
             }
             double MMX = MaxMinDetect(CSVVector)[0]; double MMY = MaxMinDetect(CSVVector)[1]; double MMZ = MaxMinDetect(CSVVector)[2];
             double Multiple = ScriptContext.Image.ZRes;
+            double OriginZ = ScriptContext.Image.Origin.z;
             bool is_integer = unchecked(Multiple == (int)Multiple); //confirm the z after
 
             if (CrossSurface != null) StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == "CrossSurface"));
@@ -582,7 +581,7 @@ namespace CouchInsert
                 VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ);
                 NewVVector.Add(new VVector(vv.x, vv.y, vv.z));
             }
-            for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i++)
+            for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i ++)
             {
                 CrossSurface.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
@@ -611,7 +610,7 @@ namespace CouchInsert
                 VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ);
                 NewVVector.Add(new VVector(vv.x, vv.y, vv.z));
             }
-            for (int i = 0; i < NewVVector.Max(p => p.z); i++)
+            for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i ++)
             {
                 CrossInterior.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
@@ -629,6 +628,8 @@ namespace CouchInsert
             if (CouchSurface != null) StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == "CouchSurface"));
             CouchSurface = ScriptContext.StructureSet.AddStructure("CONTROL", "CouchSurface");
 
+            List<VVector> ForInterpolate = new List<VVector>();
+            List<VVector> ForInterpolate1 = new List<VVector>();
             Array.Clear(TempFilelines, 0, TempFilelines.Length);
             CSVVector.Clear();
             TempFilelines = File.ReadAllLines(FilePathCS);
@@ -659,31 +660,38 @@ namespace CouchInsert
                 Loop.Clear();
                 if (is_integer == true)
                 {
-                    foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(Convert.ToDouble(i))))
+                    foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i)))
                     {
                         Loop.Add(vec);
                     }
                 }
                 else
                 {
-                    if (i + (i - a) * Multiple == (int)(i + (i - a) * Multiple))
+                    if (i * Multiple + Convert.ToInt32(OriginZ)  == (int)(i * Multiple + Convert.ToInt32(OriginZ)))
                     {
-                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(Convert.ToDouble(i))))
+                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i)))
                         {
                             Loop.Add(vec);
                         }
                     }
                     else
                     {
-                        List<VVector> ForInterpolate = new List<VVector>();
                         ForInterpolate.Clear();
-                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(Convert.ToDouble(i))))
+                        ForInterpolate1.Clear();
+                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i-1)))
                         {
                             ForInterpolate.Add(vec);
                         }
-                        for (int index = 0; index < (ForInterpolate.Count - 1); index++)
+                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i+1)))
                         {
-                            Loop.Add(Interpolate(ForInterpolate[index], ForInterpolate[index + 1]));
+                            ForInterpolate1.Add(vec);
+                        }
+                        if (ForInterpolate.Count == ForInterpolate1.Count)
+                        {
+                            for (int index = 0; index < (ForInterpolate.Count - 1); index++)
+                            {
+                                Loop.Add(Interpolate(ForInterpolate[index], ForInterpolate1[index]));
+                            }
                         }
                     }
                 }
@@ -719,32 +727,40 @@ namespace CouchInsert
                 Loop.Clear();
                 if (is_integer == true)
                 {
-                    foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(Convert.ToDouble(i))))
+                    foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i)))
                     {
                         Loop.Add(vec);
                     }
                 }
                 else
                 {
-                    if ((i + (i - a) * Multiple == (int)(i + (i - a) * Multiple)))
+                    if (i * Multiple + Convert.ToInt32(OriginZ)  == (int)(i * Multiple + Convert.ToInt32(OriginZ)))
                     {
-                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(Convert.ToDouble(i))))
+                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i)))
                         {
                             Loop.Add(vec);
                         }
                     }
                     else
                     {
-                        List<VVector> ForInterpolate = new List<VVector>();
                         ForInterpolate.Clear();
-                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(Convert.ToDouble(i))))
+                        ForInterpolate1.Clear();
+                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i-1)))
                         {
                             ForInterpolate.Add(vec);
                         }
-                        for (int index = 0; index < (ForInterpolate.Count - 1); index++)
+                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i+1)))
                         {
-                            Loop.Add(Interpolate(ForInterpolate[index], ForInterpolate[index + 1]));
+                            ForInterpolate1.Add(vec);
                         }
+                        if(ForInterpolate.Count == ForInterpolate1.Count)
+                        {
+                            for (int index = 0; index < (ForInterpolate.Count - 1); index++)
+                            {
+                                Loop.Add(Interpolate(ForInterpolate[index], ForInterpolate1[index]));
+                            }
+                        }
+
                     }
                 }
                 CouchInterior.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
@@ -765,7 +781,7 @@ namespace CouchInsert
         {
             double x = (Input.x + Next.x) / 2;
             double y = (Input.y + Next.y) / 2;
-            double z = Input.z;
+            double z = (Input.z + Next.z) / 2;
             return new VVector(x, y, z);
         }
 
