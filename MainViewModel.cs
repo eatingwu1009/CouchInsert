@@ -547,11 +547,10 @@ namespace CouchInsert
             ZBaseAxis = Double.Parse(sourceAxis[3]);
             CSHU = Double.Parse(sourceAxis[4]);
             CIHU = Double.Parse(sourceAxis[5]);
-            string UserCouchCIName = sourceAxis[6].ToString();
-            string UserCouchCSName = sourceAxis[7].ToString();
-            Structure UserCI = StructureSet.Structures.FirstOrDefault(e => e.Id == UserCouchCIName);
+            string UserCouchCSName = sourceAxis[6].ToString();
+            string UserCouchCIName = sourceAxis[7].ToString();
             Structure UserCS = StructureSet.Structures.FirstOrDefault(e => e.Id == UserCouchCSName);
-
+            Structure UserCI = StructureSet.Structures.FirstOrDefault(e => e.Id == UserCouchCIName);
 
             FilePathCI = System.IO.Path.Combine(new string[] { FileFolder, "CouchInterior.csv" });
             FilePathCS = System.IO.Path.Combine(new string[] { FileFolder, "CouchSurface.csv" });
