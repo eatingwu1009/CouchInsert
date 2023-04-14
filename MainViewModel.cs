@@ -547,6 +547,11 @@ namespace CouchInsert
             ZBaseAxis = Double.Parse(sourceAxis[3]);
             CSHU = Double.Parse(sourceAxis[4]);
             CIHU = Double.Parse(sourceAxis[5]);
+            string UserCouchCIName = sourceAxis[6].ToString();
+            string UserCouchCSName = sourceAxis[7].ToString();
+            Structure UserCI = StructureSet.Structures.FirstOrDefault(e => e.Id == UserCouchCIName);
+            Structure UserCS = StructureSet.Structures.FirstOrDefault(e => e.Id == UserCouchCSName);
+
 
             FilePathCI = System.IO.Path.Combine(new string[] { FileFolder, "CouchInterior.csv" });
             FilePathCS = System.IO.Path.Combine(new string[] { FileFolder, "CouchSurface.csv" });
@@ -622,8 +627,8 @@ namespace CouchInsert
             //        XYZ.MeshGeometry.TriangleIndices.Add(x);
             //    }
             //}
-            if (CouchSurface != null) StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == "CouchSurface"));
-            CouchSurface = ScriptContext.StructureSet.AddStructure("CONTROL", "CouchSurface");
+            if (UserCS != null) StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == UserCouchCSName));
+            UserCS = ScriptContext.StructureSet.AddStructure("CONTROL", UserCouchCSName);
 
             List<VVector> ForInterpolate = new List<VVector>();
             List<VVector> ForInterpolate1 = new List<VVector>();
@@ -699,7 +704,7 @@ namespace CouchInsert
                         }
                     }
                 }
-                CouchSurface.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
+                UserCS.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
             CurrentProgress = 85;
 
@@ -715,8 +720,8 @@ namespace CouchInsert
                 CSVVector.Add(new VVector(x, y, z));
             }
 
-            if (CouchInterior != null) StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == "CouchInterior"));
-            CouchInterior = ScriptContext.StructureSet.AddStructure("CONTROL", "CouchInterior");
+            if (UserCI != null) StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == UserCouchCIName));
+            UserCI = ScriptContext.StructureSet.AddStructure("CONTROL", UserCouchCIName);
 
             NewVVector.Clear();
             foreach (VVector vec in CSVVector)
@@ -767,14 +772,14 @@ namespace CouchInsert
                         }
                     }
                 }
-                CouchInterior.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
+                UserCI.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
             CurrentProgress = 99;
-            CouchInterior.SegmentVolume = CouchInterior.SegmentVolume.Or(CrossInterior.SegmentVolume);
-            CouchSurface.SegmentVolume = CouchSurface.SegmentVolume.Or(CrossSurface.SegmentVolume);
-            CouchSurface.SegmentVolume = CouchSurface.SegmentVolume.Sub(CouchInterior.SegmentVolume);
-            CouchInterior.SetAssignedHU(CIHU);
-            CouchSurface.SetAssignedHU(CSHU);
+            UserCI.SegmentVolume = UserCI.SegmentVolume.Or(CrossInterior.SegmentVolume);
+            UserCS.SegmentVolume = UserCS.SegmentVolume.Or(CrossSurface.SegmentVolume);
+            UserCS.SegmentVolume = UserCS.SegmentVolume.Sub(UserCI.SegmentVolume);
+            UserCI.SetAssignedHU(CIHU);
+            UserCS.SetAssignedHU(CSHU);
             StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == "CrossSurface"));
             StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == "CrossInterior"));
             CurrentProgress = 100;
