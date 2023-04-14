@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -35,7 +35,7 @@ namespace VMS.TPS
             mainView.DataContext = mainViewModel;
 
             window.Content = mainView;
-            window.Title = "CouchInsert";
+            window.Title = "CouchInsert_EatingWu😊";
             window.Height = 340;//465
             window.Width = 415;
             window.Top = 400;
