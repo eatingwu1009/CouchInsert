@@ -569,9 +569,6 @@ namespace CouchInsert
                 }
             }
             double MMX = MaxMinDetect(CSVVector)[0]; double MMY = MaxMinDetect(CSVVector)[1]; double MMZ = MaxMinDetect(CSVVector)[2];
-            double Multiple = ScriptContext.Image.ZRes;
-            double OriginZ = ScriptContext.Image.Origin.z;
-            bool is_integer = unchecked(Multiple == (int)Multiple); //confirm the z after
 
             if (CrossSurface != null) StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == "CrossSurface"));
             CrossSurface = ScriptContext.StructureSet.AddStructure("CONTROL", "CrossSurface");
@@ -644,6 +641,13 @@ namespace CouchInsert
                 }
             }
             //MMX = MaxMinDetect(CSVVector)[0]; MMY = MaxMinDetect(CSVVector)[1]; MMZ = MaxMinDetect(CSVVector)[2];
+            List<double> CheckArray = new List<double>();
+            CheckArray = CSVVector.Select(x => x.z).Distinct().ToList();
+            double CheckSlice = CheckArray[CheckArray.Count - 1] - CheckArray[CheckArray.Count-2];
+            double Multiple = ScriptContext.Image.ZRes;
+            double OriginZ = ScriptContext.Image.Origin.z;
+            bool is_integer = unchecked((CheckSlice/ Multiple) == (int)(CheckSlice / Multiple)); //confirm the z after
+
             NewVVector.Clear();
             foreach (VVector vec in CSVVector)
             {
@@ -667,7 +671,7 @@ namespace CouchInsert
                 }
                 else
                 {
-                    if (i * Multiple + Convert.ToInt32(OriginZ)  == (int)(i * Multiple + Convert.ToInt32(OriginZ)))
+                    if ((i * Multiple + Convert.ToInt32(OriginZ))  == (int)(i * Multiple + Convert.ToInt32(OriginZ)))
                     {
                         foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i)))
                         {
@@ -686,9 +690,9 @@ namespace CouchInsert
                         {
                             ForInterpolate1.Add(vec);
                         }
-                        if (ForInterpolate.Count == ForInterpolate1.Count)
+                        int MinInterpolateCount = Math.Min(Convert.ToInt32(ForInterpolate.Count()), Convert.ToInt32(ForInterpolate1.Count()));
                         {
-                            for (int index = 0; index < (ForInterpolate.Count - 1); index++)
+                            for (int index = 0; index < MinInterpolateCount - 1; index++)
                             {
                                 Loop.Add(Interpolate(ForInterpolate[index], ForInterpolate1[index]));
                             }
@@ -710,6 +714,7 @@ namespace CouchInsert
                 double z = Double.Parse(splitLine[2].Trim());
                 CSVVector.Add(new VVector(x, y, z));
             }
+
             if (CouchInterior != null) StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == "CouchInterior"));
             CouchInterior = ScriptContext.StructureSet.AddStructure("CONTROL", "CouchInterior");
 
@@ -753,14 +758,13 @@ namespace CouchInsert
                         {
                             ForInterpolate1.Add(vec);
                         }
-                        if(ForInterpolate.Count == ForInterpolate1.Count)
+                        int MinInterpolateCount = Math.Min(Convert.ToInt32(ForInterpolate.Count()), Convert.ToInt32(ForInterpolate1.Count()));
                         {
-                            for (int index = 0; index < (ForInterpolate.Count - 1); index++)
+                            for (int index = 0; index < MinInterpolateCount - 1; index++)
                             {
                                 Loop.Add(Interpolate(ForInterpolate[index], ForInterpolate1[index]));
                             }
                         }
-
                     }
                 }
                 CouchInterior.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
