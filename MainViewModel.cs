@@ -647,10 +647,10 @@ namespace CouchInsert
             //MMX = MaxMinDetect(CSVVector)[0]; MMY = MaxMinDetect(CSVVector)[1]; MMZ = MaxMinDetect(CSVVector)[2];
             List<double> CheckArray = new List<double>();
             CheckArray = CSVVector.Select(x => x.z).Distinct().ToList();
-            double CheckSlice = CheckArray[CheckArray.Count - 1] - CheckArray[CheckArray.Count-2];
+            double CheckSlice = Math.Abs( CheckArray[CheckArray.Count - 1] - CheckArray[CheckArray.Count-2] );
             double Multiple = ScriptContext.Image.ZRes;
             double OriginZ = ScriptContext.Image.Origin.z;
-            bool is_integer = unchecked((CheckSlice/ Multiple) == (int)(CheckSlice / Multiple)); //confirm the z after
+            bool is_integer = unchecked(CheckSlice == Multiple); //confirm the z after
 
             NewVVector.Clear();
             foreach (VVector vec in CSVVector)
