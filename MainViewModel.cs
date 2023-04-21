@@ -662,15 +662,7 @@ namespace CouchInsert
             List<double> CheckArray = new List<double>();
             CheckArray = ForInterpolate.Select(x => x.z).Distinct().ToList();
             double CheckSlice = Math.Abs(CheckArray[CheckArray.Count - 1] - CheckArray[CheckArray.Count - 2]);
-            using (StreamWriter writer = new StreamWriter(@"C:\Users\aria\Downloads\Interpolation\ForInterpolate.csv"))
-            {
-                {
-                    foreach (VVector vector in ForInterpolate)
-                    {
-                        writer.WriteLine(vector.x + "," + vector.y + "," + vector.z);
-                    }
-                }
-            }
+
             int a = Convert.ToInt32(ForInterpolate.Min(p => p.z));
             int b = Convert.ToInt32(ForInterpolate.Max(p => p.z));
             List<VVector> Loop = new List<VVector>();
