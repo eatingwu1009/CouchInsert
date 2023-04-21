@@ -35,7 +35,7 @@ namespace VMS.TPS
             mainView.DataContext = mainViewModel;
 
             window.Content = mainView;
-            window.Title = "CouchInsert_EatingWu😊";
+            window.Title = "CouchInsert_EatingWu🌼";
             window.Height = 340;//465
             window.Width = 415;
             window.Top = 400;

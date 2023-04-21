@@ -576,11 +576,12 @@ namespace CouchInsert
 
             if (CrossSurface != null) StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == "CrossSurface"));
             CrossSurface = ScriptContext.StructureSet.AddStructure("CONTROL", "CrossSurface");
+            double Multiple = ScriptContext.Image.ZRes;
 
             foreach (VVector vec in CSVVector)
             {
                 VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ);
-                NewVVector.Add(new VVector(vv.x, vv.y, vv.z));
+                NewVVector.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
             }
             for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i ++)
             {
@@ -609,7 +610,7 @@ namespace CouchInsert
             foreach (VVector vec in CSVVector)
             {
                 VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ);
-                NewVVector.Add(new VVector(vv.x, vv.y, vv.z));
+                NewVVector.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
             }
             for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i ++)
             {
@@ -629,8 +630,6 @@ namespace CouchInsert
             if (UserCS != null) StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == UserCouchCSName));
             UserCS = ScriptContext.StructureSet.AddStructure("CONTROL", UserCouchCSName);
 
-            List<VVector> ForInterpolate = new List<VVector>();
-            List<VVector> ForInterpolate1 = new List<VVector>();
             Array.Clear(TempFilelines, 0, TempFilelines.Length);
             CSVVector.Clear();
             TempFilelines = File.ReadAllLines(FilePathCS);
@@ -644,13 +643,6 @@ namespace CouchInsert
                     CSVVector.Add(new VVector(x, y, z));
                 }
             }
-            //MMX = MaxMinDetect(CSVVector)[0]; MMY = MaxMinDetect(CSVVector)[1]; MMZ = MaxMinDetect(CSVVector)[2];
-            List<double> CheckArray = new List<double>();
-            CheckArray = CSVVector.Select(x => x.z).Distinct().ToList();
-            double CheckSlice = Math.Abs( CheckArray[CheckArray.Count - 1] - CheckArray[CheckArray.Count-2] );
-            double Multiple = ScriptContext.Image.ZRes;
-            double OriginZ = ScriptContext.Image.Origin.z;
-            bool is_integer = unchecked(CheckSlice == Multiple); //confirm the z after
 
             NewVVector.Clear();
             foreach (VVector vec in CSVVector)
@@ -658,51 +650,70 @@ namespace CouchInsert
                 VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ);
                 NewVVector.Add(new VVector(vv.x, vv.y, vv.z));
             }
-            int a = Convert.ToInt32(NewVVector.Min(p => p.z));
-            int b = Convert.ToInt32(NewVVector.Max(p => p.z));
-
-            List<VVector> Loop = new List<VVector>();
-
-            for (int i = a; i <= b; i++)
+            //double OriginZ = Math.Round(ScriptContext.Image.Origin.z, 1, MidpointRounding.AwayFromZero);
+            //bool is_integer = unchecked(CheckSlice == Multiple);
+            double OriginZ = NewVVector.Min(p => p.z);
+            List<VVector> ForInterpolate = new List<VVector>();
+            List<VVector> ForInterpolate1 = new List<VVector>();
+            foreach (VVector vec in NewVVector.Where(p => ((p.z - OriginZ)/ Multiple) == (int)((p.z - OriginZ) / Multiple)))
             {
-                Loop.Clear();
-                if (is_integer == true)
+                ForInterpolate.Add(new VVector(vec.x, vec.y, Convert.ToInt32(vec.z / Multiple)));
+            }
+            List<double> CheckArray = new List<double>();
+            CheckArray = ForInterpolate.Select(x => x.z).Distinct().ToList();
+            double CheckSlice = Math.Abs(CheckArray[CheckArray.Count - 1] - CheckArray[CheckArray.Count - 2]);
+            using (StreamWriter writer = new StreamWriter(@"C:\Users\aria\Downloads\Interpolation\ForInterpolate.csv"))
+            {
                 {
-                    foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i)))
+                    foreach (VVector vector in ForInterpolate)
+                    {
+                        writer.WriteLine(vector.x + "," + vector.y + "," + vector.z);
+                    }
+                }
+            }
+            int a = Convert.ToInt32(ForInterpolate.Min(p => p.z));
+            int b = Convert.ToInt32(ForInterpolate.Max(p => p.z));
+            List<VVector> Loop = new List<VVector>();
+            for (int i = a; i <= b; i += Convert.ToInt32(CheckSlice))
+            {
+                //if (CheckSlice == 1)
+                Loop.Clear();
+                {
+                    foreach (VVector vec in ForInterpolate.Where(vv => vv.z.Equals(i)))
                     {
                         Loop.Add(vec);
                     }
                 }
-                else
-                {
-                    if ((i * Multiple + Convert.ToInt32(OriginZ))  == (int)(i * Multiple + Convert.ToInt32(OriginZ)))
-                    {
-                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i)))
-                        {
-                            Loop.Add(vec);
-                        }
-                    }
-                    else
-                    {
-                        ForInterpolate.Clear();
-                        ForInterpolate1.Clear();
-                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i-1)))
-                        {
-                            ForInterpolate.Add(vec);
-                        }
-                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i+1)))
-                        {
-                            ForInterpolate1.Add(vec);
-                        }
-                        int MinInterpolateCount = Math.Min(Convert.ToInt32(ForInterpolate.Count()), Convert.ToInt32(ForInterpolate1.Count()));
-                        {
-                            for (int index = 0; index < MinInterpolateCount - 1; index++)
-                            {
-                                Loop.Add(Interpolate(ForInterpolate[index], ForInterpolate1[index]));
-                            }
-                        }
-                    }
-                }
+                //else
+                //{
+                //    if ((i * Multiple + OriginZ)  % CheckSlice == 0 )
+                //    {
+                //        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i)))
+                //        {
+                //            Loop.Add(vec);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        //ForInterpolate.Clear();
+                //        //ForInterpolate1.Clear();
+                //        //foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i-1)))
+                //        //{
+                //        //    ForInterpolate.Add(vec);
+                //        //}
+                //        //foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i+1)))
+                //        //{
+                //        //    ForInterpolate1.Add(vec);
+                //        //}
+                //        //int MinInterpolateCount = Math.Min(Convert.ToInt32(ForInterpolate.Count()), Convert.ToInt32(ForInterpolate1.Count()));
+                //        //{
+                //        //    for (int index = 0; index < MinInterpolateCount - 1; index++)
+                //        //    {
+                //        //        Loop.Add(Interpolate(ForInterpolate[index], ForInterpolate1[index]));
+                //        //    }
+                //        //}
+                //    }
+                //}
                 UserCS.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
             CurrentProgress = 85;
@@ -728,55 +739,64 @@ namespace CouchInsert
                 VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ);
                 NewVVector.Add(new VVector(vv.x, vv.y, vv.z));
             }
-            a = Convert.ToInt32(NewVVector.Min(p => p.z));
-            b = Convert.ToInt32(NewVVector.Max(p => p.z));
+            ForInterpolate.Clear();
+            foreach (VVector vec in NewVVector.Where(p => ((p.z - OriginZ) / Multiple) == (int)((p.z - OriginZ) / Multiple)))
+            {
+                ForInterpolate.Add(new VVector(vec.x, vec.y, Convert.ToInt32(vec.z / Multiple)));
+            }
+            CheckArray.Clear();
+            CheckArray = ForInterpolate.Select(x => x.z).Distinct().ToList();
+            CheckSlice = Math.Abs(CheckArray[CheckArray.Count - 1] - CheckArray[CheckArray.Count - 2]);
+            a = Convert.ToInt32(ForInterpolate.Min(p => p.z));
+            b = Convert.ToInt32(ForInterpolate.Max(p => p.z));
 
-            for (int i = a; i <= b; i++)
+            for (int i = a; i <= b; i += Convert.ToInt32(CheckSlice))
             {
                 Loop.Clear();
-                if (is_integer == true)
+                //if (is_integer == true)
                 {
-                    foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i)))
+                    foreach (VVector vec in ForInterpolate.Where(vv => vv.z.Equals(i)))
                     {
                         Loop.Add(vec);
                     }
                 }
-                else
-                {
-                    if (i * Multiple + Convert.ToInt32(OriginZ)  == (int)(i * Multiple + Convert.ToInt32(OriginZ)))
-                    {
-                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i)))
-                        {
-                            Loop.Add(vec);
-                        }
-                    }
-                    else
-                    {
-                        ForInterpolate.Clear();
-                        ForInterpolate1.Clear();
-                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i-1)))
-                        {
-                            ForInterpolate.Add(vec);
-                        }
-                        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i+1)))
-                        {
-                            ForInterpolate1.Add(vec);
-                        }
-                        int MinInterpolateCount = Math.Min(Convert.ToInt32(ForInterpolate.Count()), Convert.ToInt32(ForInterpolate1.Count()));
-                        {
-                            for (int index = 0; index < MinInterpolateCount - 1; index++)
-                            {
-                                Loop.Add(Interpolate(ForInterpolate[index], ForInterpolate1[index]));
-                            }
-                        }
-                    }
-                }
+                //else
+                //{
+                //    if ((i * Multiple + OriginZ) % CheckSlice == 0)
+                //    {
+                //        foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i)))
+                //        {
+                //            Loop.Add(vec);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        //ForInterpolate.Clear();
+                //        //ForInterpolate1.Clear();
+                //        //foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i-1)))
+                //        //{
+                //        //    ForInterpolate.Add(vec);
+                //        //}
+                //        //foreach (VVector vec in NewVVector.Where(vv => vv.z.Equals(i+1)))
+                //        //{
+                //        //    ForInterpolate1.Add(vec);
+                //        //}
+                //        //int MinInterpolateCount = Math.Min(Convert.ToInt32(ForInterpolate.Count()), Convert.ToInt32(ForInterpolate1.Count()));
+                //        //{
+                //        //    for (int index = 0; index < MinInterpolateCount - 1; index++)
+                //        //    {
+                //        //        Loop.Add(Interpolate(ForInterpolate[index], ForInterpolate1[index]));
+                //        //    }
+                //        //}
+                //    }
+                //}
                 UserCI.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
             CurrentProgress = 99;
+
             UserCI.SegmentVolume = UserCI.SegmentVolume.Or(CrossInterior.SegmentVolume);
             UserCS.SegmentVolume = UserCS.SegmentVolume.Or(CrossSurface.SegmentVolume);
-            UserCS.SegmentVolume = UserCS.SegmentVolume.Sub(UserCI.SegmentVolume);
+            if (CheckSlice == 1) { UserCS.SegmentVolume = UserCS.SegmentVolume.Sub(UserCI.SegmentVolume); }
             UserCI.SetAssignedHU(CIHU);
             UserCS.SetAssignedHU(CSHU);
             StructureSet.RemoveStructure(StructureSet.Structures.First(s => s.Id == "CrossSurface"));
@@ -1017,12 +1037,12 @@ namespace CouchInsert
             //double SSZAdd = Convert.ToInt32((MarkerLocationZZ - ZBaseAxis - ScriptContext.Image.Origin.z) / ScriptContext.Image.ZRes);
             var mapAxis = new Dictionary<string, VVector>()
             {
-                {"H5",   new VVector ( Original.x + X, Original.y + Y, Convert.ToInt32((Original.z + Z  - 2 * HSpace)/ ScriptContext.Image.ZRes))},
-                {"H4",  new VVector ( Original.x + X, Original.y + Y, Convert.ToInt32((Original.z + Z - HSpace)/ ScriptContext.Image.ZRes))},
-                {"H3",  new VVector ( Original.x + X, Original.y + Y, Convert.ToInt32((Original.z + Z ) / ScriptContext.Image.ZRes))},
-                {"H2",  new VVector ( Original.x + X, Original.y + Y, Convert.ToInt32((Original.z + Z  + HSpace)/ ScriptContext.Image.ZRes))},
-                {"H1",  new VVector ( Original.x + X, Original.y + Y, Convert.ToInt32((Original.z + Z  + 2 * HSpace)/ ScriptContext.Image.ZRes))},
-                {"0",  new VVector ( Original.x + X, Original.y + Y, Convert.ToInt32((Original.z + Z + 3 * HSpace)/ ScriptContext.Image.ZRes))},
+                {"H5",  new VVector ( Original.x + X, Original.y + Y, (Original.z + Z  - 2 * HSpace))},
+                {"H4",  new VVector ( Original.x + X, Original.y + Y, (Original.z + Z - HSpace))},
+                {"H3",  new VVector ( Original.x + X, Original.y + Y,(Original.z + Z ))},
+                {"H2",  new VVector ( Original.x + X, Original.y + Y, (Original.z + Z  + HSpace))},
+                {"H1",  new VVector ( Original.x + X, Original.y + Y, (Original.z + Z  + 2 * HSpace))},
+                {"0",  new VVector ( Original.x + X, Original.y + Y, (Original.z + Z + 3 * HSpace))},
             };
             VVector output;
             return mapAxis.TryGetValue(LockBarType, out output) ? output : new VVector(0, 0, 0);
