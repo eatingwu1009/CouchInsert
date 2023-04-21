@@ -583,10 +583,10 @@ namespace CouchInsert
                 VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ);
                 NewVVector.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
             }
-            for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i ++)
-            {
-                CrossSurface.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
-            }
+            //for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i ++)
+            //{
+                CrossSurface.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), 50);
+            //}
             CurrentProgress = 15;
 
             Array.Clear(TempFilelines, 0, TempFilelines.Length);
@@ -612,10 +612,12 @@ namespace CouchInsert
                 VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ);
                 NewVVector.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
             }
-            for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i ++)
-            {
-                CrossInterior.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
-            }
+            //for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i ++)
+            //{
+                CrossInterior.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), 50);
+            //}
+
+
             CurrentProgress = 25;
             //CrossSurface.SegmentVolume = CrossSurface.SegmentVolume.Sub(CrossInterior.SegmentVolume);
 
@@ -650,6 +652,10 @@ namespace CouchInsert
                 VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ);
                 NewVVector.Add(new VVector(vv.x, vv.y, vv.z));
             }
+            //using (StreamWriter writer = new StreamWriter(@"C: \Users\aria\Downloads\Interpolation\NewVVector.csv"))
+            //{
+            //    foreach (VVector vector in NewVVector) writer.WriteLine(vector.x + "," + vector.y + "," + vector.z);
+            //}
             //double OriginZ = Math.Round(ScriptContext.Image.Origin.z, 1, MidpointRounding.AwayFromZero);
             //bool is_integer = unchecked(CheckSlice == Multiple);
             double OriginZ = NewVVector.Min(p => p.z);
@@ -659,6 +665,7 @@ namespace CouchInsert
             {
                 ForInterpolate.Add(new VVector(vec.x, vec.y, Convert.ToInt32(vec.z / Multiple)));
             }
+
             List<double> CheckArray = new List<double>();
             CheckArray = ForInterpolate.Select(x => x.z).Distinct().ToList();
             double CheckSlice = Math.Abs(CheckArray[CheckArray.Count - 1] - CheckArray[CheckArray.Count - 2]);
@@ -705,6 +712,10 @@ namespace CouchInsert
                 //        //    }
                 //        //}
                 //    }
+                //}
+                //using (StreamWriter writer = new StreamWriter(@"C: \Users\aria\Downloads\Interpolation\Loop" + Loop.Min(p => p.z)+ ".csv"))
+                //{
+                //    foreach (VVector vector in Loop) writer.WriteLine(vector.x + "," + vector.y + "," + vector.z);
                 //}
                 UserCS.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
@@ -785,7 +796,13 @@ namespace CouchInsert
                 UserCI.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
             CurrentProgress = 99;
-
+            using (StreamWriter writer = new StreamWriter(@"C: \Users\aria\Downloads\Interpolation\Volume.csv"))
+            {
+                writer.WriteLine(UserCS.Volume);
+                writer.WriteLine(UserCI.Volume);
+                writer.WriteLine(CrossSurface.Volume);
+                writer.WriteLine(CrossInterior.Volume);
+            }
             UserCI.SegmentVolume = UserCI.SegmentVolume.Or(CrossInterior.SegmentVolume);
             UserCS.SegmentVolume = UserCS.SegmentVolume.Or(CrossSurface.SegmentVolume);
             if (CheckSlice == 1) { UserCS.SegmentVolume = UserCS.SegmentVolume.Sub(UserCI.SegmentVolume); }
