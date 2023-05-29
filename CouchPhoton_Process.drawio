@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-05-29T06:22:46.760Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="xyMf5T9Q39ViZySwcEmO" version="21.3.5" type="github">
+<mxfile host="app.diagrams.net" modified="2023-05-29T06:25:10.457Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="rBx_APxfXd9Kqkwgb8DL" version="21.3.5" type="github">
   <diagram name="第 1 页" id="x1ljfz-qSG_obq4z1dJh">
     <mxGraphModel dx="1196" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -163,7 +163,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-67" value="chkBrain == true&lt;br&gt;&amp;nbsp;&amp;amp;&amp;amp;&lt;br&gt;&amp;nbsp;chkBrain2 == true" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-67" value="&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;chkBrain == true&lt;/span&gt;&lt;/li&gt;&lt;li&gt;chkBrain2 == true&lt;/li&gt;&lt;/ul&gt;" style="rhombus;whiteSpace=wrap;html=1;rounded=0;align=left;" parent="1" vertex="1">
           <mxGeometry x="480" y="920" width="160" height="80" as="geometry" />
         </mxCell>
         <mxCell id="LTVYAx_PnS-_SqXySAhT-78" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.496;exitY=0.499;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" parent="1" edge="1">
