@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-05-29T06:26:47.480Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="g1XmwHZqNeBqMdCkqZCN" version="21.3.5" type="github">
+<mxfile host="app.diagrams.net" modified="2023-05-29T06:30:34.355Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="JoF9l4AJwW6ff3FX4KgL" version="21.3.5" type="github">
   <diagram name="第 1 页" id="x1ljfz-qSG_obq4z1dJh">
-    <mxGraphModel dx="1196" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1046" dy="783" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -19,7 +19,7 @@
         <mxCell id="LTVYAx_PnS-_SqXySAhT-11" value="" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;rotation=90;" parent="1" vertex="1">
           <mxGeometry x="354.32" y="322.81" width="111.87" height="306" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.137;entryY=0.021;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.533;exitY=0.99;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="LTVYAx_PnS-_SqXySAhT-14" target="LTVYAx_PnS-_SqXySAhT-19" edge="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.13;entryY=0.015;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.533;exitY=0.99;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="LTVYAx_PnS-_SqXySAhT-14" target="LTVYAx_PnS-_SqXySAhT-19" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="258" y="580" as="sourcePoint" />
             <mxPoint x="257.76" y="622.1600000000001" as="targetPoint" />
@@ -37,7 +37,7 @@
         <mxCell id="LTVYAx_PnS-_SqXySAhT-17" value="chkBrain = false" style="text;whiteSpace=wrap;html=1;align=right;" parent="1" vertex="1">
           <mxGeometry x="149" y="486" width="100" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.863;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.551;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="LTVYAx_PnS-_SqXySAhT-18" target="LTVYAx_PnS-_SqXySAhT-19" edge="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.819;entryY=-0.001;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.551;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="LTVYAx_PnS-_SqXySAhT-18" target="LTVYAx_PnS-_SqXySAhT-19" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="560" y="580" as="sourcePoint" />
             <mxPoint x="560" y="620" as="targetPoint" />
@@ -51,27 +51,25 @@
         <mxCell id="LTVYAx_PnS-_SqXySAhT-18" value="Scan y_line up &lt;br&gt;from &lt;b&gt;BrainBorder1&lt;/b&gt; to 0" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="490" y="520" width="140" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.144;exitY=0.98;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.31;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" edge="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.13;exitY=1.004;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.31;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" edge="1" source="LTVYAx_PnS-_SqXySAhT-19">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="251.48000000000002" y="678.8000000000001" as="sourcePoint" />
             <mxPoint x="254.38" y="710" as="targetPoint" />
             <Array as="points">
+              <mxPoint x="255" y="679" />
               <mxPoint x="254" y="679" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-71" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" target="LTVYAx_PnS-_SqXySAhT-54" edge="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-71" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.819;exitY=1.002;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" target="LTVYAx_PnS-_SqXySAhT-54" edge="1" source="LTVYAx_PnS-_SqXySAhT-19">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="539" y="680" as="sourcePoint" />
             <mxPoint x="525.92" y="709.2" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="560" y="680" />
-              <mxPoint x="560" y="710" />
-            </Array>
+            <Array as="points" />
           </mxGeometry>
         </mxCell>
         <mxCell id="LTVYAx_PnS-_SqXySAhT-19" value="Get&amp;nbsp;&lt;br&gt;sum += Math.Abs(x.Value - (-450)) &amp;amp; YLocation" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="197" y="620" width="420" height="60" as="geometry" />
+          <mxGeometry x="197" y="620" width="443" height="50" as="geometry" />
         </mxCell>
         <mxCell id="LTVYAx_PnS-_SqXySAhT-31" value="" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;rotation=-90;" parent="1" vertex="1">
           <mxGeometry x="368.3" y="882.5" width="78.91" height="305.25" as="geometry" />
@@ -87,7 +85,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="LTVYAx_PnS-_SqXySAhT-37" value="&lt;ul&gt;&lt;li&gt;(Point) Couch1, 2, 3, 4&amp;nbsp;&lt;/li&gt;&lt;li&gt;chkHeight (HU)&lt;/li&gt;&lt;/ul&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
-          <mxGeometry x="200" y="810" width="175.94" height="50" as="geometry" />
+          <mxGeometry x="167.03" y="810" width="175.94" height="50" as="geometry" />
         </mxCell>
         <mxCell id="LTVYAx_PnS-_SqXySAhT-41" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;Image FOV &amp;lt; 50cm&lt;/span&gt;&lt;br style=&quot;border-color: var(--border-color); color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;(the couch show only one line )&lt;/span&gt;" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="313.65999999999997" y="360" width="193.19" height="90" as="geometry" />
@@ -120,13 +118,13 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="LTVYAx_PnS-_SqXySAhT-28" value="Couch = FindHighestSlope(XProfile)" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="199" y="710" width="198" height="60" as="geometry" />
+          <mxGeometry x="154.09" y="710" width="198" height="60" as="geometry" />
         </mxCell>
         <mxCell id="LTVYAx_PnS-_SqXySAhT-80" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;dashed=1;strokeWidth=2;" parent="1" source="LTVYAx_PnS-_SqXySAhT-46" target="LTVYAx_PnS-_SqXySAhT-28" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="90" y="943" />
-              <mxPoint x="90" y="755" />
+              <mxPoint x="70" y="943" />
+              <mxPoint x="70" y="755" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -204,7 +202,7 @@
           <mxGeometry x="619" y="927.5" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="p7OBAl8m0kmdlYUJRd6V-14" value="False" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="89" y="897.5" width="60" height="30" as="geometry" />
+          <mxGeometry x="60" y="910" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="p7OBAl8m0kmdlYUJRd6V-18" value="BadChk &lt;br&gt;if i &amp;gt;30, FinalYcenter(0)" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="589" y="1044" width="120" height="60" as="geometry" />
