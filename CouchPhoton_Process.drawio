@@ -1,25 +1,25 @@
-<mxfile host="app.diagrams.net" modified="2023-05-29T05:51:12.007Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="IdjQssFyPaWVtcXHJWWe" version="21.3.5" type="github">
+<mxfile host="app.diagrams.net" modified="2023-05-29T06:06:17.091Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="FM9TpTcInwrblXRFcrNo" version="21.3.5" type="github">
   <diagram name="第 1 页" id="x1ljfz-qSG_obq4z1dJh">
-    <mxGraphModel dx="982" dy="887" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1522" dy="1371" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="LTVYAx_PnS-_SqXySAhT-5" target="LTVYAx_PnS-_SqXySAhT-6">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="LTVYAx_PnS-_SqXySAhT-5" target="LTVYAx_PnS-_SqXySAhT-6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-5" value="&lt;ul&gt;&lt;li&gt;Get UserOrigin&lt;/li&gt;&lt;li style=&quot;&quot;&gt;Check Pt Orientation&lt;/li&gt;&lt;li style=&quot;&quot;&gt;Check StructureSet&lt;/li&gt;&lt;li style=&quot;&quot;&gt;Add BODY&amp;nbsp;&lt;/li&gt;&lt;/ul&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;align=left;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-5" value="&lt;ul&gt;&lt;li&gt;Get UserOrigin&lt;/li&gt;&lt;li style=&quot;&quot;&gt;Check Pt Orientation&lt;/li&gt;&lt;li style=&quot;&quot;&gt;Check StructureSet&lt;/li&gt;&lt;li style=&quot;&quot;&gt;Add BODY&amp;nbsp;&lt;/li&gt;&lt;/ul&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="325.25" y="150" width="170" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-42" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="LTVYAx_PnS-_SqXySAhT-6" target="LTVYAx_PnS-_SqXySAhT-41">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-42" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="LTVYAx_PnS-_SqXySAhT-6" target="LTVYAx_PnS-_SqXySAhT-41" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-6" value="Find Image center X, Y &lt;br&gt;@ z = 0" style="whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-6" value="Find Image center X, Y &lt;br&gt;@ z = 0" style="whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
           <mxGeometry x="337.75" y="270" width="145" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-11" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;rotation=90;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-11" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;rotation=90;" parent="1" vertex="1">
           <mxGeometry x="354.32" y="322.81" width="111.87" height="306" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.137;entryY=0.021;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.533;exitY=0.99;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="LTVYAx_PnS-_SqXySAhT-14" target="LTVYAx_PnS-_SqXySAhT-19">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.137;entryY=0.021;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.533;exitY=0.99;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="LTVYAx_PnS-_SqXySAhT-14" target="LTVYAx_PnS-_SqXySAhT-19" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="258" y="580" as="sourcePoint" />
             <mxPoint x="257.76" y="622.1600000000001" as="targetPoint" />
@@ -28,16 +28,16 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-14" value="Scan y_line up &lt;br&gt;from +Y to 0" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-14" value="Scan y_line up &lt;br&gt;from +Y to 0" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="199" y="520" width="110" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-16" value="chkBrain = true" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-16" value="chkBrain = true" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="569" y="486" width="110" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-17" value="chkBrain = false" style="text;whiteSpace=wrap;html=1;align=right;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-17" value="chkBrain = false" style="text;whiteSpace=wrap;html=1;align=right;" parent="1" vertex="1">
           <mxGeometry x="149" y="486" width="100" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.863;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.551;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="LTVYAx_PnS-_SqXySAhT-18" target="LTVYAx_PnS-_SqXySAhT-19">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.863;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.551;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="LTVYAx_PnS-_SqXySAhT-18" target="LTVYAx_PnS-_SqXySAhT-19" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="560" y="580" as="sourcePoint" />
             <mxPoint x="560" y="620" as="targetPoint" />
@@ -48,10 +48,10 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-18" value="Scan y_line up &lt;br&gt;from &lt;b&gt;BrainBorder1&lt;/b&gt; to 0" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-18" value="Scan y_line up &lt;br&gt;from &lt;b&gt;BrainBorder1&lt;/b&gt; to 0" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="490" y="520" width="140" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.144;exitY=0.98;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.31;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.144;exitY=0.98;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.31;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="251.48000000000002" y="678.8000000000001" as="sourcePoint" />
             <mxPoint x="254.38" y="710" as="targetPoint" />
@@ -60,7 +60,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-71" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="LTVYAx_PnS-_SqXySAhT-54">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-71" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" target="LTVYAx_PnS-_SqXySAhT-54" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="539" y="680" as="sourcePoint" />
             <mxPoint x="525.92" y="709.2" as="targetPoint" />
@@ -70,13 +70,13 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-19" value="Get&amp;nbsp;&lt;br&gt;sum += Math.Abs(x.Value - (-450)) &amp;amp; YLocation" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-19" value="Get&amp;nbsp;&lt;br&gt;sum += Math.Abs(x.Value - (-450)) &amp;amp; YLocation" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="197" y="620" width="420" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-31" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;rotation=-90;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-31" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;rotation=-90;" parent="1" vertex="1">
           <mxGeometry x="368.3" y="882.5" width="78.91" height="305.25" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-70" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-70" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="255" y="860" as="sourcePoint" />
             <mxPoint x="255" y="885.6535409240703" as="targetPoint" />
@@ -86,13 +86,13 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-37" value="&lt;ul&gt;&lt;li&gt;(Point) Couch1, 2, 3, 4&amp;nbsp;&lt;/li&gt;&lt;li&gt;chkHeight (HU)&lt;/li&gt;&lt;/ul&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-37" value="&lt;ul&gt;&lt;li&gt;(Point) Couch1, 2, 3, 4&amp;nbsp;&lt;/li&gt;&lt;li&gt;chkHeight (HU)&lt;/li&gt;&lt;/ul&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="200" y="810" width="175.94" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-41" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;If this image FOV &amp;lt; 50cm&lt;/span&gt;&lt;br style=&quot;border-color: var(--border-color); color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;(the couch show only one line )&lt;/span&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-41" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;If this image FOV &amp;lt; 50cm&lt;/span&gt;&lt;br style=&quot;border-color: var(--border-color); color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;(the couch show only one line )&lt;/span&gt;" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="313.65999999999997" y="360" width="193.19" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-68" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="LTVYAx_PnS-_SqXySAhT-43" target="LTVYAx_PnS-_SqXySAhT-67">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-68" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="LTVYAx_PnS-_SqXySAhT-43" target="LTVYAx_PnS-_SqXySAhT-67" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="561" y="890" />
@@ -100,10 +100,10 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-43" value="if (Brn != -1000 &amp;amp;&amp;amp; Brn &amp;lt; -600)&amp;nbsp; chkBrain2 -= true" style="rhombus;whiteSpace=wrap;html=1;align=center;rounded=0;verticalAlign=middle;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-43" value="if (Brn != -1000 &amp;amp;&amp;amp; Brn &amp;lt; -600)&amp;nbsp; chkBrain2 -= true" style="rhombus;whiteSpace=wrap;html=1;align=center;rounded=0;verticalAlign=middle;" parent="1" vertex="1">
           <mxGeometry x="456.01" y="795" width="209.75" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-55" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-55" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="255.00000000000006" y="770" as="sourcePoint" />
             <mxPoint x="255.00000000000006" y="810" as="targetPoint" />
@@ -113,10 +113,10 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-28" value="Couch = FindHighestSlope(XProfile)" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-28" value="Couch = FindHighestSlope(XProfile)" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="199" y="710" width="198" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-80" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;dashed=1;strokeWidth=2;" edge="1" parent="1" source="LTVYAx_PnS-_SqXySAhT-46" target="LTVYAx_PnS-_SqXySAhT-28">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-80" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;dashed=1;strokeWidth=2;" parent="1" source="LTVYAx_PnS-_SqXySAhT-46" target="LTVYAx_PnS-_SqXySAhT-28" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="90" y="943" />
@@ -124,13 +124,20 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-46" value="&lt;div style=&quot;text-align: left;&quot;&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;CouchBorder1 &amp;gt;= 50 &amp;amp;&amp;amp; CouchBorder1 &amp;lt;= 53&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;CouchBorder2 &amp;gt;= 47 &amp;amp;&amp;amp; CouchBorder2 &amp;lt;= 53&lt;br&gt;&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;chkHeight &amp;gt; -650&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-46" value="&lt;div style=&quot;text-align: left;&quot;&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;CouchBorder1 &amp;gt;= 50 &amp;amp;&amp;amp; CouchBorder1 &amp;lt;= 53&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;CouchBorder2 &amp;gt;= 47 &amp;amp;&amp;amp; CouchBorder2 &amp;lt;= 53&lt;br&gt;&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;chkHeight &amp;gt; -650&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="106.31" y="885" width="297.38" height="115" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-52" value="AddCouchStructures" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="346.19" y="1075" width="120" height="60" as="geometry" />
+        <mxCell id="p7OBAl8m0kmdlYUJRd6V-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="p7OBAl8m0kmdlYUJRd6V-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="406.19000000000005" y="1180" as="targetPoint" />
+            <mxPoint x="406.20000000000005" y="1135" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="406" y="1170" />
+              <mxPoint x="406" y="1170" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-69" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="LTVYAx_PnS-_SqXySAhT-54" target="LTVYAx_PnS-_SqXySAhT-43">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-69" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="LTVYAx_PnS-_SqXySAhT-54" target="LTVYAx_PnS-_SqXySAhT-43" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="561" y="770" />
@@ -138,10 +145,10 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-54" value="&lt;ul&gt;&lt;li&gt;(Point)&amp;nbsp;Brn1, 2, 3, 4&amp;nbsp;&lt;/li&gt;&lt;/ul&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-54" value="&lt;ul&gt;&lt;li&gt;(Point)&amp;nbsp;Brn1, 2, 3, 4&amp;nbsp;&lt;/li&gt;&lt;/ul&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="479.88" y="710" width="160" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-73" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;dashed=1;strokeWidth=2;" edge="1" parent="1" source="LTVYAx_PnS-_SqXySAhT-67" target="LTVYAx_PnS-_SqXySAhT-54">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-73" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;dashed=1;strokeWidth=2;" parent="1" source="LTVYAx_PnS-_SqXySAhT-67" target="LTVYAx_PnS-_SqXySAhT-54" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="720" y="730" as="targetPoint" />
             <Array as="points">
@@ -150,14 +157,33 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-67" value="chkBrain == true&lt;br&gt;&amp;nbsp;&amp;amp;&amp;amp;&lt;br&gt;&amp;nbsp;chkBrain2 == true" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-67" value="chkBrain == true&lt;br&gt;&amp;nbsp;&amp;amp;&amp;amp;&lt;br&gt;&amp;nbsp;chkBrain2 == true" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="480" y="920" width="160" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="LTVYAx_PnS-_SqXySAhT-78" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.496;exitY=0.499;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.023;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="LTVYAx_PnS-_SqXySAhT-31" target="LTVYAx_PnS-_SqXySAhT-31">
+        <mxCell id="LTVYAx_PnS-_SqXySAhT-78" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.496;exitY=0.499;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.023;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="LTVYAx_PnS-_SqXySAhT-31" target="LTVYAx_PnS-_SqXySAhT-31" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="420" y="1110" as="sourcePoint" />
             <mxPoint x="470" y="1060" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="p7OBAl8m0kmdlYUJRd6V-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.493;entryY=0.002;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="405.0344827586207" y="1230" as="sourcePoint" />
+            <mxPoint x="405.28999999999996" y="1270.1200000000001" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="405" y="1250" />
+              <mxPoint x="405" y="1250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p7OBAl8m0kmdlYUJRd6V-3" value="&lt;ul&gt;&lt;li style=&quot;&quot;&gt;Get Couch VVector&lt;/li&gt;&lt;li style=&quot;&quot;&gt;Find x_max, y_min&lt;/li&gt;&lt;/ul&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="321.66" y="1180" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p7OBAl8m0kmdlYUJRd6V-6" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;AddCouchStructures&lt;br&gt;(Enlarge the CT)&lt;br&gt;&lt;/span&gt;" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="347.75" y="1080" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p7OBAl8m0kmdlYUJRd6V-7" value="AddContourOnImagePlane() &lt;br&gt;new VVector(v.x + ShiftX, v.y + ShiftY, v.z);" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="278" y="1270" width="258" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
