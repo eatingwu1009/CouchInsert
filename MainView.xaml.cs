@@ -38,5 +38,16 @@ namespace CouchInsert
         {
 
         }
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        {
+            Expander expander = (Expander)sender;
+            expander.Header = "Click to collapse";
+        }
+
+        private void Expander_Collapsed(object sender, RoutedEventArgs e)
+        {
+            Expander expander = (Expander)sender;
+            expander.Header = "Click to expand";
+        }
     }
 }
