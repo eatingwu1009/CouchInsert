@@ -115,6 +115,17 @@ namespace CouchInsert
             }
         }
 
+        private double _finalYcenter;
+        public double FinalYcenter
+        {
+            get => _finalYcenter;
+            set
+            {
+                _finalYcenter = value;
+                NotifyPropertyChanged(nameof(FinalYcenter));
+            }
+        }
+
         private String _calculateBBLocation;
         public String CalculateBBLocation
         {
@@ -414,9 +425,8 @@ namespace CouchInsert
             set
             {
                 _isChecked = value;
-                NotifyPropertyChanged(nameof(CrossInterior));
-                //System.Windows.MessageBox.Show($"The HighResolution Mode is ON : {_isChecked}");
-                System.Windows.Forms.MessageBox.Show($"{_isChecked}", "High Resolution Mode", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                System.Windows.MessageBox.Show($"You are using Halcyon Couch : {_isChecked}");
+                //System.Windows.Forms.MessageBox.Show($"{_isChecked}", "Halcyon Couch", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -463,6 +473,16 @@ namespace CouchInsert
                 NotifyPropertyChanged(nameof(UserCouchCSName));
             }
         }
+        private bool _halcyon;
+        public bool Halcyon
+        {
+            get => _halcyon;
+            set
+            {
+                _halcyon = value;
+                NotifyPropertyChanged(nameof(Halcyon));
+            }
+        }
 
         public double HSpace { get; set; }
         public double XBaseAxis { get; set; }
@@ -488,6 +508,9 @@ namespace CouchInsert
 
             if (orientation == PatientOrientation.FeetFirstSupine | orientation == PatientOrientation.FeetFirstProne) XchkOrientation = -1;
             else XchkOrientation = 1;
+
+            Halcyon = false;
+            if (IsChecked == true) { Halcyon = true; }
 
             scriptContext.Patient.BeginModifications();
             StructureSet SS = scriptContext.StructureSet;
@@ -1104,6 +1127,143 @@ namespace CouchInsert
         //        }
         //    }
         //}
+        public ICommand ButtonCommand_CouchBody { get => new Command(CouchBody); }
+        private void CouchBody()
+        {
+            StructureSet SS = ScriptContext.StructureSet;
+            ScriptContext SC = ScriptContext;
+            bool imageResized = true;
+            string erroemessage = null;
+            SC.Patient.BeginModifications();
+            Structure BODY = SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL");
+            if (BODY is null)
+            {
+                var BodyPar = SS.GetDefaultSearchBodyParameters();
+                SS.CreateAndSearchBody(BodyPar);
+            }
+            if (SS.CanAddCouchStructures(out erroemessage) == true)
+            {
+                SS.AddCouchStructures("Exact_IGRT_Couch_Top_medium", orientation, RailPosition.In, RailPosition.In, -550, -950, null, out IReadOnlyList<Structure> couchStructureList, out imageResized, out erroemessage);
+                Structure CouchSurface = SS.Structures.FirstOrDefault(p => p.Id == "CouchSurface");
+                Structure CouchInterior = SS.Structures.FirstOrDefault(p => p.Id == "CouchInterior");
+                StructureCode CScode = CouchSurface.StructureCode;
+                StructureCode CIcode = CouchInterior.StructureCode;
+                CouchSurface.SegmentVolume = CouchSurface.SegmentVolume.Or(CouchInterior.SegmentVolume);
+                List<VVector> CSVVector = new List<VVector>();
+                foreach (VVector[] vectors in CouchSurface.GetContoursOnImagePlane(1))
+                {
+                    foreach (VVector v in vectors)
+                    {
+                        double x = v.x;
+                        double y = v.y;
+                        double z = v.z;
+                        CSVVector.Add(new VVector(x, y, z));
+                    }
+                }
+                double MMX = MaxMinDetect(CSVVector, orientation)[0]; double MMY = MaxMinDetect(CSVVector, orientation)[1];
+                double ShiftX = -265 - MMX;
+                double ShiftY = (FinalYcenter) - MMY;
+
+                SS.RemoveStructure(CouchSurface);
+                if (Halcyon == true)
+                {
+                    CouchSurface = SS.AddStructure("SUPPORT", "HalcyonCouchSurface");
+                }
+                else
+                {
+                    CouchSurface = SS.AddStructure("SUPPORT", "IGRTCouchSurface");
+                }
+                for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
+                {
+                    CouchSurface.AddContourOnImagePlane(CSVVector.Select(v => new VVector(v.x + ShiftX, v.y + ShiftY, v.z)).ToArray(), i);
+                }
+
+
+                CSVVector.Clear();
+                foreach (VVector[] vectors in CouchInterior.GetContoursOnImagePlane(1))
+                {
+                    foreach (VVector v in vectors)
+                    {
+                        double x = v.x;
+                        double y = v.y;
+                        double z = v.z;
+                        CSVVector.Add(new VVector(x, y, z));
+                    }
+                }
+                SS.RemoveStructure(CouchInterior);
+                if (Halcyon == true)
+                {
+                    CouchInterior = SS.AddStructure("SUPPORT", "HalcyonCouchInterior");
+                }
+                else
+                {
+                    CouchInterior = SS.AddStructure("SUPPORT", "IGRTCouchInterior");
+                }
+                for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
+                {
+                    CouchInterior.AddContourOnImagePlane(CSVVector.Select(v => new VVector(v.x + ShiftX, v.y + ShiftY, v.z)).ToArray(), i);
+                }
+                CouchSurface.SegmentVolume = CouchSurface.SegmentVolume.Sub(CouchInterior.SegmentVolume);
+                CouchSurface.StructureCode = CScode;
+                CouchInterior.StructureCode = CIcode;
+                if (Halcyon)
+                {
+                    CouchInterior.SetAssignedHU(-1000);
+                    CouchSurface.SetAssignedHU(-300);
+                    CouchInterior.Comment = "NTUCC_Halcyon Couch";
+                    CouchSurface.Comment = "NTUCC_Halcyon Couch";
+                }
+                else
+                {
+                    CouchInterior.SetAssignedHU(-950);
+                    CouchSurface.SetAssignedHU(-550);
+                    CouchInterior.Comment = "NTUCC_Exact IGRT Couch, medium";
+                    CouchSurface.Comment = "NTUCC_Exact IGRT Couch, medium";
+                }
+                //BODY part
+                Structure Temp = SS.AddStructure("CONTROL", "Temp_ForCouch");
+                VVector[] TempVec = GetpseudoLine(FinalYcenter, SI.XSize, SI.YSize, chkOrientation);
+                for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
+                {
+                    Temp.AddContourOnImagePlane(TempVec, i);
+                }
+                BODY = SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL");
+                BODY.SegmentVolume = BODY.SegmentVolume.Sub(Temp.SegmentVolume);
+                SS.RemoveStructure(Temp);
+            }
+            else if (erroemessage == "Support structures already exist in the structure set.")
+            {
+                Structure CS = SS.Structures.FirstOrDefault(a => a.Id == "IGRTCouchSurface");
+                Structure CI = SS.Structures.FirstOrDefault(a => a.Id == "IGRTCouchInterior");
+                if (Halcyon == true)
+                {
+                    CS = SS.Structures.FirstOrDefault(a => a.Id == "HalcyonCouchSurface");
+                    CI = SS.Structures.FirstOrDefault(a => a.Id == "HalcyonCouchInterior");
+                }
+                //BODY part
+                Structure Temp_null = SS.AddStructure("CONTROL", "Temp_ForCouch");
+                List<VVector> CSVVector_null = new List<VVector>();
+                foreach (VVector[] vectors in CS.GetContoursOnImagePlane(1))
+                {
+                    foreach (VVector v in vectors)
+                    {
+                        double x = v.x;
+                        double y = v.y;
+                        double z = v.z;
+                        CSVVector_null.Add(new VVector(x, y, z));
+                    }
+                }
+                VVector[] TempVec_null = GetpseudoLine(MaxMinDetect(CSVVector_null, orientation)[1], SI.XSize, SI.YSize, chkOrientation);
+                for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
+                {
+                    Temp_null.AddContourOnImagePlane(TempVec_null, i);
+                }
+                BODY = SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL");
+                BODY.SegmentVolume = BODY.SegmentVolume.Sub(Temp_null.SegmentVolume);
+                SS.RemoveStructure(Temp_null);
+            }
+            else { System.Windows.MessageBox.Show(erroemessage); }
+        }
         public ICommand ButtonCommand_FilePath { get => new Command(GetFilePath); }
         private void GetFilePath()
         {

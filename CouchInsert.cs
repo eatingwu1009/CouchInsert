@@ -35,9 +35,9 @@ namespace VMS.TPS
             mainView.DataContext = mainViewModel;
 
             window.Content = mainView;
-            window.Title = "Proton_CouchInsert_EatingWu🌼";
+            window.Title = "CouchInsert_EatingWu🌼";
             window.SizeToContent = SizeToContent.Height;
-            window.Width = 575;
+            window.Width = 580;
             window.Top = 400;
             window.Left = 1200;
 

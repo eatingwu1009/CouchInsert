@@ -47,9 +47,11 @@
             </Setter>
         </Style>
     </UserControl.Resources>
+
     <StackPanel Background="LightCoral">
-        <Label Grid.Column="0" FontWeight="Bold" FontSize="16" HorizontalAlignment="Left" Margin="5,5,0,0"/>
-        <Label Grid.Column="0" Content="AutoDetect" FontWeight="Bold" FontSize="16" HorizontalAlignment="Left" Margin="5,5,0,0">
+
+        <Label Content="✨ProtonCouch" FontWeight="Bold" FontSize="16" HorizontalAlignment="Left"/>
+        <Label Content="AutoDetect"  HorizontalAlignment="Left" Height="28" VerticalAlignment="Top"  FontSize="16" Margin="35,0,0,0">
             <!--<Label.Foreground>
                     <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
                         <GradientStop Color="Purple" Offset="0.1" />
@@ -58,8 +60,8 @@
                     </LinearGradientBrush>
                 </Label.Foreground>-->
         </Label>
-        <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="130,-35,0,0" Width="428" ExpandDirection="Right">
-            <Grid Margin="-5,-10,10,0">
+        <Expander HorizontalAlignment="Left" Margin="150,-20,0,0" Width="428" ExpandDirection="Right">
+            <Grid Margin="0,0,0,0" Background="LightCoral">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="110"/>
                     <ColumnDefinition Width="110"/>
@@ -67,19 +69,18 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
-                <Button Grid.Column="0" Content="CheckBBs✔️"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_AddBBs}" IsEnabled="{Binding CanStartProcessing}" Cursor="Hand" Margin="15,7,15,3"/>
-                <Button Grid.Column="1" Content="APPLY⏳"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_AddBBs}" IsEnabled="{Binding CanStartProcessing}" Cursor="Hand" Margin="15,7,15,3"/>
+                <Button Grid.Column="0" Content="CheckBBs✔️"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_AddBBs}" IsEnabled="{Binding CanStartProcessing}" Cursor="Hand" Margin="15,0,15,3"/>
+                <Button Grid.Column="1" Content="APPLY⏳"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_AddBBs}" IsEnabled="{Binding CanStartProcessing}" Cursor="Hand" Margin="15,0,15,3"/>
                 <!--<Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"></Setter>
                     </Style>
                 </Button.Resources>-->
-
             </Grid>
         </Expander>
 
-        <Label Content="Manual Marker" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top"  FontWeight="Bold" FontSize="16"/>
-        <Expander HorizontalAlignment="Left" Margin="130,-28,0,0" Width="428">
+        <Label Content="Manual Marker" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top"  FontSize="16" Margin="35,0,0,0"/>
+        <Expander HorizontalAlignment="Left" Margin="150,-22,0,0" Width="428">
             <Grid Margin="0,0,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="110"/>
@@ -115,8 +116,8 @@
             </Grid>
         </Expander>
 
-        <Label Content="Double Check" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top"  FontWeight="Bold" FontSize="16"/>
-        <Expander HorizontalAlignment="Left" Margin="130,-28,0,0" Width="428">
+        <Label Content="Double Check" HorizontalAlignment="Left" Height="28" VerticalAlignment="Top"  FontSize="16" Margin="35,0,0,0"/>
+        <Expander HorizontalAlignment="Left" Margin="150,-22,0,0" Width="428">
             <Grid Margin="0,0,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="135"/>
@@ -137,8 +138,8 @@
             </Grid>
         </Expander>
 
-        <Label Grid.Row="0" Content="Couch Model"  FontWeight="Bold" FontSize="16" HorizontalAlignment="Left"/>
-        <Expander HorizontalAlignment="Left" Margin="130,-28,0,0" Width="443">
+        <Label Grid.Row="0" Content="Couch Model"  FontSize="16" HorizontalAlignment="Left" Margin="35,0,0,0"/>
+        <Expander HorizontalAlignment="Left" Margin="150,-25,0,0" Width="443">
             <Grid Background="LightCoral" Width="443" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"/>
@@ -153,6 +154,21 @@
                 <Label Grid.Row="0" Content="Couch Names : CouchInterior, CouchSurface, CrossInterior, CrossSurface" FontSize="13" FontWeight="Bold" Foreground="Maroon" FontFamily="Segoe UI Light" Grid.ColumnSpan="4" />
             </Grid>
         </Expander>
+        <Grid Margin="0,0,0,0" Background="LightPink" Height="154">
+            <Label Background="LightPink" Grid.Column="0" Content="☢️PhotonCouch" FontWeight="Bold" FontSize="16" HorizontalAlignment="Left" Margin="5,5,0,0"/>
+        </Grid>
+        <Expander HorizontalAlignment="Left" Margin="150,-145,0,0" Width="460" Height="147">
+            <Grid Background="LightPink" Width="493" Margin="0,0,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="410"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="Couch /BODY➤" Background="Orchid" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="0" Width="123" FontSize="16" Margin="225,47,0,0" Command="{Binding ButtonCommand_CouchBody}" RenderTransformOrigin="0.495,0.6" FontFamily="Segoe UI Light"  Foreground="MistyRose" Height="44"/>
+                <CheckBox Name="Halcyon"  Content="Couch : Halcyon" HorizontalAlignment="Left" FontFamily="Segoe UI Light"  Margin="97,59,0,0" VerticalAlignment="Top" Command="{Binding CheckedChangedCommand, Mode=TwoWay}" CommandParameter ="{Binding ElementName = chk}" IsChecked="{Binding Path=IsChecked, Mode=TwoWay}" Width="128" FontSize="14" Height="20" FontWeight="Bold"/>
+                <!--<CheckBox Grid.Row="2" Grid.Column="1" Content="Solid" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Maroon"  Command="{Binding CheckedChangedCommand, Mode=TwoWay}"  
+                      Name ="chk" CommandParameter ="{Binding ElementName = chk}" IsChecked="{Binding Path=IsChecked, Mode=TwoWay}"/>-->
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" FontFamily="Segoe UI Light"  FontSize="16" TextDecorations="{x:Null}" Width="374" Height="33" VerticalAlignment="Top"><Run Language="zh-tw" Text="   Please check"/><Run Text="✔️"/><Run Language="zh-tw" Text=" if you use Halcyon couch."/></TextBlock>
+                <Image Source="/CouchInsert.esapi;component/OK_Hal2.png" Margin="9,26,314,12"/>
+            </Grid>
+        </Expander>
     </StackPanel>
-
 </UserControl>
