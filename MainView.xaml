@@ -65,12 +65,14 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="110"/>
                     <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="110"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
-                <Button Grid.Column="0" Content="CheckBBs✔️"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_AddBBs}" IsEnabled="{Binding CanStartProcessing}" Cursor="Hand" Margin="15,0,15,3"/>
-                <Button Grid.Column="1" Content="APPLY⏳"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_AddBBs}" IsEnabled="{Binding CanStartProcessing}" Cursor="Hand" Margin="15,0,15,3"/>
+                <Button Grid.Column="0" Content="Start✔️"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_StartChk}"  Cursor="Hand" Margin="15,0,15,3"/>
+                <Button Grid.Column="1" Content="CheckBBs"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_AddBBs}" IsEnabled="{Binding CanStartProcessing}" Cursor="Hand" Margin="15,0,15,3"/>
+                <Button Grid.Column="2" Content="APPLY⏳"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_AddCouch}" IsEnabled="{Binding CanStartProcessing}" Cursor="Hand" Margin="15,0,15,3"/>
                 <!--<Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"></Setter>
@@ -105,7 +107,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </ComboBox>
-                <Button Grid.Row="3" Grid.Column="2" Content="APPLY⏳" HorizontalAlignment="Center"  FontFamily="Segoe UI Light" VerticalAlignment="Center" Cursor="Hand" Command="{Binding ButtonCommand_AddCouchLine}"/>
+                <Button Grid.Row="3" Grid.Column="2" Content="APPLY⏳" HorizontalAlignment="Center"  FontFamily="Segoe UI Light" VerticalAlignment="Center" Cursor="Hand" Command="{Binding ButtonCommand_AddCouch}"/>
                 <Label Grid.Row="2" Grid.Column="0" Content="STEP2 : Please Check the BB Position w/ marker" Foreground="White" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="4" Margin="5,0,-63,0"/>
                 <Label Grid.Row="3" Grid.Column="0" Content="BB Position: "  FontFamily="Segoe UI Light" Foreground="Maroon"/>
                 <ComboBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding MarkerPositions}"  FontFamily="Segoe UI Light" FontSize="16" SelectedValue="{Binding SelectedMarkerPosition}" SelectionChanged="ComboBox_SelectionChanged" FontWeight="Bold"/>
@@ -128,7 +130,7 @@
                     <RowDefinition Height="45"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Column="0" Content="The BB position is :" Foreground="Maroon"  FontFamily="Segoe UI Light"/>
-                <Label Grid.Column="1" Foreground="blue"  FontFamily="Segoe UI" FontSize="16" Background="LightBlue" FontWeight="Bold" Content="{Binding CalculateBBLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,3,10,10"/>
+                <Label Grid.Column="1" Foreground="blue"  FontFamily="Segoe UI Light" FontSize="16" Background="LightBlue" FontWeight="Bold" Content="{Binding CalculateBBLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,3,10,10"/>
                 <Button Grid.Row="0" Grid.Column="2" Content="Calculate🔍" Command="{Binding ButtonCommand_CheckingBB}" Cursor="Hand"  FontFamily="Segoe UI Light" Margin="5,5,5,10"/>
                 <!--<TextBox Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" TextWrapping="Wrap" Foreground="Black" FontSize="14"  Text="{Binding MarkerLocationX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" Foreground="Black" FontSize="14"  Text="{Binding MarkerLocationY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

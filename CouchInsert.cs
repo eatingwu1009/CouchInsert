@@ -10,6 +10,7 @@ using VMS.TPS.Common.Model.Types;
 using CouchInsert;
 using System.IO;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 // TODO: Replace the following version attributes by creating AssemblyInfo.cs. You can do this in the properties of the Visual Studio project.
 [assembly: AssemblyVersion("1.0.0.1")]
@@ -38,9 +39,7 @@ namespace VMS.TPS
             window.Title = "CouchInsert_EatingWu🌼";
             window.SizeToContent = SizeToContent.Height;
             window.Width = 580;
-            window.Top = 400;
-            window.Left = 1200;
-
+            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
     }
 }
