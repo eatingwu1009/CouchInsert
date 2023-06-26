@@ -62,6 +62,16 @@ namespace CouchInsert
             }
         }
 
+        private List<MarkerWPositions> _automarkerWPosition;
+        public List<MarkerWPositions> AutoMarkerWPosition
+        {
+            get => _automarkerWPosition;
+            set
+            {
+                _automarkerWPosition = value;
+                NotifyPropertyChanged(nameof(AutoMarkerWPosition));
+            }
+        }
 
         private string _selectedMarkerName;
         public string SelectedMarkerName
@@ -324,7 +334,7 @@ namespace CouchInsert
         }
         private ScriptContext _sC;
         public ScriptContext SC
-        { 
+        {
             get => _sC;
             set
             {
@@ -376,14 +386,14 @@ namespace CouchInsert
                 NotifyPropertyChanged(nameof(Multiple));
             }
         }
-        private double _chkOrientation;
-        public double chkOrientation
+        private double _ychkOrientation;
+        public double YchkOrientation
         {
-            get => _chkOrientation;
+            get => _ychkOrientation;
             set
             {
-                _chkOrientation = value;
-                NotifyPropertyChanged(nameof(chkOrientation));
+                _ychkOrientation = value;
+                NotifyPropertyChanged(nameof(YchkOrientation));
             }
         }
 
@@ -549,8 +559,8 @@ namespace CouchInsert
             SS = scriptContext.StructureSet;
             SI = scriptContext.Image;
             orientation = scriptContext.Image.ImagingOrientation;
-            if (orientation == PatientOrientation.HeadFirstSupine | orientation == PatientOrientation.FeetFirstSupine | orientation == PatientOrientation.Sitting) chkOrientation = 1;
-            else if (orientation == PatientOrientation.HeadFirstProne | orientation == PatientOrientation.FeetFirstProne) chkOrientation = -1;
+            if (orientation == PatientOrientation.HeadFirstSupine | orientation == PatientOrientation.FeetFirstSupine | orientation == PatientOrientation.Sitting) YchkOrientation = 1;
+            else if (orientation == PatientOrientation.HeadFirstProne | orientation == PatientOrientation.FeetFirstProne) YchkOrientation = -1;
             else System.Windows.MessageBox.Show("This CT image Orientation is not supported : No Orientation or Decubitus");
 
             if (orientation == PatientOrientation.FeetFirstSupine | orientation == PatientOrientation.HeadFirstProne) XchkOrientation = -1;
@@ -584,8 +594,8 @@ namespace CouchInsert
             double Xborder = Math.Abs(X2 - X1);
 
             //Find center Y
-            Start = new VVector(Xcenter, 700 * chkOrientation + originY, UserOriginZ);
-            Stop = new VVector(Xcenter, -700 * chkOrientation + originY, UserOriginZ);
+            Start = new VVector(Xcenter, 700 * YchkOrientation + originY, UserOriginZ);
+            Stop = new VVector(Xcenter, -700 * YchkOrientation + originY, UserOriginZ);
             double[] YPreallocatedBuffer = new double[1000];
             ImageProfile YProfile = SI.GetImageProfile(Start, Stop, YPreallocatedBuffer);
             double Y2 = YProfile.Where(p => !Double.IsNaN(p.Value)).Max(p => p.Position.y);
@@ -594,7 +604,7 @@ namespace CouchInsert
             double Yborder = Math.Abs(X2 - X1);
 
             //Find min Z
-            Start = new VVector(Xcenter, Ycenter, UserOriginZ - 1500 );
+            Start = new VVector(Xcenter, Ycenter, UserOriginZ - 1500);
             Stop = new VVector(Xcenter, Ycenter, UserOriginZ);
             double[] ZPreallocatedBuffer = new double[1000];
             ImageProfile ZProfile = SI.GetImageProfile(Start, Stop, ZPreallocatedBuffer);
@@ -617,8 +627,8 @@ namespace CouchInsert
             for (int i = a; i < Convert.ToInt32(SI.YSize * SI.YRes / 2); i++)
             {
 
-                __Start = new VVector(X1, chkOrientation * ((SI.YSize * SI.YRes / 2) - (i)) + Ycenter, UserOriginZ);//(-SI.XSize * SI.XRes / 2) + Xcenter
-                __Stop = new VVector(X2, chkOrientation * ((SI.YSize * SI.YRes / 2) - (i)) + Ycenter, UserOriginZ);
+                __Start = new VVector(X1, YchkOrientation * ((SI.YSize * SI.YRes / 2) - (i)) + Ycenter, UserOriginZ);//(-SI.XSize * SI.XRes / 2) + Xcenter
+                __Stop = new VVector(X2, YchkOrientation * ((SI.YSize * SI.YRes / 2) - (i)) + Ycenter, UserOriginZ);
                 double[] __PreallocatedBuffer = new double[1000];
                 ImageProfile __Profile = SI.GetImageProfile(__Start, __Stop, __PreallocatedBuffer);
                 sum = 0;
@@ -640,7 +650,7 @@ namespace CouchInsert
                 if (sum != 0)
                 {
                     YHU_Diff.Add(sum);
-                    YLocation.Add(chkOrientation * ((SI.YSize * SI.YRes / 2) - (i)) + Ycenter);
+                    YLocation.Add(YchkOrientation * ((SI.YSize * SI.YRes / 2) - (i)) + Ycenter);
                 }
             }
             int index = new int();
@@ -653,8 +663,8 @@ namespace CouchInsert
             VVector Couch1, Couch2, Couch3, Couch4, _Start, _Stop = new VVector();
             index = YHU_Diff.IndexOf(YHU_Diff.Min());
             FinalYcenter = YLocation.ElementAt(index);
-            double limit1 = FinalYcenter + chkOrientation * 5;
-            double limit2 = FinalYcenter - chkOrientation * 5;
+            double limit1 = FinalYcenter + YchkOrientation * 5;
+            double limit2 = FinalYcenter - YchkOrientation * 5;
 
             for (int i = 0; i < 50; i++)
             {
@@ -666,42 +676,42 @@ namespace CouchInsert
                 _Stop = new VVector(275 + Xcenter, FinalYcenter, UserOriginZ);
                 ImageProfile XProfile4 = SI.GetImageProfile(_Start, _Stop, _PreallocatedBuffer);
                 Couch4 = FindHighestSlope(XProfile4);
-                limit1 = FinalYcenter + chkOrientation * 5; limit2 = FinalYcenter - chkOrientation * 5;
-                if (limit1 > limit2) { limit2 = limit1; limit1 = FinalYcenter - chkOrientation * 5; }
+                limit1 = FinalYcenter + YchkOrientation * 5; limit2 = FinalYcenter - YchkOrientation * 5;
+                if (limit1 > limit2) { limit2 = limit1; limit1 = FinalYcenter - YchkOrientation * 5; }
 
                 if ((limit2 < Y2) && (limit1 > Y1))
                 {
-                    _Start = new VVector(-275 + Xcenter, FinalYcenter + chkOrientation * 3, UserOriginZ);
-                    _Stop = new VVector(0 + Xcenter, FinalYcenter + chkOrientation * 3, UserOriginZ);
+                    _Start = new VVector(-275 + Xcenter, FinalYcenter + YchkOrientation * 3, UserOriginZ);
+                    _Stop = new VVector(0 + Xcenter, FinalYcenter + YchkOrientation * 3, UserOriginZ);
                     ImageProfile XProfile1 = SI.GetImageProfile(_Start, _Stop, _PreallocatedBuffer);
                     Couch1 = FindHighestSlope(XProfile1);
-                    _Start = new VVector(0 + Xcenter, FinalYcenter + chkOrientation * 3, UserOriginZ);
-                    _Stop = new VVector(275 + Xcenter, FinalYcenter + chkOrientation * 3, UserOriginZ);
+                    _Start = new VVector(0 + Xcenter, FinalYcenter + YchkOrientation * 3, UserOriginZ);
+                    _Stop = new VVector(275 + Xcenter, FinalYcenter + YchkOrientation * 3, UserOriginZ);
                     ImageProfile XProfile2 = SI.GetImageProfile(_Start, _Stop, _PreallocatedBuffer);
                     Couch2 = FindHighestSlope(XProfile2);
 
-                    _Start = new VVector(-50 + Xcenter, FinalYcenter + chkOrientation, UserOriginZ);
-                    _Stop = new VVector(50 + Xcenter, FinalYcenter + chkOrientation, UserOriginZ);
+                    _Start = new VVector(-50 + Xcenter, FinalYcenter + YchkOrientation, UserOriginZ);
+                    _Stop = new VVector(50 + Xcenter, FinalYcenter + YchkOrientation, UserOriginZ);
                     ImageProfile XProfilechk = SI.GetImageProfile(_Start, _Stop, _PreallocatedBuffer1);
                     chkHeight = XProfilechk[50].Value;
 
-                    _Start = new VVector(-50 + Xcenter, FinalYcenter + chkOrientation * 5, UserOriginZ);
-                    _Stop = new VVector(50 + Xcenter, FinalYcenter + chkOrientation * 5, UserOriginZ);
+                    _Start = new VVector(-50 + Xcenter, FinalYcenter + YchkOrientation * 5, UserOriginZ);
+                    _Stop = new VVector(50 + Xcenter, FinalYcenter + YchkOrientation * 5, UserOriginZ);
                     ImageProfile XProfileBrn1 = SI.GetImageProfile(_Start, _Stop, _PreallocatedBuffer1);
                     Brn1 = XProfileBrn1.Where(p => !Double.IsNaN(p.Value)).Min(p => p.Value);
 
-                    _Start = new VVector(-250 + Xcenter, FinalYcenter - chkOrientation * 5, UserOriginZ);
-                    _Stop = new VVector(250 + Xcenter, FinalYcenter - chkOrientation * 5, UserOriginZ);
+                    _Start = new VVector(-250 + Xcenter, FinalYcenter - YchkOrientation * 5, UserOriginZ);
+                    _Stop = new VVector(250 + Xcenter, FinalYcenter - YchkOrientation * 5, UserOriginZ);
                     ImageProfile XProfileBrn2 = SI.GetImageProfile(_Start, _Stop, _PreallocatedBuffer1);
                     Brn2 = XProfileBrn2.Where(p => p.Value != -1024).Where(p => p.Value != -1000).Where(p => !Double.IsNaN(p.Value)).Min(p => p.Value);
 
-                    _Start = new VVector(-50 + Xcenter, FinalYcenter + chkOrientation * 4, UserOriginZ);
-                    _Stop = new VVector(50 + Xcenter, FinalYcenter + chkOrientation * 4, UserOriginZ);
+                    _Start = new VVector(-50 + Xcenter, FinalYcenter + YchkOrientation * 4, UserOriginZ);
+                    _Stop = new VVector(50 + Xcenter, FinalYcenter + YchkOrientation * 4, UserOriginZ);
                     ImageProfile XProfileBrn3 = SI.GetImageProfile(_Start, _Stop, _PreallocatedBuffer1);
                     Brn3 = XProfileBrn3.Where(p => !Double.IsNaN(p.Value)).Min(p => p.Value);
 
-                    _Start = new VVector(-250 + Xcenter, FinalYcenter - chkOrientation * 4, UserOriginZ);
-                    _Stop = new VVector(250 + Xcenter, FinalYcenter - chkOrientation * 4, UserOriginZ);
+                    _Start = new VVector(-250 + Xcenter, FinalYcenter - YchkOrientation * 4, UserOriginZ);
+                    _Stop = new VVector(250 + Xcenter, FinalYcenter - YchkOrientation * 4, UserOriginZ);
                     ImageProfile XProfileBrn4 = SI.GetImageProfile(_Start, _Stop, _PreallocatedBuffer1);
                     Brn4 = XProfileBrn4.Where(p => p.Value != -1024).Where(p => p.Value != -1000).Where(p => !Double.IsNaN(p.Value)).Min(p => p.Value);
 
@@ -728,7 +738,7 @@ namespace CouchInsert
                 FinalYcenter = YLocation.ElementAt(index);
                 i++;
             }
-            FinalYcenter = FinalYcenter - 0.4 * chkOrientation;// = MarkerLocationYY
+            FinalYcenter = FinalYcenter - 0.4 * YchkOrientation;// = MarkerLocationYY
 
             //OriginalProtonCouch           
             if (scriptContext.StructureSet.Structures.Where(s => s.DicomType == "MARKER").FirstOrDefault() != null)
@@ -793,11 +803,11 @@ namespace CouchInsert
                 MarkerLocationZ = MarkerLocationItem.CenterPoint.z;
                 for (double zzz = MarkerLocationZ - 0.5; zzz < MarkerLocationZ + 0.5; zzz += 0.1)
                 {
-                    Start = new VVector(MarkerLocationX + 5 * XchkOrientation, MarkerLocationY, zzz);
+                    Start = new VVector(MarkerLocationX + 60 * XchkOrientation, MarkerLocationY, zzz);
                     Stop = new VVector(MarkerLocationX - 60 * XchkOrientation, MarkerLocationY, zzz);
                     PreallocatedBuffer = new double[100];
                     XProfile = SC.Image.GetImageProfile(Start, Stop, PreallocatedBuffer);
-                    if (PeakDetect(XProfile) != "") { MarkerNames.Add(PeakDetect(XProfile)); }
+                    if (PeakDetect(Twopoint(XProfile)) != "") { MarkerNames.Add(PeakDetect(Twopoint(XProfile))); }
                 }
                 SelectedMarkerPosition = MarkerNames.GroupBy(x => x).OrderByDescending(x => x.Count()).ThenBy(x => x.Key).Select(x => (string)x.Key).FirstOrDefault();//Find the Mode
                 //SelectedMarkerPosition = PeakDetect(XProfile);
@@ -807,24 +817,72 @@ namespace CouchInsert
         public ICommand ButtonCommand_StartChk { get => new Command(StartChk); }
         private void StartChk()
         {
-            List<string> Zposition = new List<string>();
+            AutoMarkerWPosition = new List<MarkerWPositions>();
+            AutoMarkerWPosition.Clear();
             for (double zaxis = UserOriginZ - 150; zaxis < UserOriginZ + 150; zaxis++)
             {
-                VVector AutoStart = new VVector(Xcenter + 10 * XchkOrientation, FinalYcenter, zaxis);
+                VVector AutoStart = new VVector(Xcenter + 60 * XchkOrientation, FinalYcenter, zaxis);
                 VVector AutoStop = new VVector(Xcenter - 60 * XchkOrientation, FinalYcenter, zaxis);
                 double[] AutoPreallocatedBuffer = new double[1000];
                 ImageProfile AutoXProfile = SI.GetImageProfile(AutoStart, AutoStop, AutoPreallocatedBuffer);
-                if (PeakDetect(AutoXProfile) != "") { Zposition.Add(PeakDetect(AutoXProfile) + "," + zaxis); }
+                List<VVector> TP = Twopoint(AutoXProfile);
+                string TheMarker = PeakDetect(TP);
+                if (TheMarker != "")
+                {
+                    MarkerWPositions AAA = new MarkerWPositions();
+                    AAA.Markers = TheMarker;
+                    AAA.Positions = TP;
+                    AutoMarkerWPosition.Add(AAA);
+                }
             }
-            if (Zposition.Count == 0) CanStartProcessing = false;
-            else CanStartProcessing = true;
+            if (AutoMarkerWPosition.Count == 0) CanStartProcessing = false;
+            else { CanStartProcessing = true; }
+            if (SS.Structures.Where(s => s.Id == "BBsForCouch").FirstOrDefault() != null) { SS.RemoveStructure(SS.Structures.FirstOrDefault(s => s.Id == "BBsForCouch")); }
+        }
+
+        public ICommand ButtonCommand_AddBBs { get => new Command(AddBBs); }
+        private void AddBBs()
+        {
+            int FirstMarkerInt = Convert.ToInt32(AutoMarkerWPosition.GroupBy(x => x.Markers).OrderByDescending(x => x.Count()).ThenBy(x => x.Key).Select(x => (string)x.Key).FirstOrDefault().Replace("H", ""));
+            string SecondMarker = (FirstMarkerInt + 1).ToString();
+            string ThirdMarker = (FirstMarkerInt - 1).ToString();
+            List<VVector> BBVectors = new List<VVector>();
+            foreach (MarkerWPositions v in AutoMarkerWPosition)
+            {
+                if (v.Markers.Contains(FirstMarkerInt.ToString()))
+                {
+                    foreach (VVector vv in v.Positions) { BBVectors.Add(vv); }
+                }
+            }
+            int mid = BBVectors.Count() / 2;
+            Structure BBs = SS.AddStructure("CONTROL", "BBsForCouch");
+            if (BBVectors.Count() != 0)
+            {
+                BBs.AddContourOnImagePlane(GetCircleContours(SI.XRes, 10, BBVectors.ElementAtOrDefault(mid - 1)), GetSlice(BBVectors.ElementAtOrDefault(mid - 1).z));
+                BBs.AddContourOnImagePlane(GetCircleContours(SI.XRes, 10, BBVectors.ElementAtOrDefault(mid)), GetSlice(BBVectors.ElementAtOrDefault(mid).z));
+            }
+
+            BBVectors.Clear();
+            foreach (MarkerWPositions v in AutoMarkerWPosition)
+            {
+                if (v.Markers.Contains(SecondMarker) | v.Markers.Contains(ThirdMarker))
+                {
+                    foreach (VVector vv in v.Positions) { BBVectors.Add(vv); }
+                }
+            }
+            mid = BBVectors.Count() / 2;
+            if (BBVectors.Count() != 0)
+            {
+                BBs.AddContourOnImagePlane(GetCircleContours(SI.XRes, 10, BBVectors.ElementAtOrDefault(mid - 1)), GetSlice(BBVectors.ElementAtOrDefault(mid - 1).z));
+                BBs.AddContourOnImagePlane(GetCircleContours(SI.XRes, 10, BBVectors.ElementAtOrDefault(mid)), GetSlice(BBVectors.ElementAtOrDefault(mid).z));
+            }
         }
 
         public ICommand ButtonCommand_AddCouch { get => new Command(AddCouch); }
         private void AddCouch()
         {
             SC.Patient.BeginModifications();
-            if (SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL") is null )
+            if (SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL") is null)
             {
                 var BodyPar = SS.GetDefaultSearchBodyParameters();
                 BodyPar.KeepLargestParts = false;
@@ -837,7 +895,7 @@ namespace CouchInsert
                 SS.CreateAndSearchBody(BodyPar);
             }
             ProgressVisibility = Visibility.Visible;
-            DateTime dateTime = DateTime.Now;
+            //DateTime dateTime = DateTime.Now;
             //string filePathOuter = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\contour.csv";
             //if (!File.Exists(filePathOuter))
             //{
@@ -871,16 +929,26 @@ namespace CouchInsert
             //if (IsChecked == true) { if (CrossSurface.CanConvertToHighResolution()) CrossSurface.ConvertToHighResolution(); }
             if (CrossSurface.CanConvertToHighResolution()) CrossSurface.ConvertToHighResolution();
 
-
             foreach (VVector vec in CSVVector)
             {
-                VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, chkOrientation, ZchkOrientation);
+                VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, YchkOrientation, ZchkOrientation);
                 NewVVector.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
             }
-            for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i++)
+            if (ZchkOrientation == -1)
             {
-                CrossSurface.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
-                //Convert.ToInt32(NewVVector.FirstOrDefault().z)
+                for (int i = 0; i < NewVVector.Max(p => p.z) - Convert.ToInt32(2 * ZBaseAxis / SI.ZRes) + 1; i++)
+                {
+                    CrossSurface.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
+
+                }
+            }
+            else
+            {
+                for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i++)
+                {
+                    CrossSurface.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
+
+                }
             }
             CurrentProgress = 15;
 
@@ -906,12 +974,24 @@ namespace CouchInsert
             NewVVector.Clear();
             foreach (VVector vec in CSVVector)
             {
-                VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, chkOrientation, ZchkOrientation);
+                VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, YchkOrientation, ZchkOrientation);
                 NewVVector.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
             }
-            for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i++)
+            if (ZchkOrientation == -1)
             {
-                CrossInterior.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
+                for (int i = 0; i < NewVVector.Max(p => p.z) - Convert.ToInt32(2 * ZBaseAxis / SI.ZRes) + 1; i++)
+                {
+                    CrossInterior.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
+
+                }
+            }
+            else
+            {
+                for (int i = 0; i < NewVVector.Max(p => p.z) + 1; i++)
+                {
+                    CrossInterior.AddContourOnImagePlane(NewVVector.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
+
+                }
             }
 
 
@@ -948,15 +1028,10 @@ namespace CouchInsert
             NewVVector.Clear();
             foreach (VVector vec in CSVVector)
             {
-                VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, chkOrientation, ZchkOrientation);
+                VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, YchkOrientation, ZchkOrientation);
                 NewVVector.Add(new VVector(vv.x, vv.y, vv.z));
             }
-            //using (StreamWriter writer = new StreamWriter(@"C: \Users\aria\Downloads\Interpolation\NewVVector.csv"))
-            //{
-            //    foreach (VVector vector in NewVVector) writer.WriteLine(vector.x + "," + vector.y + "," + vector.z);
-            //}
-            //double OriginZ = Math.Round(ScriptContext.Image.Origin.z, 1, MidpointRounding.AwayFromZero);
-            //bool is_integer = unchecked(CheckSlice == Multiple);
+
             double CouchOriginZ = NewVVector.Min(p => p.z);
             List<VVector> ForInterpolate = new List<VVector>();
             List<VVector> ForInterpolate1 = new List<VVector>();
@@ -972,15 +1047,31 @@ namespace CouchInsert
             int a = Convert.ToInt32(ForInterpolate.Min(p => p.z));
             int b = Convert.ToInt32(ForInterpolate.Max(p => p.z));
             List<VVector> Loop = new List<VVector>();
-            for (int i = a; i <= b; i += Convert.ToInt32(CheckSlice))
+            if (ZchkOrientation == -1)
             {
-                //if (CheckSlice == 1)
-                Loop.Clear();
-                foreach (VVector vec in ForInterpolate.Where(vv => vv.z.Equals(i)))
+                for (int i = a; i <= b; i += Convert.ToInt32(CheckSlice))
                 {
-                    Loop.Add(vec);
+                    Loop.Clear();
+                    //if (is_integer == true)
+                    foreach (VVector vec in ForInterpolate.Where(vv => vv.z.Equals(i)))
+                    {
+                        Loop.Add(vec);
+                    }
+                    UserCS.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), -(i - 2 * b) - Convert.ToInt32(2 * ZBaseAxis / SI.ZRes));
                 }
-                UserCS.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
+            }
+            else
+            {
+                for (int i = a; i <= b; i += Convert.ToInt32(CheckSlice))
+                {
+                    Loop.Clear();
+                    //if (is_integer == true)
+                    foreach (VVector vec in ForInterpolate.Where(vv => vv.z.Equals(i)))
+                    {
+                        Loop.Add(vec);
+                    }
+                    UserCS.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
+                }
             }
             CurrentProgress = 85;
 
@@ -1004,7 +1095,7 @@ namespace CouchInsert
             NewVVector.Clear();
             foreach (VVector vec in CSVVector)
             {
-                VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, chkOrientation, ZchkOrientation);
+                VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, YchkOrientation, ZchkOrientation);
                 NewVVector.Add(new VVector(vv.x, vv.y, vv.z));
             }
             ForInterpolate.Clear();
@@ -1018,16 +1109,33 @@ namespace CouchInsert
             a = Convert.ToInt32(ForInterpolate.Min(p => p.z));
             b = Convert.ToInt32(ForInterpolate.Max(p => p.z));
 
-            for (int i = a; i <= b; i += Convert.ToInt32(CheckSlice))
+            if (ZchkOrientation == -1)
             {
-                Loop.Clear();
-                //if (is_integer == true)
-                foreach (VVector vec in ForInterpolate.Where(vv => vv.z.Equals(i)))
+                for (int i = a; i <= b; i += Convert.ToInt32(CheckSlice))
                 {
-                    Loop.Add(vec);
+                    Loop.Clear();
+                    //if (is_integer == true)
+                    foreach (VVector vec in ForInterpolate.Where(vv => vv.z.Equals(i)))
+                    {
+                        Loop.Add(vec);
+                    }
+                    UserCI.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), -(i - 2 * b) - Convert.ToInt32(2 * ZBaseAxis / SI.ZRes));
                 }
-                UserCI.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
             }
+            else
+            {
+                for (int i = a; i <= b; i += Convert.ToInt32(CheckSlice))
+                {
+                    Loop.Clear();
+                    //if (is_integer == true)
+                    foreach (VVector vec in ForInterpolate.Where(vv => vv.z.Equals(i)))
+                    {
+                        Loop.Add(vec);
+                    }
+                    UserCI.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
+                }
+            }
+
             //ForResearch
             //CurrentProgress = 99;
             //using (StreamWriter writer = new StreamWriter(@"C: \Users\aria\Downloads\Interpolation\Volume.csv"))
@@ -1065,7 +1173,6 @@ namespace CouchInsert
             SS.RemoveStructure(SS.Structures.First(s => s.Id == "CrossSurface"));
             SS.RemoveStructure(SS.Structures.First(s => s.Id == "CrossInterior"));
             CurrentProgress = 100;
-            //ProgressVisibility = Visibility.Hidden;
         }
 
         public VVector Interpolate(VVector Input, VVector Next)
@@ -1076,48 +1183,6 @@ namespace CouchInsert
             return new VVector(x, y, z);
         }
 
-        //public static void CreateSphere(MeshGeometry3D mesh, double radius, int subdivisions)
-        //{
-        //    if (mesh.Positions == null) mesh.Positions = new Point3DCollection();
-        //    if (mesh.TriangleIndices == null) mesh.TriangleIndices = new Int32Collection();
-        //    mesh.Positions.Clear();
-        //    mesh.TriangleIndices.Clear();
-
-        //    for (int i = 0; i <= subdivisions; i++)
-        //    {
-        //        double v = i / (double)subdivisions;
-        //        double phi = v * Math.PI;
-
-        //        for (int j = 0; j <= subdivisions; j++)
-        //        {
-        //            double u = j / (double)subdivisions;
-        //            double theta = u * 2 * Math.PI;
-
-        //            double x = Math.Cos(theta) * Math.Sin(phi);
-        //            double y = Math.Cos(phi);
-        //            double z = Math.Sin(theta) * Math.Sin(phi);
-
-        //            mesh.Positions.Add(new Point3D(radius * x, radius * y, radius * z));
-        //        }
-        //    }
-
-        //    for (int i = 0; i < subdivisions; i++)
-        //    {
-        //        for (int j = 0; j < subdivisions; j++)
-        //        {
-        //            int index1 = i * (subdivisions + 1) + j;
-        //            int index2 = index1 + subdivisions + 1;
-
-        //            mesh.TriangleIndices.Add(index1);
-        //            mesh.TriangleIndices.Add(index2);
-        //            mesh.TriangleIndices.Add(index1 + 1);
-
-        //            mesh.TriangleIndices.Add(index1 + 1);
-        //            mesh.TriangleIndices.Add(index2);
-        //            mesh.TriangleIndices.Add(index2 + 1);
-        //        }
-        //    }
-        //}
         public ICommand ButtonCommand_CouchBody { get => new Command(CouchBody); }
         private void CouchBody()
         {
@@ -1163,9 +1228,9 @@ namespace CouchInsert
             }
             List<VVector> CSVVector = new List<VVector>();
             bool AddCouch = true;
-            if ((SI.XSize * SI.XRes) <= 540) 
-            {  
-               DialogResult result = System.Windows.Forms.MessageBox.Show("Enlarging is irreversible. Are you sure you want to enlarge the image?", "External Beam Planning", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if ((SI.XSize * SI.XRes) <= 540)
+            {
+                DialogResult result = System.Windows.Forms.MessageBox.Show("Enlarging is irreversible. Are you sure you want to enlarge the image?", "External Beam Planning", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.No) { AddCouch = false; }
             }
             switch (AddCouch)
@@ -1254,7 +1319,7 @@ namespace CouchInsert
                         //BODY part
                         BODY = SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL");
                         Structure Temp = SS.AddStructure("CONTROL", "Temp_ForCouch");
-                        VVector[] TempVec = GetpseudoLine(FinalYcenter, SI.XSize, SI.YSize, chkOrientation);
+                        VVector[] TempVec = GetpseudoLine(FinalYcenter, SI.XSize, SI.YSize, YchkOrientation);
                         for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
                         {
                             Temp.AddContourOnImagePlane(TempVec, i);
@@ -1271,7 +1336,7 @@ namespace CouchInsert
                         if (EncompassBase == null)
                         {
                             CSVVector.Clear();
-                            Structure CouchSurface = SS.Structures.FirstOrDefault(e => e.Id == "CouchSurface");
+                            CouchSurface = SS.Structures.FirstOrDefault(z => z.Id.Contains("CouchSurface"));
                             foreach (VVector[] vectors in CouchSurface.GetContoursOnImagePlane(1))
                             {
                                 foreach (VVector v in vectors)
@@ -1282,12 +1347,12 @@ namespace CouchInsert
                                     CSVVector.Add(new VVector(x, y, z));
                                 }
                             }
-                            if (chkOrientation == 1)
+                            if (YchkOrientation == 1)
                             { FinalYcenter = CSVVector.Min(p => p.y); }
                             else { FinalYcenter = CSVVector.Max(p => p.y); }
                             BODY = SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL");
                             Structure Temp = SS.AddStructure("CONTROL", "Temp_ForCouch");
-                            VVector[] TempVec = GetpseudoLine(FinalYcenter, SI.XSize, SI.YSize, chkOrientation);
+                            VVector[] TempVec = GetpseudoLine(FinalYcenter, SI.XSize, SI.YSize, YchkOrientation);
                             for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
                             {
                                 Temp.AddContourOnImagePlane(TempVec, i);
@@ -1330,7 +1395,7 @@ namespace CouchInsert
                             //BodyPar.SmoothingLevel = 3;
                             SS.CreateAndSearchBody(BodyPar);
                             Structure Temp = SS.AddStructure("CONTROL", "Temp_ForCouch");
-                            VVector[] TempVec = GetpseudoLine(FinalYcenter, SI.XSize, SI.YSize, chkOrientation);
+                            VVector[] TempVec = GetpseudoLine(FinalYcenter, SI.XSize, SI.YSize, YchkOrientation);
                             for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
                             {
                                 Temp.AddContourOnImagePlane(TempVec, i);
@@ -1342,13 +1407,7 @@ namespace CouchInsert
                             SS.RemoveStructure(Temp);
                             if (BODY.Volume > BodyVolume) { System.Windows.Forms.MessageBox.Show("Please Check your BODY carefully", "Confirmation", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
                             BODY.Comment = "Modified by ESAPI";
-                            //foreach (Structure st in SS.Structures.Where(s => s.DicomType != "MARKER").Where(s => s.DicomType != "EXTERNAL")) 
-                            //{ 
-                            //    if (st.CanConvertToHighResolution() == true)
-                            //    {
-                            //        st.ConvertToHighResolution();
-                            //    }
-                            //}
+
                             //NTUCC
                             foreach (Structure st in SS.Structures.Where(s => s.DicomType == "GTV"))
                             {
@@ -1404,24 +1463,11 @@ namespace CouchInsert
         public ICommand ButtonCommand_BuildModel { get => new Command(BuildModel); }
         private void BuildModel()
         {
-            DialogResult result = System.Windows.Forms.MessageBox.Show("You are Biulding Model for Couch", "Confirmation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            DialogResult result = System.Windows.Forms.MessageBox.Show("You are Biulding Model for Couch", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (result == DialogResult.Yes)
             {
                 if (CouchInterior != null)
                 {
-                    //Point3DCollection Points = CouchInterior.MeshGeometry.Positions;
-                    //Vector3DCollection Normals = CouchInterior.MeshGeometry.Normals;
-                    //PointCollection TextureCoordinate = CouchInterior.MeshGeometry.TextureCoordinates;
-                    //System.Windows.Media.Int32Collection TriangleIndices = CouchInterior.MeshGeometry.TriangleIndices;
-                    //using (StreamWriter writer = new StreamWriter(FilePathCI_point))
-                    //{
-                    //    foreach (Point3D v in Points) writer.WriteLine(v.X + "," + v.Y + "," + v.Z);
-                    //    //writer.WriteLine();
-                    //}
-                    //using (StreamWriter writer = new StreamWriter(FilePathCI_TI))
-                    //{
-                    //    foreach (Int32 t in TriangleIndices) writer.WriteLine(t);
-                    //}
                     using (StreamWriter writer = new StreamWriter(ModelFilePathCI))
                     {
                         for (int i = 0; i < SC.Image.ZSize; i++)
@@ -1435,7 +1481,6 @@ namespace CouchInsert
                 }
                 if (CouchSurface != null)
                 {
-                    //VVector contours = CouchSurface.MeshGeometry.Points.Select(e => new VVector(e.x, e.y, e.z));
                     using (StreamWriter writer = new StreamWriter(ModelFilePathCS))
                     {
                         for (int i = 0; i < SC.Image.ZSize; i++)
@@ -1479,29 +1524,19 @@ namespace CouchInsert
         public ICommand ButtonCommand_CheckingBB { get => new Command(CheckingBB); }
         private void CheckingBB()
         {
-            double zzz = 0;
+            double BBs = 0;
             for (int i = 0; i < SC.Image.ZSize; i++)
             {
                 foreach (VVector[] vectors in UserCS.GetContoursOnImagePlane(i))
                 {
                     double vs = vectors.FirstOrDefault().z;
-                    zzz = Math.Max(0, vs);
+                    BBs = Math.Max(0, vs);
                 }
             }
-            double distanceBB = zzz - MarkerLocationZ;//mm
+            double distanceBB = BBs - MarkerLocationZ;//mm
             CalculateBBLocation = BBCalDetect(distanceBB);
         }
-        public VVector[] GetpseudoLine(double yPlane)
-        {
-            List<VVector> vvectors = new List<VVector>();
-            vvectors.Add(new VVector(-SC.Image.XSize, yPlane, 0));
-            vvectors.Add(new VVector(SC.Image.XSize, yPlane, 0));
-            vvectors.Add(new VVector(SC.Image.XSize, SC.Image.YSize, 0));
-            vvectors.Add(new VVector(-SC.Image.XSize, SC.Image.YSize, 0));
-            return vvectors.ToArray();
-        }
-
-        public String PeakDetect(ImageProfile XProfile)
+        public List<VVector> Twopoint(ImageProfile XProfile)
         {
             List<VVector> Twopoint = new List<VVector>();
             double OverallMaximum = XProfile.Where(p => !Double.IsNaN(p.Value)).Max(p => p.Value);
@@ -1520,6 +1555,10 @@ namespace CouchInsert
                     Twopoint.Add(XProfile[i].Position);
                 }
             }
+            return Twopoint;
+        }
+        public String PeakDetect(List<VVector> Twopoint)
+        {
             if (Twopoint.Count > 1)
             {
                 double distance = VVector.Distance(Twopoint[0], Twopoint[1]);
@@ -1544,6 +1583,7 @@ namespace CouchInsert
             }
             else return "";
         }
+
         public String BBCalDetect(Double distance)
         {
             var mapBB = new Dictionary<double, string>()
@@ -1558,22 +1598,22 @@ namespace CouchInsert
             string output;
             return mapBB.TryGetValue(Math.Round(distance / 10), out output) ? output : null;
         }
-        public VVector AxisAlignment(VVector Original, string LockBarType, double Xmin, double Ymax, double Zmin, double chkOrientation, double ZchkOrientation)
+        public VVector AxisAlignment(VVector Original, string LockBarType, double Xmin, double Ymax, double Zmin, double YchkOrientation, double ZchkOrientation)
         {
             //The value of YAxis is opposite
             double X = MarkerLocationX - XBaseAxis - Xmin;
-            double Y = MarkerLocationY + chkOrientation * YBaseAxis - chkOrientation * Ymax;
-            if (chkOrientation == -1) { Y = Y - 67.4; }
+            double Y = MarkerLocationY + YchkOrientation * (YBaseAxis - Ymax);
+            if (YchkOrientation == -1 && ZchkOrientation == 1) { Y = Y - 67.4; }
             double Z = MarkerLocationZ - ZBaseAxis - SC.Image.Origin.z - Zmin;
             //double SSZAdd = Convert.ToInt32((MarkerLocationZZ - ZBaseAxis - ScriptContext.Image.Origin.z) / ScriptContext.Image.ZRes);
             var mapAxis = new Dictionary<string, VVector>()
             {
-                {"H5",  new VVector ( Original.x + X, chkOrientation * Original.y + Y, ZchkOrientation * (Original.z + Z  - 2 * HSpace))},
-                {"H4",  new VVector ( Original.x + X, chkOrientation * Original.y + Y, ZchkOrientation * (Original.z + Z - HSpace))},
-                {"H3",  new VVector ( Original.x + X, chkOrientation * Original.y + Y, ZchkOrientation * (Original.z + Z ))},
-                {"H2",  new VVector ( Original.x + X, chkOrientation * Original.y + Y, ZchkOrientation * (Original.z + Z  + HSpace))},
-                {"H1",  new VVector ( Original.x + X, chkOrientation * Original.y + Y, ZchkOrientation * (Original.z + Z  + 2 * HSpace))},
-                {"0",  new VVector ( Original.x + X, chkOrientation * Original.y + Y, ZchkOrientation * (Original.z + Z + 3 * HSpace))},
+                {"H5",  new VVector ( Original.x + X, YchkOrientation * Original.y + Y, ZchkOrientation * (Original.z + Z  - 2 * HSpace))},
+                {"H4",  new VVector ( Original.x + X, YchkOrientation * Original.y + Y, ZchkOrientation * (Original.z + Z - HSpace))},
+                {"H3",  new VVector ( Original.x + X, YchkOrientation * Original.y + Y, ZchkOrientation * (Original.z + Z ))},
+                {"H2",  new VVector ( Original.x + X, YchkOrientation * Original.y + Y, ZchkOrientation * (Original.z + Z  + HSpace))},
+                {"H1",  new VVector ( Original.x + X, YchkOrientation * Original.y + Y, ZchkOrientation * (Original.z + Z  + 2 * HSpace))},
+                {"0",  new VVector ( Original.x + X, YchkOrientation * Original.y + Y, ZchkOrientation * (Original.z + Z + 3 * HSpace))},
             };
             VVector output;
             return mapAxis.TryGetValue(LockBarType, out output) ? output : new VVector(0, 0, 0);
@@ -1615,16 +1655,14 @@ namespace CouchInsert
         public VVector[] GetpseudoLine(double yPlane, double Xsize, double Ysize, double chkorientation)
         {
             List<VVector> vvectors = new List<VVector>();
-            double reverse = 1;
-            if (yPlane - (chkorientation * Ysize) < 0) { reverse = -1; }
-            vvectors.Add(new VVector(-Xsize, yPlane - reverse * 30, 0));
-            vvectors.Add(new VVector(Xsize, yPlane - reverse * 30, 0));
+            vvectors.Add(new VVector(-Xsize, yPlane, 0));
+            vvectors.Add(new VVector(Xsize, yPlane, 0));
             vvectors.Add(new VVector(Xsize, chkorientation * Ysize, 0));
             vvectors.Add(new VVector(-Xsize, chkorientation * Ysize, 0));
             return vvectors.ToArray();
         }
 
-        public VVector[] GetCircleContours(double xRes, double yRes, double radius, VVector CircleOrigin)
+        public VVector[] GetCircleContours(double xRes, double radius, VVector CircleOrigin)
         {
             List<VVector> vvectors = new List<VVector>();
             for (double x = -1 * radius; x < radius; x += xRes)
@@ -1639,6 +1677,35 @@ namespace CouchInsert
                 vvectors.Add(new VVector(x + CircleOrigin.x, y + CircleOrigin.y, 0));
             }
             return vvectors.ToArray();
+        }
+
+        public class CustomArray<T>
+        {
+            public T[] GetColumn(T[,] matrix, int columnNumber)
+            {
+                return Enumerable.Range(0, matrix.GetLength(0))
+                        .Select(x => matrix[x, columnNumber])
+                        .ToArray();
+            }
+
+            public T[] GetRow(T[,] matrix, int rowNumber)
+            {
+                return Enumerable.Range(0, matrix.GetLength(1))
+                        .Select(x => matrix[rowNumber, x])
+                        .ToArray();
+            }
+        }
+
+        public int GetSlice(double z)
+        {
+            var imageRes = SS.Image.ZRes;
+            return Convert.ToInt32((z - SS.Image.Origin.z) / imageRes);
+        }
+
+        public class MarkerWPositions
+        {
+            public string Markers { get; set; }
+            public List<VVector> Positions { get; set; }
         }
     }
 }
