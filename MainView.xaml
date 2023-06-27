@@ -72,7 +72,7 @@
                 </Grid.RowDefinitions>
                 <Button Grid.Column="0" Content="Start✔️"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_StartChk}"  Cursor="Hand" Margin="15,0,15,3"/>
                 <Button Grid.Column="1" Content="CheckBBs"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_AddBBs}" IsEnabled="{Binding CanStartProcessing}" Cursor="Hand" Margin="15,0,15,3"/>
-                <Button Grid.Column="2" Content="APPLY⏳"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_AddCouch}" IsEnabled="{Binding CanStartProcessing}" Cursor="Hand" Margin="15,0,15,3"/>
+                <Button Grid.Column="2" Content="APPLY⏳"  FontFamily="Segoe UI Light" Command="{Binding BBMarkerRenewCommand}" IsEnabled="{Binding CanStartProcessingChkBBs}" Cursor="Hand" Margin="15,0,15,3"/>
                 <!--<Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"></Setter>
@@ -164,7 +164,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="410"/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Couch /BODY➤" Background="Orchid" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="0" Width="123" FontSize="16" Margin="225,47,0,0" Command="{Binding ButtonCommand_CouchBody}" RenderTransformOrigin="0.495,0.6" FontFamily="Segoe UI Light"  Foreground="MistyRose" Height="44"/>
+                <Button Content="Couch /BODY➤" Background="Orchid" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="0" Width="123" FontSize="16" Margin="225,47,0,0" Command="{Binding ButtonCommand_PhotonCouchBody}" RenderTransformOrigin="0.495,0.6" FontFamily="Segoe UI Light"  Foreground="MistyRose" Height="44"/>
                 <CheckBox Name="Halcyon"  Content="Couch : Halcyon" HorizontalAlignment="Left" FontFamily="Segoe UI Light"  Margin="97,59,0,0" VerticalAlignment="Top" Command="{Binding CheckedChangedCommand, Mode=TwoWay}" CommandParameter ="{Binding ElementName = chk}" IsChecked="{Binding Path=IsChecked, Mode=TwoWay}" Width="128" FontSize="14" Height="20" FontWeight="Bold"/>
                 <!--<CheckBox Grid.Row="2" Grid.Column="1" Content="Solid" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Maroon"  Command="{Binding CheckedChangedCommand, Mode=TwoWay}"  
                       Name ="chk" CommandParameter ="{Binding ElementName = chk}" IsChecked="{Binding Path=IsChecked, Mode=TwoWay}"/>-->

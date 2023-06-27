@@ -27,6 +27,9 @@ using System.Windows.Documents;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using System.Windows.Controls;
+using System.Windows.Navigation;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
+using static CouchInsert.MainViewModel;
 
 namespace CouchInsert
 {
@@ -142,6 +145,16 @@ namespace CouchInsert
             {
                 _xcenter = value;
                 NotifyPropertyChanged(nameof(Xcenter));
+            }
+        }
+        private double _ycenter;
+        public double Ycenter
+        {
+            get => _ycenter;
+            set
+            {
+                _ycenter = value;
+                NotifyPropertyChanged(nameof(Ycenter));
             }
         }
         private double _useroriginZ;
@@ -376,6 +389,16 @@ namespace CouchInsert
             }
         }
 
+        private double _bodyVolume;
+        public double BodyVolume
+        {
+            get => _bodyVolume;
+            set
+            {
+                _bodyVolume = value;
+                NotifyPropertyChanged(nameof(BodyVolume));
+            }
+        }
         private double _multiple;
         public double Multiple
         {
@@ -497,6 +520,17 @@ namespace CouchInsert
             }
         }
 
+        private bool _canStartProcessingChkBBs;
+        public bool CanStartProcessingChkBBs
+        {
+            get => _canStartProcessingChkBBs;
+            set
+            {
+                _canStartProcessingChkBBs = value;
+                NotifyPropertyChanged(nameof(CanStartProcessingChkBBs));
+            }
+        }
+
         private String _filFolder;
         public String FileFolder
         {
@@ -600,7 +634,7 @@ namespace CouchInsert
             ImageProfile YProfile = SI.GetImageProfile(Start, Stop, YPreallocatedBuffer);
             double Y2 = YProfile.Where(p => !Double.IsNaN(p.Value)).Max(p => p.Position.y);
             double Y1 = YProfile.Where(p => !Double.IsNaN(p.Value)).Min(p => p.Position.y);
-            double Ycenter = (Y2 + Y1) / 2;
+            Ycenter = (Y2 + Y1) / 2;
             double Yborder = Math.Abs(X2 - X1);
 
             //Find min Z
@@ -785,6 +819,8 @@ namespace CouchInsert
             UserCouchCIName = sourceAxis[7].ToString();
             UserCS = SS.Structures.FirstOrDefault(e => e.Id == UserCouchCSName);
             UserCI = SS.Structures.FirstOrDefault(e => e.Id == UserCouchCIName);
+
+            ChkBBsStructure();
         }
 
         public ICommand PositionRenewCommand { get => new Command(PositionRenew); }
@@ -813,6 +849,47 @@ namespace CouchInsert
                 //SelectedMarkerPosition = PeakDetect(XProfile);
             }
         }
+        public ICommand BBMarkerRenewCommand { get => new Command(BBMarkerRenew); }
+        private void BBMarkerRenew()
+        {
+            double min = Double.MaxValue;
+            VVector NearImageCenter =  new VVector(Xcenter, Ycenter, UserOriginZ);
+            VVector FinalMarkerBB = new VVector();
+            string FFName = "";
+            string NoDeleteID = "";
+            foreach (var s in SS.Structures.Where(s => s.Id.Contains("BBsForCouch")))
+            {
+                if (VVector.Distance(NearImageCenter, s.CenterPoint) < min)
+                {
+                    FinalMarkerBB = s.CenterPoint;
+                    min = Math.Min(VVector.Distance(NearImageCenter, s.CenterPoint), min);
+                    FFName = s.Id.Split('_').LastOrDefault();
+                    NoDeleteID = s.Id;
+                }
+            }
+            MarkerLocationX = FinalMarkerBB.x;
+            MarkerLocationY = FinalMarkerBB.y;
+            MarkerLocationZ = FinalMarkerBB.z;
+            SelectedMarkerPosition = FFName;
+            AddCouch();
+            var RStructures = SS.Structures.Where(s => s.Id.Contains("BBsForCouch")).ToList();
+            foreach (var structure in RStructures)
+            {
+                if (structure.Id != NoDeleteID)
+                {
+                   SS.RemoveStructure(structure);
+                }
+            }
+        }
+
+        public ICommand ChkBBsStructureCommand { get => new Command(ChkBBsStructure); }
+        private void ChkBBsStructure()
+        {
+            if (SS.Structures.Where(s => s.Id.Contains("BBsForCouch")).FirstOrDefault() != null)
+            {
+                CanStartProcessingChkBBs = true;
+            }
+        }
 
         public ICommand ButtonCommand_StartChk { get => new Command(StartChk); }
         private void StartChk()
@@ -837,16 +914,21 @@ namespace CouchInsert
             }
             if (AutoMarkerWPosition.Count == 0) CanStartProcessing = false;
             else { CanStartProcessing = true; }
-            if (SS.Structures.Where(s => s.Id == "BBsForCouch").FirstOrDefault() != null) { SS.RemoveStructure(SS.Structures.FirstOrDefault(s => s.Id == "BBsForCouch")); }
         }
 
         public ICommand ButtonCommand_AddBBs { get => new Command(AddBBs); }
         private void AddBBs()
         {
+            var RStructures = SS.Structures.Where(s => s.Id.Contains("BBsForCouch")).ToList();
+            foreach (var structure in RStructures)
+            {
+               SS.RemoveStructure(structure);
+            }
             int FirstMarkerInt = Convert.ToInt32(AutoMarkerWPosition.GroupBy(x => x.Markers).OrderByDescending(x => x.Count()).ThenBy(x => x.Key).Select(x => (string)x.Key).FirstOrDefault().Replace("H", ""));
             string SecondMarker = (FirstMarkerInt + 1).ToString();
             string ThirdMarker = (FirstMarkerInt - 1).ToString();
             List<VVector> BBVectors = new List<VVector>();
+            string BBNameMarker = AutoMarkerWPosition.GroupBy(x => x.Markers).OrderByDescending(x => x.Count()).ThenBy(x => x.Key).Select(x => (string)x.Key).Distinct().ToList().FirstOrDefault();
             foreach (MarkerWPositions v in AutoMarkerWPosition)
             {
                 if (v.Markers.Contains(FirstMarkerInt.ToString()))
@@ -855,13 +937,15 @@ namespace CouchInsert
                 }
             }
             int mid = BBVectors.Count() / 2;
-            Structure BBs = SS.AddStructure("CONTROL", "BBsForCouch");
             if (BBVectors.Count() != 0)
             {
-                BBs.AddContourOnImagePlane(GetCircleContours(SI.XRes, 10, BBVectors.ElementAtOrDefault(mid - 1)), GetSlice(BBVectors.ElementAtOrDefault(mid - 1).z));
-                BBs.AddContourOnImagePlane(GetCircleContours(SI.XRes, 10, BBVectors.ElementAtOrDefault(mid)), GetSlice(BBVectors.ElementAtOrDefault(mid).z));
+                Structure BBs1 = SS.AddStructure("CONTROL", "BBsForCouch1_" + BBNameMarker);
+                Structure BBs2 = SS.AddStructure("CONTROL", "BBsForCouch2_" + BBNameMarker);
+                BBs1.AddContourOnImagePlane(GetCircleContours(SI.XRes, 5, BBVectors.ElementAtOrDefault(mid - 1)), GetSlice(BBVectors.ElementAtOrDefault(mid - 1).z));
+                BBs2.AddContourOnImagePlane(GetCircleContours(SI.XRes, 5, BBVectors.ElementAtOrDefault(mid)), GetSlice(BBVectors.ElementAtOrDefault(mid).z));
             }
-
+            MarkerWPositions CCC = new MarkerWPositions();
+            BBNameMarker = AutoMarkerWPosition.GroupBy(x => x.Markers).OrderByDescending(x => x.Count()).ThenBy(x => x.Key).Select(x => (string)x.Key).Distinct().ToList().ElementAt(1);
             BBVectors.Clear();
             foreach (MarkerWPositions v in AutoMarkerWPosition)
             {
@@ -873,35 +957,20 @@ namespace CouchInsert
             mid = BBVectors.Count() / 2;
             if (BBVectors.Count() != 0)
             {
-                BBs.AddContourOnImagePlane(GetCircleContours(SI.XRes, 10, BBVectors.ElementAtOrDefault(mid - 1)), GetSlice(BBVectors.ElementAtOrDefault(mid - 1).z));
-                BBs.AddContourOnImagePlane(GetCircleContours(SI.XRes, 10, BBVectors.ElementAtOrDefault(mid)), GetSlice(BBVectors.ElementAtOrDefault(mid).z));
+                Structure BBs3 = SS.AddStructure("CONTROL", "BBsForCouch1_" + BBNameMarker);
+                Structure BBs4 = SS.AddStructure("CONTROL", "BBsForCouch2_" + BBNameMarker);
+                BBs3.AddContourOnImagePlane(GetCircleContours(SI.XRes, 5, BBVectors.ElementAtOrDefault(mid - 1)), GetSlice(BBVectors.ElementAtOrDefault(mid - 1).z));
+                BBs4.AddContourOnImagePlane(GetCircleContours(SI.XRes, 5, BBVectors.ElementAtOrDefault(mid)), GetSlice(BBVectors.ElementAtOrDefault(mid).z));
             }
+            ChkBBsStructure();
         }
 
         public ICommand ButtonCommand_AddCouch { get => new Command(AddCouch); }
         private void AddCouch()
         {
             SC.Patient.BeginModifications();
-            if (SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL") is null)
-            {
-                var BodyPar = SS.GetDefaultSearchBodyParameters();
-                BodyPar.KeepLargestParts = false;
-                SS.CreateAndSearchBody(BodyPar);
-            }
-            else if (SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL").Volume == 0)
-            {
-                var BodyPar = SS.GetDefaultSearchBodyParameters();
-                BodyPar.KeepLargestParts = false;
-                SS.CreateAndSearchBody(BodyPar);
-            }
+            PreBODY();
             ProgressVisibility = Visibility.Visible;
-            //DateTime dateTime = DateTime.Now;
-            //string filePathOuter = @"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\contour.csv";
-            //if (!File.Exists(filePathOuter))
-            //{
-            //    System.Windows.MessageBox.Show($"No file exists at path {filePathOuter}");
-            //    return;
-            //}
 
             FilePathCI = System.IO.Path.Combine(new string[] { FileFolder, "CouchInterior.csv" });
             FilePathCS = System.IO.Path.Combine(new string[] { FileFolder, "CouchSurface.csv" });
@@ -934,6 +1003,9 @@ namespace CouchInsert
                 VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, YchkOrientation, ZchkOrientation);
                 NewVVector.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
             }
+            if (YchkOrientation == 1)
+            { FinalYcenter = CSVVector.Min(p => p.y); }
+            else { FinalYcenter = CSVVector.Max(p => p.y); }
             if (ZchkOrientation == -1)
             {
                 for (int i = 0; i < NewVVector.Max(p => p.z) - Convert.ToInt32(2 * ZBaseAxis / SI.ZRes) + 1; i++)
@@ -1073,7 +1145,6 @@ namespace CouchInsert
                     UserCS.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
                 }
             }
-            CurrentProgress = 85;
 
             Array.Clear(TempFilelines, 0, TempFilelines.Length);
             TempFilelines = File.ReadAllLines(FilePathCI);
@@ -1135,43 +1206,12 @@ namespace CouchInsert
                     UserCI.AddContourOnImagePlane(Loop.Select(v => new VVector(v.x, v.y, v.z)).ToArray(), i);
                 }
             }
-
-            //ForResearch
-            //CurrentProgress = 99;
-            //using (StreamWriter writer = new StreamWriter(@"C: \Users\aria\Downloads\Interpolation\Volume.csv"))
-            //{
-            //    Structure None = SS.Structures.FirstOrDefault(e => e.Id == "None");
-            //    Structure None1 = SS.Structures.FirstOrDefault(e => e.Id == "None1");
-            //    Structure temp1 = SS.Structures.FirstOrDefault(e => e.Id == "CS_High");
-            //    Structure temp2 = SS.Structures.FirstOrDefault(e => e.Id == "CSS_High");
-            //    if (IsChecked == true)
-            //    {
-            //        UserCI.SegmentVolume = UserCI.SegmentVolume.Or(CrossInterior.SegmentVolume);
-            //        UserCS.SegmentVolume = UserCS.SegmentVolume.Or(CrossSurface.SegmentVolume);
-            //        UserCS.SegmentVolume = UserCS.SegmentVolume.Sub(UserCI.SegmentVolume);
-            //        if (CheckSlice == 1) { UserCS.SegmentVolume = UserCS.SegmentVolume.Sub(UserCI.SegmentVolume); }
-            //        UserCI.SetAssignedHU(CIHU);
-            //        UserCS.SetAssignedHU(CSHU);
-            //        SS.RemoveStructure(SS.Structures.First(s => s.Id == "CrossSurface"));
-            //        SS.RemoveStructure(SS.Structures.First(s => s.Id == "CrossInterior"));
-            //    }
-            //    else
-            //    {
-            //        UserCI.SegmentVolume = UserCI.SegmentVolume.Or(CrossInterior.SegmentVolume);
-            //        UserCS.SegmentVolume = UserCS.SegmentVolume.Or(CrossSurface.SegmentVolume);
-            //        UserCI.SetAssignedHU(CIHU);
-            //        UserCS.SetAssignedHU(CSHU);
-            //        SS.RemoveStructure(SS.Structures.First(s => s.Id == "CrossSurface"));
-            //        SS.RemoveStructure(SS.Structures.First(s => s.Id == "CrossInterior"));
-            //    }
-            //    DateTime dateTime2 = DateTime.Now;
-            //    TimeSpan dateTime3 = dateTime2.Subtract(dateTime);
-            //    writer.WriteLine(dateTime3.ToString());
-            //}
             UserCS.SegmentVolume = UserCS.SegmentVolume.Or(CrossSurface.SegmentVolume);
             UserCI.SegmentVolume = UserCI.SegmentVolume.Or(CrossInterior.SegmentVolume);
             SS.RemoveStructure(SS.Structures.First(s => s.Id == "CrossSurface"));
             SS.RemoveStructure(SS.Structures.First(s => s.Id == "CrossInterior"));
+            CurrentProgress = 95;
+            PostBODY();
             CurrentProgress = 100;
         }
 
@@ -1183,11 +1223,9 @@ namespace CouchInsert
             return new VVector(x, y, z);
         }
 
-        public ICommand ButtonCommand_CouchBody { get => new Command(CouchBody); }
-        private void CouchBody()
+        public ICommand PreBODYCommand { get => new Command(PreBODY); }
+        private void PreBODY()
         {
-            bool imageResized = true;
-            string errorCouch = "error";
             Structure BODY = SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL");
             double BodyVolume = new double();
             if (BODY == null)
@@ -1226,6 +1264,30 @@ namespace CouchInsert
                 BodyPar.SmoothingLevel = 3;
                 SS.CreateAndSearchBody(BodyPar);
             }
+        }
+        public ICommand PostBODYCommand { get => new Command(PostBODY); }
+        private void PostBODY()
+        {
+            //BODY part
+            Structure BODY = SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL");
+            Structure Temp = SS.AddStructure("CONTROL", "Temp_ForCouch");
+            VVector[] TempVec = GetpseudoLine(FinalYcenter, SI.XSize, SI.YSize, YchkOrientation);
+            for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
+            {
+                Temp.AddContourOnImagePlane(TempVec, i);
+            }
+            BODY.SegmentVolume = BODY.SegmentVolume.Sub(Temp.SegmentVolume);
+            SS.RemoveStructure(Temp);
+            if (BODY.Volume > BodyVolume) { System.Windows.Forms.MessageBox.Show("Please Check your BODY carefully", "Confirmation", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+            BODY.Comment = "Modified by ESAPI";
+        }
+
+public ICommand ButtonCommand_PhotonCouchBody { get => new Command(PhotonCouchBody); }
+        private void PhotonCouchBody()
+        {
+            PreBODY();
+            bool imageResized = true;
+            string errorCouch = "error";
             List<VVector> CSVVector = new List<VVector>();
             bool AddCouch = true;
             if ((SI.XSize * SI.XRes) <= 540)
@@ -1316,18 +1378,7 @@ namespace CouchInsert
                             CouchInterior.Comment = "NTUCC_Exact IGRT Couch, medium";
                             CouchSurface.Comment = "NTUCC_Exact IGRT Couch, medium";
                         }
-                        //BODY part
-                        BODY = SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL");
-                        Structure Temp = SS.AddStructure("CONTROL", "Temp_ForCouch");
-                        VVector[] TempVec = GetpseudoLine(FinalYcenter, SI.XSize, SI.YSize, YchkOrientation);
-                        for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
-                        {
-                            Temp.AddContourOnImagePlane(TempVec, i);
-                        }
-                        BODY.SegmentVolume = BODY.SegmentVolume.Sub(Temp.SegmentVolume);
-                        SS.RemoveStructure(Temp);
-                        if (BODY.Volume > BodyVolume) { System.Windows.Forms.MessageBox.Show("Please Check your BODY carefully", "Confirmation", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
-                        BODY.Comment = "Modified by ESAPI";
+                        PostBODY();
                     }
                     else if (errorCouch.Contains("Support structures already exist in the structure set."))
                     {
@@ -1350,17 +1401,7 @@ namespace CouchInsert
                             if (YchkOrientation == 1)
                             { FinalYcenter = CSVVector.Min(p => p.y); }
                             else { FinalYcenter = CSVVector.Max(p => p.y); }
-                            BODY = SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL");
-                            Structure Temp = SS.AddStructure("CONTROL", "Temp_ForCouch");
-                            VVector[] TempVec = GetpseudoLine(FinalYcenter, SI.XSize, SI.YSize, YchkOrientation);
-                            for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
-                            {
-                                Temp.AddContourOnImagePlane(TempVec, i);
-                            }
-                            BODY.SegmentVolume = BODY.SegmentVolume.Sub(Temp.SegmentVolume);
-                            SS.RemoveStructure(Temp);
-                            if (BODY.Volume > BodyVolume) { System.Windows.Forms.MessageBox.Show("Please Check your BODY carefully", "Confirmation", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
-                            BODY.Comment = "Modified by ESAPI";
+                            PostBODY();
                         }
                         else
                         {
@@ -1400,7 +1441,7 @@ namespace CouchInsert
                             {
                                 Temp.AddContourOnImagePlane(TempVec, i);
                             }
-                            BODY = SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL");
+                            Structure BODY = SS.Structures.FirstOrDefault(s => s.DicomType == "EXTERNAL");
                             BODY.SegmentVolume = BODY.SegmentVolume.Sub(Temp.SegmentVolume);
                             BODY.SegmentVolume = BODY.SegmentVolume.Sub(Encompass.SegmentVolume);
                             BODY.SegmentVolume = BODY.SegmentVolume.Sub(EncompassBase.SegmentVolume);
@@ -1677,23 +1718,6 @@ namespace CouchInsert
                 vvectors.Add(new VVector(x + CircleOrigin.x, y + CircleOrigin.y, 0));
             }
             return vvectors.ToArray();
-        }
-
-        public class CustomArray<T>
-        {
-            public T[] GetColumn(T[,] matrix, int columnNumber)
-            {
-                return Enumerable.Range(0, matrix.GetLength(0))
-                        .Select(x => matrix[x, columnNumber])
-                        .ToArray();
-            }
-
-            public T[] GetRow(T[,] matrix, int rowNumber)
-            {
-                return Enumerable.Range(0, matrix.GetLength(1))
-                        .Select(x => matrix[rowNumber, x])
-                        .ToArray();
-            }
         }
 
         public int GetSlice(double z)
