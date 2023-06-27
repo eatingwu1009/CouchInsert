@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-06-27T09:26:35.746Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="oCAE43V-dmHKeob3EGDv" version="21.5.0" type="github">
+<mxfile host="app.diagrams.net" modified="2023-06-27T09:34:03.127Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="Kukik7ooKcd73zWnELN4" version="21.5.0" type="github">
   <diagram name="第 1 页" id="x1ljfz-qSG_obq4z1dJh">
-    <mxGraphModel dx="1064" dy="1526" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="626" dy="898" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -161,7 +161,7 @@
         <mxCell id="LTVYAx_PnS-_SqXySAhT-67" value="&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;chkBrain == true&lt;/span&gt;&lt;/li&gt;&lt;li&gt;chkBrain2 == true&lt;/li&gt;&lt;/ul&gt;" style="rhombus;whiteSpace=wrap;html=1;rounded=0;align=left;" parent="1" vertex="1">
           <mxGeometry x="480" y="915" width="160" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="p7OBAl8m0kmdlYUJRd6V-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" parent="1" edge="1" target="CMgAXBfwaaWUZ1rotl-2-1">
+        <mxCell id="p7OBAl8m0kmdlYUJRd6V-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" parent="1" target="CMgAXBfwaaWUZ1rotl-2-1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="252.0344827586207" y="1745" as="sourcePoint" />
             <mxPoint x="252.28999999999996" y="1785.1200000000001" as="targetPoint" />
@@ -170,9 +170,6 @@
               <mxPoint x="252" y="1765" />
             </Array>
           </mxGeometry>
-        </mxCell>
-        <mxCell id="p7OBAl8m0kmdlYUJRd6V-3" value="&lt;ul&gt;&lt;li style=&quot;&quot;&gt;Get Couch VVector&lt;/li&gt;&lt;li style=&quot;&quot;&gt;Find x_max, y_min get ShiftX, ShiftY&lt;/li&gt;&lt;/ul&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;strokeWidth=2;" parent="1" vertex="1">
-          <mxGeometry x="126.55000000000001" y="1695" width="248.4" height="50" as="geometry" />
         </mxCell>
         <mxCell id="p7OBAl8m0kmdlYUJRd6V-6" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;AddCouchStructures&lt;br&gt;(Enlarge the CT)&lt;br&gt;&lt;/span&gt;" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;strokeWidth=2;" parent="1" vertex="1">
           <mxGeometry x="190.75" y="1595" width="120" height="60" as="geometry" />
@@ -333,8 +330,11 @@
         <mxCell id="4svMNwHMsA5PGAplz-GQ-60" value="&lt;ul&gt;&lt;li&gt;HyperArc :&amp;nbsp;EncompassBase&lt;/li&gt;&lt;li&gt;CouchSurface&lt;/li&gt;&lt;/ul&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;strokeWidth=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#336600;" parent="1" vertex="1">
           <mxGeometry x="460.50000000000006" y="1697" width="201" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="CMgAXBfwaaWUZ1rotl-2-1" value="&lt;div style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;AddContourOnImagePlane()&lt;/span&gt;&lt;/div&gt;&lt;span style=&quot;background-color: initial; text-align: center;&quot;&gt;new VVector(v.x + ShiftX, v.y + ShiftY, v.z);&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;strokeWidth=2;" vertex="1" parent="1">
+        <mxCell id="CMgAXBfwaaWUZ1rotl-2-1" value="&lt;div style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;AddContourOnImagePlane()&lt;/span&gt;&lt;/div&gt;&lt;span style=&quot;background-color: initial; text-align: center;&quot;&gt;new VVector(v.x + ShiftX, v.y + ShiftY, v.z);&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;strokeWidth=2;" parent="1" vertex="1">
           <mxGeometry x="127.54" y="1780" width="248.4" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="KvZVWsqX1mR37qSP34bk-1" value="&lt;ul style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Get Couch VVector&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Find x_max, y_min get ShiftX, ShiftY&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
+          <mxGeometry x="132.87" y="1692" width="237.75" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
