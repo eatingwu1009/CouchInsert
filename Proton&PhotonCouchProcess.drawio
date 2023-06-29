@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-06-29T01:40:26.195Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="anEnivCmL459rtq2mpAM" version="21.3.6" type="github">
+<mxfile host="app.diagrams.net" modified="2023-06-29T02:10:42.991Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="pFL6D6Hzn87TRikmxJJq" version="21.3.6" type="github">
   <diagram name="第 1 页" id="3PoZT99JLvgC_yYh0iIf">
-    <mxGraphModel dx="712" dy="754" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="838" dy="887" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -13,25 +13,25 @@
           <mxGeometry x="348" y="70" width="220" height="70" as="geometry" />
         </mxCell>
         <mxCell id="UUtNP9MRQaCTh92hcmn--2" value="AutoDetect" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="245" y="180" width="100" height="50" as="geometry" />
+          <mxGeometry x="205" y="180" width="100" height="50" as="geometry" />
         </mxCell>
         <mxCell id="UUtNP9MRQaCTh92hcmn--3" value="Manual Marker" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="355" y="180" width="100" height="50" as="geometry" />
         </mxCell>
         <mxCell id="UUtNP9MRQaCTh92hcmn--4" value="Double Check" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="465" y="180" width="100" height="50" as="geometry" />
+          <mxGeometry x="510" y="180" width="100" height="50" as="geometry" />
         </mxCell>
         <mxCell id="UUtNP9MRQaCTh92hcmn--5" value="Couch Model" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="575" y="180" width="100" height="50" as="geometry" />
+          <mxGeometry x="662.5" y="180" width="100" height="50" as="geometry" />
         </mxCell>
         <mxCell id="UUtNP9MRQaCTh92hcmn--6" value="&lt;ul&gt;&lt;li&gt;CouchInterior&lt;/li&gt;&lt;li&gt;CouchSurface&lt;/li&gt;&lt;/ul&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;align=left;" parent="1" vertex="1">
-          <mxGeometry x="552.5" y="260" width="145" height="50" as="geometry" />
+          <mxGeometry x="640" y="260" width="145" height="50" as="geometry" />
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;" parent="1" source="L71xMRWu8lyQpmZ8tHU4-1" target="L71xMRWu8lyQpmZ8tHU4-5" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-1" value="ButtonCommand&lt;br&gt;StartChk" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;align=center;" parent="1" vertex="1">
-          <mxGeometry x="60" y="260" width="135" height="50" as="geometry" />
+          <mxGeometry x="7" y="260" width="135" height="50" as="geometry" />
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-4" value="&lt;ul&gt;&lt;li&gt;XchkOrientation&lt;/li&gt;&lt;li&gt;YchkOrientation&lt;/li&gt;&lt;li&gt;ZChkOrientation&lt;/li&gt;&lt;/ul&gt;" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;align=left;" parent="1" vertex="1">
           <mxGeometry x="610" y="80" width="160" height="50" as="geometry" />
@@ -40,46 +40,74 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-5" value="Detect BB Marker&lt;br&gt;Check OriginZ&amp;nbsp;± 6cm &lt;br&gt;@Couch Plane" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="217.5" y="260" width="155" height="50" as="geometry" />
+          <mxGeometry x="164.5" y="260" width="155" height="50" as="geometry" />
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="L71xMRWu8lyQpmZ8tHU4-7" target="L71xMRWu8lyQpmZ8tHU4-23" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-7" value="Add BBs Structures" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="217.75" y="463" width="155" height="50" as="geometry" />
+          <mxGeometry x="164.75" y="463" width="155" height="50" as="geometry" />
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="L71xMRWu8lyQpmZ8tHU4-8" target="L71xMRWu8lyQpmZ8tHU4-9" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-8" value="If Detect BB number &amp;gt;0" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;labelBackgroundColor=#FFFFFF;" parent="1" vertex="1">
-          <mxGeometry x="226" y="350" width="138.5" height="80" as="geometry" />
+          <mxGeometry x="173" y="350" width="138.5" height="80" as="geometry" />
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="L71xMRWu8lyQpmZ8tHU4-9" target="L71xMRWu8lyQpmZ8tHU4-7" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-9" value="ButtonCommand&lt;br&gt;AddBBs" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;align=center;" parent="1" vertex="1">
-          <mxGeometry x="60" y="365" width="135" height="50" as="geometry" />
+          <mxGeometry x="7" y="365" width="135" height="50" as="geometry" />
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-12" value="True&lt;br&gt;Enable" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="185" y="350" width="60" height="30" as="geometry" />
+          <mxGeometry x="132" y="350" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="L71xMRWu8lyQpmZ8tHU4-21" value="Add Couch depends on&lt;br&gt;structure centerpoint" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="217.75" y="663" width="155" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="L71xMRWu8lyQpmZ8tHU4-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="L71xMRWu8lyQpmZ8tHU4-23" target="L71xMRWu8lyQpmZ8tHU4-25" edge="1">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="L71xMRWu8lyQpmZ8tHU4-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="L71xMRWu8lyQpmZ8tHU4-23" target="L71xMRWu8lyQpmZ8tHU4-25" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="324.54705882352937" y="590.0588235294117" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-23" value="If BB structure is existed" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;labelBackgroundColor=#FFFFFF;" parent="1" vertex="1">
-          <mxGeometry x="226" y="550" width="138.5" height="80" as="geometry" />
+          <mxGeometry x="173" y="550" width="138.5" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="L71xMRWu8lyQpmZ8tHU4-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="L71xMRWu8lyQpmZ8tHU4-25" target="L71xMRWu8lyQpmZ8tHU4-21" edge="1">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="L71xMRWu8lyQpmZ8tHU4-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="L71xMRWu8lyQpmZ8tHU4-25" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="405" y="663" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-25" value="ButtonCommand&lt;br&gt;AddCouch" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;align=center;" parent="1" vertex="1">
-          <mxGeometry x="60" y="565" width="135" height="50" as="geometry" />
+          <mxGeometry x="337.5" y="565" width="135" height="50" as="geometry" />
         </mxCell>
         <mxCell id="L71xMRWu8lyQpmZ8tHU4-27" value="True&lt;br&gt;Enable" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="185" y="550" width="60" height="30" as="geometry" />
+          <mxGeometry x="295" y="550" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DlJTijxT4euHkg5b0cn0-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="DlJTijxT4euHkg5b0cn0-2" target="DlJTijxT4euHkg5b0cn0-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DlJTijxT4euHkg5b0cn0-2" value="Select&amp;nbsp; the Marker" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="355" y="260" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="DlJTijxT4euHkg5b0cn0-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="DlJTijxT4euHkg5b0cn0-3" target="L71xMRWu8lyQpmZ8tHU4-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DlJTijxT4euHkg5b0cn0-3" value="Confirm the Position &lt;br&gt;or &lt;br&gt;Select manually" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="337.5" y="350" width="135" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="DlJTijxT4euHkg5b0cn0-8" value="Get&amp;nbsp; ProtonCouch structrue VVector" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="350" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="DlJTijxT4euHkg5b0cn0-9" value="If ProtonCouch&lt;br&gt;&amp;nbsp;is existed" style="strokeWidth=1;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="490.75" y="245" width="138.5" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="DlJTijxT4euHkg5b0cn0-10" value="Check&amp;nbsp; relative VVector" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="440" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="DlJTijxT4euHkg5b0cn0-11" value="Add Couch depends on&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;structure centerpoint" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="333.75" y="660" width="142.5" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="DlJTijxT4euHkg5b0cn0-12" value="Add Couch depends on&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;structure centerpoint" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490.75" y="530" width="142.5" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
