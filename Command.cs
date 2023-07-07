@@ -7,7 +7,6 @@ using System.Windows.Input;
 
 namespace CouchInsert
 {
-    // test commit
     public class Command : ICommand
     {
         private Action _action;

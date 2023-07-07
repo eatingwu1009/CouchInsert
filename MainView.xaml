@@ -63,16 +63,20 @@
         <Expander HorizontalAlignment="Left" Margin="150,-20,0,0" Width="428" ExpandDirection="Right">
             <Grid Margin="0,0,0,0" Background="LightCoral">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="110"/>
                     <ColumnDefinition Width="110"/>
                     <ColumnDefinition Width="110"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
-                <Button Grid.Column="0" Content="Start✔️"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_StartChk}"  Cursor="Hand" Margin="15,0,15,3"/>
-                <Button Grid.Column="1" Content="CheckBBs"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_AddBBs}" IsEnabled="{Binding CanStartProcessing}" Cursor="Hand" Margin="15,0,15,3"/>
-                <Button Grid.Column="2" Content="APPLY⏳"  FontFamily="Segoe UI Light" Command="{Binding BBMarkerRenewCommand}" IsEnabled="{Binding CanStartProcessingChkBBs}" Cursor="Hand" Margin="15,0,15,3"/>
+                <Button Grid.Column="1" Content="Start✔️"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_StartChk}"  Cursor="Hand" Margin="15,0,15,3"/>
+                <Button Grid.Column="2" Content="CheckBBs"  FontFamily="Segoe UI Light" Command="{Binding ButtonCommand_AddBBs}" IsEnabled="{Binding CanStartProcessing}" Cursor="Hand" Margin="15,0,15,3"/>
+                <Button Grid.Column="3" Content="APPLY⏳"  FontFamily="Segoe UI Light" Command="{Binding BBMarkerRenewCommand}" IsEnabled="{Binding CanStartProcessingChkBBs}" Cursor="Hand" Margin="15,0,15,3"/>
+                <ProgressBar  Grid.Row="4" Value="{Binding CurrentProgress, Mode=TwoWay}" Visibility="{Binding ProgressVisibility}" Minimum="0" Maximum="100" Name="pbStatus" Height="25" Grid.ColumnSpan="3" Margin="-16,0,-143,0"/>
+                <TextBlock Grid.Row="4" Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3" Margin="5,0,-123,0"/>
                 <!--<Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"></Setter>
@@ -110,8 +114,8 @@
                 <Button Grid.Row="3" Grid.Column="2" Content="APPLY⏳" HorizontalAlignment="Center"  FontFamily="Segoe UI Light" VerticalAlignment="Center" Cursor="Hand" Command="{Binding ButtonCommand_AddCouch}"/>
                 <Label Grid.Row="2" Grid.Column="0" Content="STEP2 : Please Check the BB Position w/ marker" Foreground="White" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="4" Margin="5,0,-63,0"/>
                 <Label Grid.Row="3" Grid.Column="0" Content="BB Position: "  FontFamily="Segoe UI Light" Foreground="Maroon"/>
-                <ComboBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding MarkerPositions}"  FontFamily="Segoe UI Light" FontSize="16" SelectedValue="{Binding SelectedMarkerPosition}" SelectionChanged="ComboBox_SelectionChanged" FontWeight="Bold"/>
-                <ProgressBar  Grid.Row="6" Value="{Binding CurrentProgress, Mode=TwoWay}" Visibility="{Binding ProgressVisibility}" Minimum="0" Maximum="100" Name="pbStatus" Height="25" Grid.ColumnSpan="4" Margin="5,0,-63,0"/>
+                <ComboBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding MarkerPositions}"  FontFamily="Segoe UI Light" FontSize="16" SelectedValue="{Binding ShowSelectedMarkerPosition}" SelectionChanged="ComboBox_SelectionChanged" FontWeight="Bold"/>
+                <ProgressBar  Grid.Row="6" Value="{Binding CurrentProgress, Mode=TwoWay}" Visibility="{Binding ProgressVisibility}" Minimum="0" Maximum="100" Name="pbStatus2" Height="25" Grid.ColumnSpan="4" Margin="5,0,-63,0"/>
                 <TextBlock Grid.Row="6" Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="4" Margin="5,0,-63,0"/>
                 <!--<CheckBox Grid.Row="2" Grid.Column="1" Content="Solid" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Maroon"  Command="{Binding CheckedChangedCommand, Mode=TwoWay}"  
                       Name ="chk" CommandParameter ="{Binding ElementName = chk}" IsChecked="{Binding Path=IsChecked, Mode=TwoWay}"/>-->

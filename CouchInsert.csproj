@@ -85,6 +85,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoCouchYPlane.cs" />
+    <Compile Include="ChkOrientation.cs" />
+    <Compile Include="FindImageCenter.cs" />
+    <Compile Include="MarkerWPositions.cs" />
+    <Compile Include="ModelBuilder.cs" />
     <Compile Include="SegmentShifter.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CouchInsert.cs" />

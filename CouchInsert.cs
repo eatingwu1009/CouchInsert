@@ -1,16 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Collections.Generic;
+﻿using System.Windows;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using VMS.TPS.Common.Model.API;
-using VMS.TPS.Common.Model.Types;
 using CouchInsert;
-using System.IO;
-using System.ComponentModel;
-using System.Windows.Forms;
 
 // TODO: Replace the following version attributes by creating AssemblyInfo.cs. You can do this in the properties of the Visual Studio project.
 [assembly: AssemblyVersion("1.0.0.1")]
