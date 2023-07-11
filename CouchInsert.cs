@@ -28,7 +28,7 @@ namespace VMS.TPS
             mainView.DataContext = mainViewModel;
 
             window.Content = mainView;
-            window.Title = "CouchInsert_EatingWu🌼";
+            window.Title = "CouchInsert&BODY_EatingWu🌼";
             window.SizeToContent = SizeToContent.Height;
             window.Width = 580;
             window.WindowStartupLocation = WindowStartupLocation.CenterScreen;

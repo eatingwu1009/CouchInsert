@@ -104,6 +104,8 @@ namespace CouchInsert
 
                     if (Brn1 < -600 && Brn2 < -600 && (Brn3 <= -850 && Brn3 >= -950) && Brn4 < -600)
                     { chkBrain2 = true; }
+                    else
+                    { chkBrain2 = false; }
 
                     double CouchBorder1 = Math.Round(VVector.Distance(Couch1, Couch2) / 10);
                     double CouchBorder2 = Math.Round(VVector.Distance(Couch3, Couch4) / 10);

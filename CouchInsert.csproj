@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CouchInsert</RootNamespace>
-    <AssemblyName>CouchInsert.esapi</AssemblyName>
+    <AssemblyName>CouchInsert&amp;BODY.esapi</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -86,8 +86,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCouchYPlane.cs" />
+    <Compile Include="bodyParameter.cs" />
     <Compile Include="ChkOrientation.cs" />
+    <Compile Include="DetectTool.cs" />
     <Compile Include="FindImageCenter.cs" />
+    <Compile Include="StructureModifier.cs" />
+    <Compile Include="GetSlice.cs" />
+    <Compile Include="HalcyonHR.cs" />
     <Compile Include="MarkerWPositions.cs" />
     <Compile Include="ModelBuilder.cs" />
     <Compile Include="SegmentShifter.cs" />
