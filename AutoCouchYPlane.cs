@@ -60,7 +60,7 @@ namespace CouchInsert
                 }
             }
 
-            double chkHeight, Brn1, Brn2, Brn3, Brn4 = new double();
+            double chkHeight, Brn1, Brn2, Brn3, Brn4, BodyfixChk = new double();
             List<double> BadChk = new List<double>();
             int index = new int();
             index = YHU_Diff.IndexOf(YHU_Diff.Min());
@@ -102,6 +102,9 @@ namespace CouchInsert
                     profile.TakeProfile(SI, -250 + Xcenter, 250 + Xcenter, FinalYcenter - YchkOrientation * 4, UserOriginZ);
                     Brn4 = profile.getXprofile.Where(p => p.Value != -1024).Where(p => p.Value != -1000).Where(p => !Double.IsNaN(p.Value)).Min(p => p.Value);
 
+                    profile.TakeProfile(SI, 0 + Xcenter, 250 + Xcenter, FinalYcenter + YchkOrientation * 8.5, UserOriginZ);
+                    BodyfixChk = profile.getXprofile[990].Value;
+
                     if (Brn1 < -600 && Brn2 < -600 && (Brn3 <= -850 && Brn3 >= -950) && Brn4 < -600)
                     { chkBrain2 = true; }
                     else
@@ -114,7 +117,7 @@ namespace CouchInsert
                         CouchBorder1 = Math.Round(VVector.Distance(Couch3, Couch4) / 10);
                         CouchBorder2 = Math.Round(VVector.Distance(Couch1, Couch2) / 10);
                     }
-                    if (((CouchBorder1 >= 50 && CouchBorder1 <= 54) && (CouchBorder2 >= 47 && CouchBorder2 <= 54) && (chkHeight > -650 | chkBrain2 == true)) | (chkBrain == true && chkBrain2 == true)) break;
+                    if (((CouchBorder1 >= 49 && CouchBorder1 <= 54) && (CouchBorder2 >= 47 && CouchBorder2 <= 54) && (chkHeight > -650 && chkBrain2 == true) && BodyfixChk < 0) | (chkBrain == true && chkBrain2 == true)) break;
                     YHU_Diff.RemoveAt(index);
                     YLocation.RemoveAt(index);
                 }

@@ -49,7 +49,7 @@
     </UserControl.Resources>
 
     <StackPanel Background="LightCoral">
-
+        <Label Content="***Please Re-open ESAPI to renew the database once the couch insertion is finished." FontSize="14" HorizontalAlignment="Left" Foreground="DarkBlue"/>
         <Label Content="✨ProtonCouch" FontWeight="Bold" FontSize="16" HorizontalAlignment="Left"/>
         <Label Content="AutoDetect"  HorizontalAlignment="Left" Height="28" VerticalAlignment="Top"  FontSize="16" Margin="35,0,0,0">
             <!--<Label.Foreground>
@@ -135,7 +135,7 @@
                 </Grid.RowDefinitions>
                 <Label Grid.Column="0" Content="The BB position is :" Foreground="Maroon"  FontFamily="Segoe UI Light"/>
                 <Label Grid.Column="1" Foreground="blue"  FontFamily="Segoe UI Light" FontSize="16" Background="LightBlue" FontWeight="Bold" Content="{Binding CalculateBBLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,3,10,10"/>
-                <Button Grid.Row="0" Grid.Column="2" Content="Calculate🔍" Command="{Binding ButtonCommand_CheckingBB}" Cursor="Hand"  FontFamily="Segoe UI Light" Margin="5,5,5,10"/>
+                <Button Grid.Row="0" Grid.Column="2" Content="Calculate🔍" Command="{Binding ButtonCommand_CheckingBB}" Cursor="Hand"  FontFamily="Segoe UI Light" Margin="5,5,5,10" Click="Button_Click"/>
                 <!--<TextBox Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" TextWrapping="Wrap" Foreground="Black" FontSize="14"  Text="{Binding MarkerLocationX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" Foreground="Black" FontSize="14"  Text="{Binding MarkerLocationY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" TextWrapping="Wrap" Foreground="Black" FontSize="14"  Text="{Binding MarkerLocationZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
@@ -155,9 +155,10 @@
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
-                <Button Grid.Row="1" Content="FilePath" Command="{Binding ButtonCommand_FilePath}" FontSize="14" FontWeight="Bold" Cursor="Hand" HorizontalAlignment="Left" FontFamily="Segoe UI Light"  Margin="200,0,0,10" Grid.ColumnSpan="2"/>
-                <Button Grid.Row="1" Content="BuildModel" Command="{Binding ButtonCommand_BuildModel}" FontSize="14" FontWeight="Bold" Cursor="Hand" HorizontalAlignment="Left" FontFamily="Segoe UI Light"  Margin="290,0,0,10" Grid.ColumnSpan="2"/>
-                <Label Grid.Row="0" Content="Couch Names : CouchInterior, CouchSurface, CrossInterior, CrossSurface" FontSize="13" FontWeight="Bold" Foreground="Maroon" FontFamily="Segoe UI Light" Grid.ColumnSpan="4" />
+                <Button Grid.Row="1" Content="FilePath" Command="{Binding ButtonCommand_FilePath}" FontSize="14" FontWeight="Bold" Cursor="Hand" FontFamily="Segoe UI Light"  Margin="130,0,0,0" Grid.ColumnSpan="2"/>
+                <Button Grid.Row="1" Content="BuildModel" Command="{Binding ButtonCommand_BuildModel}" FontSize="14" FontWeight="Bold" Cursor="Hand" HorizontalAlignment="Left" FontFamily="Segoe UI Light"  Margin="320,0,0,0" Grid.ColumnSpan="2"/>
+                <Label Grid.Row="0" Content="Please Name the Couch correctly : (1) CouchInterior  (2) CouchSurface" FontSize="13" FontWeight="Bold" Foreground="Maroon" FontFamily="Segoe UI Light" Grid.ColumnSpan="4" />
+                <Label Grid.Row="1" Content="Model Position : HeadFirstSupine" FontSize="13" FontWeight="Bold" Foreground="Maroon" FontFamily="Segoe UI Light" Grid.ColumnSpan="4" Margin="5,0,200,0" />
             </Grid>
         </Expander>
         <Grid Margin="0,0,0,0" Background="LightPink" Height="154">
@@ -173,7 +174,7 @@
                 <!--<CheckBox Grid.Row="2" Grid.Column="1" Content="Solid" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Maroon"  Command="{Binding CheckedChangedCommand, Mode=TwoWay}"  
                       Name ="chk" CommandParameter ="{Binding ElementName = chk}" IsChecked="{Binding Path=IsChecked, Mode=TwoWay}"/>-->
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" FontFamily="Segoe UI Light"  FontSize="16" TextDecorations="{x:Null}" Width="374" Height="33" VerticalAlignment="Top"><Run Language="zh-tw" Text="   Please check"/><Run Text="✔️"/><Run Language="zh-tw" Text=" if you use Halcyon couch."/></TextBlock>
-                <Image Source="/CouchInsert.esapi;component/OK_Hal2.png" Margin="9,26,314,12"/>
+                <Image HorizontalAlignment="Left" Height="92" Margin="8,27,0,0" VerticalAlignment="Top" Width="85" Source="/CouchInsert&amp;BODY.esapi;component/OK_Hal2.png"/>
             </Grid>
         </Expander>
     </StackPanel>
