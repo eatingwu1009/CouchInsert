@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VMS.TPS.Common.Model.Types;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
 namespace CouchInsert
 {
@@ -73,19 +74,20 @@ namespace CouchInsert
             else return "";
         }
 
-        public String BBCalDetect(Double distance)
+        public String BBCalDetect(double distance, double Xcenter, double StandardY, double StandardZ)
         {
-            var mapBB = new Dictionary<int, string>()
-                {
-                    {42 + 4 , "H0"},
-                    {28 + 4 , "H1"},
-                    {14 + 4, "H2"},
-                    {4, "H3"},
-                    {Math.Abs(4 - 14) , "H4"},
-                    {Math.Abs(4 - 28), "H5"},
-                };
+            var mapBB = new Dictionary<double, string>()
+            {
+                    {Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) +Math.Pow(StandardY, 2) + Math.Pow(420 + StandardZ, 2)))/10,0,MidpointRounding.AwayFromZero) , "H0"},
+                    {Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) +Math.Pow(StandardY, 2) + Math.Pow(280 + StandardZ, 2)))/10,0,MidpointRounding.AwayFromZero) , "H1"},
+                    {Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) +Math.Pow(StandardY, 2) + Math.Pow(140 + StandardZ, 2)))/10,0,MidpointRounding.AwayFromZero), "H2"},
+                    {Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) +Math.Pow(StandardY, 2) + Math.Pow(StandardZ, 2)))/10,0,MidpointRounding.AwayFromZero), "H3"},
+                    {Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) +Math.Pow(StandardY, 2) + Math.Pow(StandardZ - 140, 2)))/10,0,MidpointRounding.AwayFromZero) , "H4"},
+                    {Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) +Math.Pow(StandardY, 2) + Math.Pow(StandardZ - 280, 2)))/10,0,MidpointRounding.AwayFromZero), "H5"},
+            };
             string output;
-            return mapBB.TryGetValue(Convert.ToInt32(Math.Abs(distance)), out output) ? output : null;
+            double temp = Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) + Math.Pow(StandardY, 2) + Math.Pow(StandardZ, 2))) / 10, 0, MidpointRounding.AwayFromZero);
+            return mapBB.TryGetValue((Math.Round(distance/10, 0, MidpointRounding.AwayFromZero)), out output) ? output : "Error";
             //The distance are using absolute value cuz there is no foot side marker
         }
 
@@ -106,11 +108,6 @@ namespace CouchInsert
                 Final[2] = Math.Min(VVectors[i].z, Final[2]);
             }
             return Final;
-        }
-
-        public string DoubleChk(double distanceBB)
-        {
-            return BBCalDetect(distanceBB);
         }
     }
 }

@@ -13,6 +13,7 @@ using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Threading;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 using System.Windows.Documents;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
 namespace CouchInsert
 {
@@ -521,9 +522,9 @@ namespace CouchInsert
             MarkerPositions.Add("H0");
 
             //TBOXSite
-            string[] Basiclines = File.ReadAllLines(@"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\PathInformation.csv");
+            //string[] Basiclines = File.ReadAllLines(@"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\PathInformation.csv");
             //NTUCCSite
-            //string[] Basiclines = File.ReadAllLines(@"\\FILESVR\VA_DATA$\ProgramData\Vision\PublishedScripts\CouchPath\PathInformation.csv");
+            string[] Basiclines = File.ReadAllLines(@"\\FILESVR\VA_DATA$\ProgramData\Vision\PublishedScripts\CouchPath\PathInformation.csv");
             FileFolder = Basiclines[0].ToString() + SliceThickness;
             string FilePathBasic = System.IO.Path.Combine(new string[] { FileFolder, "BasicInformation.csv" });
             Basiclines = File.ReadAllLines(FilePathBasic);
@@ -1129,18 +1130,8 @@ namespace CouchInsert
         private void CheckingBB()
         {
             DetectTool detectTool = new DetectTool();
-            double BBs = new double();
-            if (ZchkOrientation == 1) { BBs = double.MinValue; }
-            else if (ZchkOrientation == -1) { BBs = double.MaxValue; }
-            for (int i = 0; i < SC.Image.ZSize; i++)
-            {
-                foreach (VVector[] vectors in UserCS.GetContoursOnImagePlane(i))
-                {
-                    double vs = vectors.FirstOrDefault().z;
-                    if (ZchkOrientation == 1) { BBs = Math.Max(BBs, vs); }
-                    else if (ZchkOrientation == -1) { BBs = Math.Min(BBs, vs); }
-                }
-            }
+            SliceConverter sliceConverter = new SliceConverter();
+            double BBs = sliceConverter.GetLimitValue("Z", SI, UserCS, ZchkOrientation,0);
 
             Structure MsgStructure = SS.Structures.Where(s => s.Id.Contains("BBsForCouch")).FirstOrDefault();
             if (MsgStructure != null && SS.Structures.Where(s => s.DicomType == "MARKER").FirstOrDefault() != null)
@@ -1166,8 +1157,13 @@ namespace CouchInsert
             {
                 PositionRenew();
             }
-            CalculateBBLocation = detectTool.DoubleChk(BBs - MarkerLocationZ);//mm
-
+            VVector CompareOrigin = new VVector(MarkerLocationX, MarkerLocationY, MarkerLocationZ);
+            double DoubleChkX1 = sliceConverter.GetLimitValue("X1", SI, UserCS, XchkOrientation, sliceConverter.GetSlice(SS, BBs));
+            double DoubleChkX2 = sliceConverter.GetLimitValue("X2", SI, UserCS, XchkOrientation, sliceConverter.GetSlice(SS, BBs));
+            double DoubleChkY = sliceConverter.GetLimitValue("Y", SI, UserCS, YchkOrientation, sliceConverter.GetSlice(SS, BBs));
+            VVector DoubleChkPoint = new VVector(((DoubleChkX1+ DoubleChkX2)/2), DoubleChkY, BBs);
+            //CalculateBBLocation = detectTool.DoubleChk(BBs - MarkerLocationZ);//mm
+            CalculateBBLocation = detectTool.BBCalDetect(VVector.Distance(DoubleChkPoint, CompareOrigin), DoubleChkPoint.x, YBaseAxis, ZBaseAxis);
         }
         public VVector AxisAlignment(VVector Original, string LockBarType, double Xmin, double Ymax, double Zmin, double YchkOrientation, double ZchkOrientation)
         {
