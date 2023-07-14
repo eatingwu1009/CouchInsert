@@ -31,7 +31,22 @@ namespace CouchInsert
             return Twopoint;
         }
 
-        public String PeakDetect(List<VVector> Twopoint)
+        public bool MarkerPlaced(List<VVector> VVectorPoints, VVector MarkerLocationItem, double Xchkorientation)
+        {
+            bool OK = false;
+            double BaseNumber = 0;
+            VVector final = new VVector();
+            foreach (VVector v in VVectorPoints)
+            {
+                double d = VVector.Distance(v, MarkerLocationItem);
+                if(Math.Abs(d) > BaseNumber) { BaseNumber = Math.Abs(d); final = v; }
+            }
+            if (Xchkorientation == 1) { if (final.x < MarkerLocationItem.x) OK = true; }
+            else if (Xchkorientation == -1) { if (final.x > MarkerLocationItem.x) OK = true; }
+            return OK;
+        }
+
+    public String PeakDetect(List<VVector> Twopoint)
         {
             if (Twopoint.Count > 1)
             {
@@ -62,7 +77,7 @@ namespace CouchInsert
         {
             var mapBB = new Dictionary<int, string>()
                 {
-                    {42 + 4 , "0"},
+                    {42 + 4 , "H0"},
                     {28 + 4 , "H1"},
                     {14 + 4, "H2"},
                     {4, "H3"},
@@ -70,7 +85,7 @@ namespace CouchInsert
                     {Math.Abs(4 - 28), "H5"},
                 };
             string output;
-            return mapBB.TryGetValue(Convert.ToInt32(Math.Abs(distance / 10)), out output) ? output : null;
+            return mapBB.TryGetValue(Convert.ToInt32(Math.Abs(distance)), out output) ? output : null;
             //The distance are using absolute value cuz there is no foot side marker
         }
 

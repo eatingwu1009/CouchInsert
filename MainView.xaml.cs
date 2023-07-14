@@ -33,5 +33,10 @@ namespace CouchInsert
             Expander expander = (Expander)sender;
             expander.Header = "Click to expand";
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

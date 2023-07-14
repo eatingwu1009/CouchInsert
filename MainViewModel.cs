@@ -518,12 +518,12 @@ namespace CouchInsert
             MarkerPositions.Add("H3");
             MarkerPositions.Add("H2");
             MarkerPositions.Add("H1");
-            MarkerPositions.Add("0");
+            MarkerPositions.Add("H0");
 
             //TBOXSite
-            //string[] Basiclines = File.ReadAllLines(@"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\PathInformation.csv");
+            string[] Basiclines = File.ReadAllLines(@"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\PathInformation.csv");
             //NTUCCSite
-            string[] Basiclines = File.ReadAllLines(@"\\FILESVR\VA_DATA$\ProgramData\Vision\PublishedScripts\CouchPath\PathInformation.csv");
+            //string[] Basiclines = File.ReadAllLines(@"\\FILESVR\VA_DATA$\ProgramData\Vision\PublishedScripts\CouchPath\PathInformation.csv");
             FileFolder = Basiclines[0].ToString() + SliceThickness;
             string FilePathBasic = System.IO.Path.Combine(new string[] { FileFolder, "BasicInformation.csv" });
             Basiclines = File.ReadAllLines(FilePathBasic);
@@ -566,7 +566,15 @@ namespace CouchInsert
                     if (detectTool.PeakDetect(detectTool.Twopoint(PositionXProfile)) != "") { MarkerNames.Add(detectTool.PeakDetect(detectTool.Twopoint(PositionXProfile))); }
                 }
                 SelectedMarkerPosition = MarkerNames.GroupBy(x => x).OrderByDescending(x => x.Count()).ThenBy(x => x.Key).Select(x => (string)x.Key).FirstOrDefault();//Find the Mode
-                ShowSelectedMarkerPosition = SelectedMarkerPosition;
+                ShowSelectedMarkerPosition = SelectedMarkerPosition; VVector A = new VVector(MarkerLocationX + 60 * XchkOrientation, MarkerLocationY, MarkerLocationItem.CenterPoint.z);
+                if (ShowSelectedMarkerPosition != "0" | ShowSelectedMarkerPosition != "")
+                {
+                    VVector B = new VVector(MarkerLocationX - 60 * XchkOrientation, MarkerLocationY, MarkerLocationItem.CenterPoint.z);
+                    double[] C = new double[100];
+                    ImageProfile D = SC.Image.GetImageProfile(A, B, C);
+                    if (detectTool.MarkerPlaced(detectTool.Twopoint(D), MarkerLocationItem.CenterPoint, XchkOrientation) == false)
+                    { System.Windows.MessageBox.Show("Please Check your Marker Location is at the center one!!"); }
+                }
             }
         }
 
@@ -717,151 +725,157 @@ namespace CouchInsert
             FilePathCS = System.IO.Path.Combine(new string[] { FileFolder, "CouchSurface.csv" });
 
             //CouchSurface_Cross
-            if (UserCS != null) SS.RemoveStructure(SS.Structures.First(s => s.Id == UserCouchCSName));
-            UserCS = SS.AddStructure("CONTROL", UserCouchCSName);
-            if (UserCS.CanConvertToHighResolution()) UserCS.ConvertToHighResolution();
-            List<VVector> CSVVector = new List<VVector>();
-            List<VVector> CSVVector_Cross = new List<VVector>();
-            string[] TempFilelines = File.ReadAllLines(FilePathCS);
+            if (UserCS != null | UserCI != null)
             {
-                foreach (string line in TempFilelines)
-                {
-                    string[] splitLine = line.Split(',');
-                    double x = Double.Parse(splitLine[0].Trim());
-                    double y = Double.Parse(splitLine[1].Trim());
-                    double z = Double.Parse(splitLine[2].Trim());
-                    CSVVector.Add(new VVector(x, y, z));
-                }
-            }
-            double zmin = CSVVector.Min(vec => vec.z);
-            foreach (VVector v in CSVVector.Where(vec => vec.z == zmin))
-            { CSVVector_Cross.Add(new VVector(v.x, v.y, v.z)); }
-
-            double MMX = detectTool.MaxMinDetect(CSVVector_Cross, orientation)[0];
-            double MMY = detectTool.MaxMinDetect(CSVVector_Cross, orientation)[1];
-            double MMZ = detectTool.MaxMinDetect(CSVVector_Cross, orientation)[2];
-
-            List<VVector> NewVVector_Cross = new List<VVector>();
-            foreach (VVector vec in CSVVector_Cross)
-            {
-                VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, YchkOrientation, ZchkOrientation);
-                NewVVector_Cross.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
-            }
-
-            //CouchSurface
-            CurrentProgress = 15;
-            List<VVector> NewVVector = new List<VVector>();
-            foreach (VVector vec in CSVVector)
-            {
-                VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, YchkOrientation, ZchkOrientation);
-                NewVVector.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
-            }
-            int a = Convert.ToInt32(NewVVector.Min(p => p.z));
-            int b = Convert.ToInt32(NewVVector.Max(p => p.z));
-            if (ZchkOrientation == -1)
-            {
-                for (int i = a; i <= b; i++)
-                {
-                    UserCS.AddContourOnImagePlane(NewVVector.Where(vv => vv.z.Equals(i)).ToArray(), -(i - 2 * b) - Convert.ToInt32(2 * ZBaseAxis / SI.ZRes));
-                }
+                DialogResult result = System.Windows.Forms.MessageBox.Show("Proton Couch Structures are existed. Please delete your couch before adding new one.", "Couch-existed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                for (int i = a; i <= b; i++)
+                UserCS = SS.AddStructure("CONTROL", UserCouchCSName);
+                if (UserCS.CanConvertToHighResolution()) UserCS.ConvertToHighResolution();
+                List<VVector> CSVVector = new List<VVector>();
+                List<VVector> CSVVector_Cross = new List<VVector>();
+                string[] TempFilelines = File.ReadAllLines(FilePathCS);
                 {
+                    foreach (string line in TempFilelines)
+                    {
+                        string[] splitLine = line.Split(',');
+                        double x = Double.Parse(splitLine[0].Trim());
+                        double y = Double.Parse(splitLine[1].Trim());
+                        double z = Double.Parse(splitLine[2].Trim());
+                        CSVVector.Add(new VVector(x, y, z));
+                    }
+                }
+                double zmin = CSVVector.Min(vec => vec.z);
+                foreach (VVector v in CSVVector.Where(vec => vec.z == zmin))
+                { CSVVector_Cross.Add(new VVector(v.x, v.y, v.z)); }
 
-                    UserCS.AddContourOnImagePlane(NewVVector.Where(vv => (vv.z).Equals(i)).ToArray(), i);
-                }
-            }
-            //CouchSurface_Cross
-            if (YchkOrientation == 1)
-            { FinalYcenter = NewVVector_Cross.Min(p => p.y) - 27.1; }
-            else { FinalYcenter = NewVVector_Cross.Max(p => p.y) + 27.1; }
+                double MMX = detectTool.MaxMinDetect(CSVVector_Cross, orientation)[0];
+                double MMY = detectTool.MaxMinDetect(CSVVector_Cross, orientation)[1];
+                double MMZ = detectTool.MaxMinDetect(CSVVector_Cross, orientation)[2];
 
-            if (ZchkOrientation == -1)
-            {
-                for (int i = Convert.ToInt32(NewVVector.Max(p => p.z)); i < Convert.ToInt32(SI.ZSize) + 1; i++)
+                List<VVector> NewVVector_Cross = new List<VVector>();
+                foreach (VVector vec in CSVVector_Cross)
                 {
-                    UserCS.AddContourOnImagePlane(NewVVector_Cross.ToArray(), i);
+                    VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, YchkOrientation, ZchkOrientation);
+                    NewVVector_Cross.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
                 }
-            }
-            else
-            {
-                for (int i = 0; i < NewVVector_Cross.Max(p => p.z) + 1; i++)
-                {
-                    UserCS.AddContourOnImagePlane(NewVVector_Cross.ToArray(), i);
-                }
-            }
 
-            //CouchInterior_Cross
-            if (UserCI != null) SS.RemoveStructure(SS.Structures.First(s => s.Id == UserCouchCIName));
-            UserCI = SS.AddStructure("CONTROL", UserCouchCIName);
-            if (UserCI.CanConvertToHighResolution()) UserCI.ConvertToHighResolution();
+                //CouchSurface
+                CurrentProgress = 15;
+                List<VVector> NewVVector = new List<VVector>();
+                foreach (VVector vec in CSVVector)
+                {
+                    VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, YchkOrientation, ZchkOrientation);
+                    NewVVector.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
+                }
+                int a = Convert.ToInt32(NewVVector.Min(p => p.z));
+                int b = Convert.ToInt32(NewVVector.Max(p => p.z));
+                if (ZchkOrientation == -1)
+                {
+                    for (int i = a; i <= b; i++)
+                    {
+                        UserCS.AddContourOnImagePlane(NewVVector.Where(vv => vv.z.Equals(i)).ToArray(), -(i - 2 * b) - Convert.ToInt32(2 * ZBaseAxis / SI.ZRes));
+                    }
+                }
+                else
+                {
+                    for (int i = a; i <= b; i++)
+                    {
 
-            Array.Clear(TempFilelines, 0, TempFilelines.Length);
-            CSVVector.Clear(); CSVVector_Cross.Clear();
-            TempFilelines = File.ReadAllLines(FilePathCI);
-            {
-                foreach (string line in TempFilelines)
-                {
-                    string[] splitLine = line.Split(',');
-                    double x = Double.Parse(splitLine[0].Trim());
-                    double y = Double.Parse(splitLine[1].Trim());
-                    double z = Double.Parse(splitLine[2].Trim());
-                    CSVVector.Add(new VVector(x, y, z));
+                        UserCS.AddContourOnImagePlane(NewVVector.Where(vv => (vv.z).Equals(i)).ToArray(), i);
+                    }
                 }
-            }
-            zmin = CSVVector.Min(vec => vec.z);
-            foreach (VVector v in CSVVector.Where(vec => vec.z == zmin))
-            { CSVVector_Cross.Add(new VVector(v.x, v.y, v.z)); }
+                //CouchSurface_Cross
+                if (YchkOrientation == 1)
+                { FinalYcenter = NewVVector_Cross.Min(p => p.y) - 27.1; }
+                else { FinalYcenter = NewVVector_Cross.Max(p => p.y) + 27.1; }
 
-            NewVVector_Cross.Clear();
-            foreach (VVector vec in CSVVector_Cross)
-            {
-                VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, YchkOrientation, ZchkOrientation);
-                NewVVector_Cross.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
-            }
-            if (ZchkOrientation == -1)
-            {
-                for (int i = Convert.ToInt32(NewVVector.Max(p => p.z)); i < Convert.ToInt32(SI.ZSize) + 1; i++)
+                if (ZchkOrientation == -1)
                 {
-                    UserCI.AddContourOnImagePlane(NewVVector_Cross.ToArray(), i);
+                    for (int i = Convert.ToInt32(NewVVector.Max(p => p.z)); i < Convert.ToInt32(SI.ZSize) + 1; i++)
+                    {
+                        UserCS.AddContourOnImagePlane(NewVVector_Cross.ToArray(), i);
+                    }
                 }
-            }
-            else
-            {
-                for (int i = 0; i < NewVVector_Cross.Max(p => p.z) + 1; i++)
+                else
                 {
-                    UserCI.AddContourOnImagePlane(NewVVector_Cross.ToArray(), i);
+                    for (int i = 0; i < NewVVector_Cross.Max(p => p.z) + 1; i++)
+                    {
+                        UserCS.AddContourOnImagePlane(NewVVector_Cross.ToArray(), i);
+                    }
                 }
-            }
-            int subject = Convert.ToInt32(NewVVector.Max(p => p.z));
 
-            //CouchInterior
-            NewVVector.Clear();
-            foreach (VVector vec in CSVVector)
-            {
-                VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, YchkOrientation, ZchkOrientation);
-                NewVVector.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
-            }
+                //CouchInterior_Cross
+                UserCI = SS.AddStructure("CONTROL", UserCouchCIName);
+                if (UserCI.CanConvertToHighResolution()) UserCI.ConvertToHighResolution();
 
-            if (ZchkOrientation == -1)
-            {
-                for (int i = a; i <= b; i++)
+                Array.Clear(TempFilelines, 0, TempFilelines.Length);
+                CSVVector.Clear(); CSVVector_Cross.Clear();
+                TempFilelines = File.ReadAllLines(FilePathCI);
                 {
-                    UserCI.AddContourOnImagePlane(NewVVector.Where(vv => (vv.z).Equals(i)).ToArray(), -(i - 2 * b) - Convert.ToInt32(2 * ZBaseAxis / SI.ZRes));
+                    foreach (string line in TempFilelines)
+                    {
+                        string[] splitLine = line.Split(',');
+                        double x = Double.Parse(splitLine[0].Trim());
+                        double y = Double.Parse(splitLine[1].Trim());
+                        double z = Double.Parse(splitLine[2].Trim());
+                        CSVVector.Add(new VVector(x, y, z));
+                    }
                 }
-            }
-            else
-            {
-                for (int i = a; i <= b; i++)
+                zmin = CSVVector.Min(vec => vec.z);
+                foreach (VVector v in CSVVector.Where(vec => vec.z == zmin))
+                { CSVVector_Cross.Add(new VVector(v.x, v.y, v.z)); }
+
+                NewVVector_Cross.Clear();
+                foreach (VVector vec in CSVVector_Cross)
                 {
-                    UserCI.AddContourOnImagePlane(NewVVector.Where(vv => (vv.z).Equals(i)).ToArray(), i);
+                    VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, YchkOrientation, ZchkOrientation);
+                    NewVVector_Cross.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
                 }
+                if (ZchkOrientation == -1)
+                {
+                    for (int i = Convert.ToInt32(NewVVector.Max(p => p.z)); i < Convert.ToInt32(SI.ZSize) + 1; i++)
+                    {
+                        UserCI.AddContourOnImagePlane(NewVVector_Cross.ToArray(), i);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < NewVVector_Cross.Max(p => p.z) + 1; i++)
+                    {
+                        UserCI.AddContourOnImagePlane(NewVVector_Cross.ToArray(), i);
+                    }
+                }
+                int subject = Convert.ToInt32(NewVVector.Max(p => p.z));
+
+                //CouchInterior
+                NewVVector.Clear();
+                foreach (VVector vec in CSVVector)
+                {
+                    VVector vv = AxisAlignment(vec, SelectedMarkerPosition, MMX, MMY, MMZ, YchkOrientation, ZchkOrientation);
+                    NewVVector.Add(new VVector(vv.x, vv.y, Convert.ToInt32(vv.z / Multiple)));
+                }
+
+                if (ZchkOrientation == -1)
+                {
+                    for (int i = a; i <= b; i++)
+                    {
+                        UserCI.AddContourOnImagePlane(NewVVector.Where(vv => (vv.z).Equals(i)).ToArray(), -(i - 2 * b) - Convert.ToInt32(2 * ZBaseAxis / SI.ZRes));
+                    }
+                }
+                else
+                {
+                    for (int i = a; i <= b; i++)
+                    {
+                        UserCI.AddContourOnImagePlane(NewVVector.Where(vv => (vv.z).Equals(i)).ToArray(), i);
+                    }
+                }
+                UserCS.SegmentVolume = UserCS.SegmentVolume.Sub(UserCI.SegmentVolume);
+                CurrentProgress = 95;
+                PostBODY();
+                CurrentProgress = 100;
             }
-            CurrentProgress = 95;
-            PostBODY();
-            CurrentProgress = 100;
         }
 
         public VVector Interpolate(VVector Input, VVector Next)
