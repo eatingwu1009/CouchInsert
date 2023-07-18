@@ -873,6 +873,8 @@ namespace CouchInsert
                     }
                 }
                 UserCS.SegmentVolume = UserCS.SegmentVolume.Sub(UserCI.SegmentVolume);
+                UserCI.SetAssignedHU(CIHU);
+                UserCS.SetAssignedHU(CSHU);
                 CurrentProgress = 95;
                 PostBODY();
                 CurrentProgress = 100;
