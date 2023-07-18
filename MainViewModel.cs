@@ -788,10 +788,7 @@ namespace CouchInsert
                     }
                 }
                 //CouchSurface_Cross
-                if (YchkOrientation == 1)
-                { FinalYcenter = NewVVector_Cross.Min(p => p.y) - 27.1; }
-                else { FinalYcenter = NewVVector_Cross.Max(p => p.y) + 27.1; }
-
+                { FinalYcenter = MarkerLocationY; }
                 if (ZchkOrientation == -1)
                 {
                     for (int i = Convert.ToInt32(NewVVector.Max(p => p.z)); i < Convert.ToInt32(SI.ZSize) + 1; i++)
@@ -916,8 +913,28 @@ namespace CouchInsert
         {
             //BODY part
             StructureModifier getStructure = new StructureModifier();
+            DetectTool detectTool = new DetectTool();
             Structure BODY = getStructure.FindStructure(SS, "EXTERNAL", "DicomType");
             Structure Temp = SS.AddStructure("CONTROL", "Temp_ForCouch");
+            Structure ProtonCS = getStructure.FindStructure(SS, UserCouchCSName, "Id");
+            List<VVector> CSVVector = new List<VVector>();
+            if (ProtonCS != null)
+            {
+                for (int i = 0; i < SI.ZSize; i++)
+                {
+                    foreach (VVector[] vectors in ProtonCS.GetContoursOnImagePlane(i))
+                    {
+                        foreach (VVector v in vectors)
+                        {
+                            double x = v.x;
+                            double y = v.y;
+                            double z = v.z;
+                            CSVVector.Add(new VVector(x, y, z));
+                        }
+                    }
+                }
+                FinalYcenter = detectTool.MaxMinDetect(CSVVector, orientation)[1];
+            }          
             VVector[] TempVec = getStructure.GetpseudoLine(FinalYcenter, SI.XSize, SI.YSize, YchkOrientation);
             for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
             {
