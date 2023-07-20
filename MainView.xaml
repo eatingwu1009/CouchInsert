@@ -60,7 +60,7 @@
                     </LinearGradientBrush>
                 </Label.Foreground>-->
         </Label>
-        <Expander HorizontalAlignment="Left" Margin="150,-20,0,0" Width="428" ExpandDirection="Right">
+        <Expander HorizontalAlignment="Left" Margin="150,-22,0,0" Width="428" ExpandDirection="Right">
             <Grid Margin="0,0,0,0" Background="LightCoral">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20"/>
@@ -144,8 +144,8 @@
             </Grid>
         </Expander>
 
-        <Label Grid.Row="0" Content="Clean BODY"  FontSize="16" HorizontalAlignment="Left" Margin="35,0,0,0"/>
-        <Expander HorizontalAlignment="Left" Margin="150,-25,0,0" Width="443" ExpandDirection="Right">
+        <Label Grid.Row="0" Content="BODY"  FontSize="16" HorizontalAlignment="Left" Margin="35,5,0,0"/>
+        <Expander HorizontalAlignment="Left" Margin="150,-28,0,0" Width="443" ExpandDirection="Right">
             <Grid Background="LightCoral" Width="443" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="280"/>
@@ -155,7 +155,7 @@
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Content="Please Check Proton Couch structure is existed." FontSize="13" FontWeight="Bold" Foreground="Maroon" FontFamily="Segoe UI Light"/>
-                <Button Grid.Row="1" Content="Cleaning✂️" Command="{Binding PostBODYCommand}" FontSize="14" FontWeight="Bold" Cursor="Hand" FontFamily="Segoe UI Light"  Grid.ColumnSpan="2" Margin="260,0,0,0"/>
+                <Button Grid.Row="1" Content="BODY Mod" Command="{Binding PostProtonBODYCommand}" FontSize="14" FontWeight="Bold" Cursor="Hand" FontFamily="Segoe UI Light"  Grid.ColumnSpan="2" Margin="260,0,0,0"/>
             </Grid>
         </Expander>
 
