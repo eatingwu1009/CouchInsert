@@ -12,7 +12,9 @@ namespace CouchInsert
     {
         public List<VVector> Twopoint(ImageProfile InputProfile)
         {
-            List<VVector> Twopoint = new List<VVector>();
+            List<LineProfile> Twopoint_Temp = new List<LineProfile>();
+            List <VVector> Twopoint = new List<VVector>();
+            Twopoint_Temp.Clear(); Twopoint.Clear();
             double OverallMaximum = InputProfile.Where(p => !Double.IsNaN(p.Value)).Max(p => p.Value);
             double OverallMinimum = InputProfile.Where(p => !Double.IsNaN(p.Value)).Min(p => p.Value);
             double mean = InputProfile.Where(p => !Double.IsNaN(p.Value)).Average(p => p.Value);
@@ -26,8 +28,22 @@ namespace CouchInsert
                 double iminus = InputProfile[i - 1].Value - OverallMinimum;
                 if (!Double.IsNaN(ii) && ii > HalfTrend && (ii > iadd) && (ii > iminus) && iiHU > mean + 100)
                 {
-                    Twopoint.Add(InputProfile[i].Position);
+                    double slope = Math.Abs(2*InputProfile[i].Value - InputProfile[i + 1].Value - InputProfile[i - 1].Value);
+                    LineProfile cc =new LineProfile();
+                    cc.position = InputProfile[i].Position; cc.slope = slope;
+                    Twopoint_Temp.Add(cc);
                 }
+            }
+            if (Twopoint_Temp.Count > 1)
+            {
+                Twopoint_Temp = Twopoint_Temp.OrderByDescending(x => x.slope).ToList();
+                Twopoint.Add(Twopoint_Temp.ElementAtOrDefault(0).position);
+                Twopoint.Add(Twopoint_Temp.ElementAtOrDefault(1).position);
+            }
+            else if (Twopoint_Temp.Count > 0)
+            {
+                Twopoint_Temp = Twopoint_Temp.OrderByDescending(x => x.slope).ToList();
+                Twopoint.Add(Twopoint_Temp.ElementAtOrDefault(0).position);
             }
             return Twopoint;
         }
@@ -69,7 +85,7 @@ namespace CouchInsert
             }
             else if (Twopoint.Count == 1)
             {
-                return "0";
+                return "H0";
             }
             else return "";
         }
@@ -86,9 +102,30 @@ namespace CouchInsert
                     {Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) +Math.Pow(StandardY, 2) + Math.Pow(StandardZ - 280, 2)))/10,0,MidpointRounding.AwayFromZero), "H5"},
             };
             string output;
-            double temp = Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) + Math.Pow(StandardY, 2) + Math.Pow(StandardZ, 2))) / 10, 0, MidpointRounding.AwayFromZero);
             return mapBB.TryGetValue((Math.Round(distance/10, 0, MidpointRounding.AwayFromZero)), out output) ? output : "Error";
             //The distance are using absolute value cuz there is no foot side marker
+        }
+
+        public String NeckZDetect(double NeckZLocation, double MarkerZLocation, double Zchkorientation)
+        {
+            double distance = Zchkorientation * (NeckZLocation - MarkerZLocation);
+            var mapBB = new Dictionary<double, string>()
+            {
+                    {-2 + 14*3 , "H0"},
+                    {-2 + 14*2, "H1"},
+                    {-2 + 14, "H2"},
+                    {-2, "H3"},
+                    {-2 - 14, "H4"},
+                    {-2 - 14*2, "H5"},
+            };
+            string output;
+            return mapBB.TryGetValue(Math.Round(distance / 10), out output) ? output : "Error";
+            //The distance are using absolute value cuz there is no foot side marker
+        }
+
+        public bool IsBetween(int source, int range)
+        {
+            return source >= source- range && source < source + range;
         }
 
         public double[] MaxMinDetect(List<VVector> VVectors, PatientOrientation Ori)
