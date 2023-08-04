@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Windows.Media;
+using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
@@ -13,7 +17,7 @@ namespace CouchInsert
         public List<VVector> Twopoint(ImageProfile InputProfile)
         {
             List<LineProfile> Twopoint_Temp = new List<LineProfile>();
-            List <VVector> Twopoint = new List<VVector>();
+            List<VVector> Twopoint = new List<VVector>();
             Twopoint_Temp.Clear(); Twopoint.Clear();
             double OverallMaximum = InputProfile.Where(p => !Double.IsNaN(p.Value)).Max(p => p.Value);
             double OverallMinimum = InputProfile.Where(p => !Double.IsNaN(p.Value)).Min(p => p.Value);
@@ -28,8 +32,8 @@ namespace CouchInsert
                 double iminus = InputProfile[i - 1].Value - OverallMinimum;
                 if (!Double.IsNaN(ii) && ii > HalfTrend && (ii > iadd) && (ii > iminus) && iiHU > mean + 100)
                 {
-                    double slope = Math.Abs(2*InputProfile[i].Value - InputProfile[i + 1].Value - InputProfile[i - 1].Value);
-                    LineProfile cc =new LineProfile();
+                    double slope = Math.Abs(2 * InputProfile[i].Value - InputProfile[i + 1].Value - InputProfile[i - 1].Value);
+                    LineProfile cc = new LineProfile();
                     cc.position = InputProfile[i].Position; cc.slope = slope;
                     Twopoint_Temp.Add(cc);
                 }
@@ -56,14 +60,14 @@ namespace CouchInsert
             foreach (VVector v in VVectorPoints)
             {
                 double d = VVector.Distance(v, MarkerLocationItem);
-                if(Math.Abs(d) > BaseNumber) { BaseNumber = Math.Abs(d); final = v; }
+                if (Math.Abs(d) > BaseNumber) { BaseNumber = Math.Abs(d); final = v; }
             }
             if (Xchkorientation == 1) { if (final.x < MarkerLocationItem.x) OK = true; }
             else if (Xchkorientation == -1) { if (final.x > MarkerLocationItem.x) OK = true; }
             return OK;
         }
 
-    public String PeakDetect(List<VVector> Twopoint)
+        public String PeakDetect(List<VVector> Twopoint)
         {
             if (Twopoint.Count > 1)
             {
@@ -90,42 +94,37 @@ namespace CouchInsert
             else return "";
         }
 
-        public String BBCalDetect(double distance, double Xcenter, double StandardY, double StandardZ)
+        public String NeckDetect(double distance, double HSpace, double StandardZ, double ZChk)
         {
+            double Ans = double.MaxValue;
             var mapBB = new Dictionary<double, string>()
             {
-                    {Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) +Math.Pow(StandardY, 2) + Math.Pow(420 + StandardZ, 2)))/10,0,MidpointRounding.AwayFromZero) , "H0"},
-                    {Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) +Math.Pow(StandardY, 2) + Math.Pow(280 + StandardZ, 2)))/10,0,MidpointRounding.AwayFromZero) , "H1"},
-                    {Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) +Math.Pow(StandardY, 2) + Math.Pow(140 + StandardZ, 2)))/10,0,MidpointRounding.AwayFromZero), "H2"},
-                    {Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) +Math.Pow(StandardY, 2) + Math.Pow(StandardZ, 2)))/10,0,MidpointRounding.AwayFromZero), "H3"},
-                    {Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) +Math.Pow(StandardY, 2) + Math.Pow(StandardZ - 140, 2)))/10,0,MidpointRounding.AwayFromZero) , "H4"},
-                    {Math.Round((Math.Sqrt(Math.Pow(Xcenter, 2) +Math.Pow(StandardY, 2) + Math.Pow(StandardZ - 280, 2)))/10,0,MidpointRounding.AwayFromZero), "H5"},
+                {Math.Round((-69 + StandardZ - 2 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H5"},
+                {Math.Round((-69 + StandardZ - 1 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H4"},
+                {Math.Round((-69 + StandardZ - 0 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H3"},
+                {Math.Round((-69 + StandardZ + 1 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H2"},
+                {Math.Round((-69 + StandardZ + 2 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H1"},
+                {Math.Round((-69 + StandardZ + 3 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H0"},
             };
             string output;
-            return mapBB.TryGetValue((Math.Round(distance/10, 0, MidpointRounding.AwayFromZero)), out output) ? output : "Error";
+            List<double> Listfor5mm = IsBetween(Convert.ToInt32(Math.Round(distance, 0, MidpointRounding.AwayFromZero)), 5);
+            foreach (double i in Listfor5mm)
+            {
+                double temp = i / 10;
+                if (mapBB.ContainsKey(Math.Round(temp, 0, MidpointRounding.AwayFromZero)) == true) 
+                { Ans = Convert.ToInt32(Math.Round(temp, 0, MidpointRounding.AwayFromZero)); }
+            }
+            return mapBB.TryGetValue(Ans, out output) ? output : "Error";
             //The distance are using absolute value cuz there is no foot side marker
         }
 
-        public String NeckZDetect(double NeckZLocation, double MarkerZLocation, double Zchkorientation)
-        {
-            double distance = Zchkorientation * (NeckZLocation - MarkerZLocation);
-            var mapBB = new Dictionary<double, string>()
-            {
-                    {-2 + 14*3 , "H0"},
-                    {-2 + 14*2, "H1"},
-                    {-2 + 14, "H2"},
-                    {-2, "H3"},
-                    {-2 - 14, "H4"},
-                    {-2 - 14*2, "H5"},
-            };
-            string output;
-            return mapBB.TryGetValue(Math.Round(distance / 10), out output) ? output : "Error";
-            //The distance are using absolute value cuz there is no foot side marker
-        }
 
-        public bool IsBetween(int source, int range)
+        public List<double> IsBetween(double source, double range)
         {
-            return source >= source- range && source < source + range;
+            List<double> ints = new List<double>();
+            for (double a = source - range; a <= source + range; a++)
+            { ints.Add(a); }
+            return ints;
         }
 
         public double[] MaxMinDetect(List<VVector> VVectors, PatientOrientation Ori)

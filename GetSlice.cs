@@ -81,7 +81,7 @@ namespace CouchInsert
         {
             int? finalNeck = null;
             double limit1, limit2 = new double();
-            List<double[]> Lists = new List<double[]>();
+            List<double[]> Lists = new List<double[]>(); List<double> Lists2 = new List<double>();
             for (int i = Z1; i <= Z2; i++)
             {
                 limit1 = double.MinValue; limit2 = double.MaxValue;
@@ -98,11 +98,16 @@ namespace CouchInsert
                 element[1] = limit1 - limit2;
                 Lists.Add(element);
             }
-            for (int i = 1; i < Lists.Count() - 1; i++)
+            Lists.RemoveAll(item => double.IsInfinity(item[1]));
+            foreach (double[] number in Lists)
             {
-                if (Lists.ElementAt(i)[1]!= Lists.ElementAt(i-1)[1] && Lists.ElementAt(i)[1] > Lists.ElementAt(i + 1)[1])
-                { finalNeck = Convert.ToInt32(Lists.ElementAt(i)[0]); }
+                Lists2.Add(number[1]);
             }
+            double mode = Lists2.GroupBy(x => x).OrderByDescending(x => x.Count()).ThenBy(x => x.Key).Select(x => (double)x.Key).FirstOrDefault();
+            Lists.RemoveAll(item => item[1].Equals(mode)); Lists.RemoveAll(item => item[1] > mode);
+            if (Lists.Count == 0) { finalNeck = null; }
+            else
+            { finalNeck = Convert.ToInt32(Lists.OrderByDescending(x => x[1]).FirstOrDefault()[0]); }
             return finalNeck;// else finalNeck = null
         }
 

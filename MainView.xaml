@@ -131,6 +131,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="45"/>
                 </Grid.RowDefinitions>
+                <Label Grid.Column="0" Content="**This Check is for Z direction only. :" Foreground="Blue"  FontFamily="Segoe UI Light" Margin="20,-25,-100,25"/>
                 <Label Grid.Column="0" Content="The BB position is :" Foreground="Maroon"  FontFamily="Segoe UI Light"/>
                 <Label Grid.Column="1" Foreground="blue" Content="{Binding CalculateBBLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontFamily="Segoe UI Light" FontSize="16" Background="LightBlue" FontWeight="Bold" Margin="5,3,10,10"/>
                 <Button Grid.Row="0" Grid.Column="2" Content="Calculate🔍" Command="{Binding ButtonCommand_CheckingBB}" Cursor="Hand"  FontFamily="Segoe UI Light" Margin="5,5,5,10" Click="Button_Click"/>

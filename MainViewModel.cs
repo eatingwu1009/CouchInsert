@@ -8,13 +8,7 @@ using System.Windows;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using Microsoft.Practices.EnterpriseLibrary.Logging;
-using System.Threading;
-using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
-using System.Windows.Documents;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
-using System.Windows.Shapes;
+using System.Diagnostics.Eventing.Reader;
 
 namespace CouchInsert
 {
@@ -477,6 +471,8 @@ namespace CouchInsert
         public double XBaseAxis { get; set; }
         public double YBaseAxis { get; set; }
         public double ZBaseAxis { get; set; }
+        public double ProneY { get; set; }
+        public double FFZ { get; set; }
         public double CSHU { get; set; }
         public double CIHU { get; set; }
         public double XchkOrientation { get; set; }
@@ -542,9 +538,9 @@ namespace CouchInsert
             MarkerId = "Marker"; PositionMarkerNameRenew();
 
             //TBOXSite
-            string[] Basiclines = File.ReadAllLines(@"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\PathInformation.csv");
+            //string[] Basiclines = File.ReadAllLines(@"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\PathInformation.csv");
             //NTUCCSite
-            //string[] Basiclines = File.ReadAllLines(@"\\FILESVR\VA_DATA$\ProgramData\Vision\PublishedScripts\CouchPath\PathInformation.csv");
+            string[] Basiclines = File.ReadAllLines(@"\\FILESVR\VA_DATA$\ProgramData\Vision\PublishedScripts\CouchPath\PathInformation.csv");
             FileFolder = Basiclines[0].ToString() + SliceThickness;
             string FilePathBasic = System.IO.Path.Combine(new string[] { FileFolder, "BasicInformation.csv" });
             Basiclines = File.ReadAllLines(FilePathBasic);
@@ -553,10 +549,12 @@ namespace CouchInsert
             XBaseAxis = Double.Parse(sourceAxis[1]);
             YBaseAxis = Double.Parse(sourceAxis[2]);
             ZBaseAxis = Double.Parse(sourceAxis[3]);
-            CSHU = Double.Parse(sourceAxis[4]);
-            CIHU = Double.Parse(sourceAxis[5]);
-            UserCouchCSName = sourceAxis[6].ToString();
-            UserCouchCIName = sourceAxis[7].ToString();
+            ProneY = Double.Parse(sourceAxis[4]);
+            FFZ= Double.Parse(sourceAxis[5]);
+            CSHU = Double.Parse(sourceAxis[6]);
+            CIHU = Double.Parse(sourceAxis[7]);
+            UserCouchCSName = sourceAxis[8].ToString();
+            UserCouchCIName = sourceAxis[9].ToString();
 
             UserCS = getStructure.FindStructure(SS, UserCouchCSName, "Id");
             UserCI = getStructure.FindStructure(SS, UserCouchCIName, "Id");
@@ -593,7 +591,7 @@ namespace CouchInsert
                     double[] C = new double[100];
                     ImageProfile D = SC.Image.GetImageProfile(A, B, C);
                     if (detectTool.MarkerPlaced(detectTool.Twopoint(D), MarkerLocationItem.CenterPoint, XchkOrientation) == false)
-                    { System.Windows.MessageBox.Show("Please Check your Marker Location is at the center one!!"); }
+                    { System.Windows.MessageBox.Show("Please Check your Marker Location carefully.\nIt may not located at the center x-plane."); }
                 }
             }
         }
@@ -821,7 +819,7 @@ namespace CouchInsert
                 { FinalYcenter = MarkerLocationY; }
                 if (ZchkOrientation == -1)
                 {
-                    for (int i = Convert.ToInt32(NewVVector.Max(p => p.z)); i < Convert.ToInt32(SI.ZSize) + 1; i++)
+                    for (int i = Convert.ToInt32(NewVVector.Max(p => p.z))-2; i <= Convert.ToInt32(SI.ZSize) +2; i++)
                     {
                         UserCS.AddContourOnImagePlane(NewVVector_Cross.ToArray(), i);
                     }
@@ -863,7 +861,7 @@ namespace CouchInsert
                 }
                 if (ZchkOrientation == -1)
                 {
-                    for (int i = Convert.ToInt32(NewVVector.Max(p => p.z)); i < Convert.ToInt32(SI.ZSize) + 1; i++)
+                    for (int i = Convert.ToInt32(NewVVector.Max(p => p.z))-2; i < Convert.ToInt32(SI.ZSize) +2; i++)
                     {
                         UserCI.AddContourOnImagePlane(NewVVector_Cross.ToArray(), i);
                     }
@@ -919,8 +917,15 @@ namespace CouchInsert
         public ICommand PostProtonBODYCommand { get => new Command(PostProtonBODY); }
         private void PostProtonBODY()
         {
-            bodyParameter BodyPar = new bodyParameter();
-            BodyPar.PostProtonBODY(SS, SI, UserCS, UserCI, FinalYcenter, orientation, YchkOrientation, Xcenter);
+            if (UserCI != null && UserCS != null)
+            {
+                bodyParameter BodyPar = new bodyParameter();
+                BodyPar.PostProtonBODY(SS, SI, UserCS, UserCI, FinalYcenter, orientation, YchkOrientation, Xcenter);
+            }
+            else 
+            {
+                DialogResult result = System.Windows.Forms.MessageBox.Show("There is no accurate couch struture for BODY modification", "No-Couch", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public ICommand PostPhotonBODYCommand { get => new Command(PostPhotonBODY); }
@@ -934,7 +939,7 @@ namespace CouchInsert
             string errorCouch = "error";
             if (SS.CanAddCouchStructures(out errorCouch) == true)
             {
-                DialogResult result = System.Windows.Forms.MessageBox.Show("Couch Structures are existed. Please delete your couch before adding new one.", "Couch-existed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DialogResult result = System.Windows.Forms.MessageBox.Show("There is no couch for BODY modification", "No-Couch", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else if (errorCouch.Contains("Support structures already exist in the structure set."))
             {
@@ -957,6 +962,17 @@ namespace CouchInsert
                     if (YchkOrientation == 1)
                     { FinalYcenter = CSVVector.Min(p => p.y); }
                     else { FinalYcenter = CSVVector.Max(p => p.y); }
+                    Structure Temp = SS.AddStructure("CONTROL", "Temp_ForCouch");
+                    VVector[] TempVec = getStructure.GetpseudoLine(FinalYcenter, YchkOrientation * SI.YSize, 0, SI.XSize);
+                    for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
+                    {
+                        Temp.AddContourOnImagePlane(TempVec, i);
+                    }
+                    Structure BODY = getStructure.FindStructure(SS, "EXTERNAL", "DicomType");
+                    BODY.SegmentVolume = BODY.SegmentVolume.Sub(Temp.SegmentVolume);
+                    SS.RemoveStructure(Temp);
+                    if (BODY.Volume > BodyVolume) { System.Windows.Forms.MessageBox.Show("Please Check your BODY carefully", "Confirmation", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+                    BODY.Comment = "Modified by ESAPI";
                 }
                 else
                 {
@@ -977,7 +993,6 @@ namespace CouchInsert
                     FinalYcenter = CSVVector.Min(p => p.y);
                     SS.RemoveStructure(getStructure.FindStructure(SS, "EXTERNAL", "DicomType"));
                     AddBODY.BuildBODY(SS, -700, false, 1, true, 0.2, true, true, 0.2, true, 1);
-
                     Structure Temp = SS.AddStructure("CONTROL", "Temp_ForCouch");
                     VVector[] TempVec = getStructure.GetpseudoLine(FinalYcenter, YchkOrientation * SI.YSize, 0, SI.XSize);
                     for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
@@ -991,13 +1006,13 @@ namespace CouchInsert
                     SS.RemoveStructure(Temp);
                     if (BODY.Volume > BodyVolume) { System.Windows.Forms.MessageBox.Show("Please Check your BODY carefully", "Confirmation", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
                     BODY.Comment = "Modified by ESAPI";
-
                     //NTUCC
                     StructureHR halcyonHR = new StructureHR();
                     halcyonHR.ConvertHRType(SS, "GTV");
                     halcyonHR.ConvertHRType(SS, "CTV");
                     halcyonHR.ConvertHRType(SS, "PTV");
                 }
+
             }
         }
 
@@ -1178,21 +1193,17 @@ namespace CouchInsert
             VVector DoubleChkPoint = new VVector(((DoubleChkX1 + DoubleChkX2) / 2), DoubleChkY, BBs);
             //CalculateBBLocation = detectTool.DoubleChk(BBs - MarkerLocationZ);//mm
             double SIZlocation = SI.ZRes * SI.ZSize + SI.Origin.z;
-            int NeckChk1 = sliceConverter.GetSlice(SS, sliceConverter.GetLimitValue("Z", SI, UserCS, YchkOrientation, sliceConverter.GetSlice(SS, BBs)) - 80 * ZchkOrientation);
-            int NeckChk2 = sliceConverter.GetSlice(SS, sliceConverter.GetLimitValue("Z", SI, UserCS, YchkOrientation, sliceConverter.GetSlice(SS, BBs)));
+            int NeckChk1 = 0;
+            int NeckChk2 = sliceConverter.GetSlice(SS, SIZlocation);
             if (NeckChk1 > NeckChk2)
             {
-                NeckChk1 = sliceConverter.GetSlice(SS, sliceConverter.GetLimitValue("Z", SI, UserCS, YchkOrientation, sliceConverter.GetSlice(SS, BBs)));
-                NeckChk2 = sliceConverter.GetSlice(SS, sliceConverter.GetLimitValue("Z", SI, UserCS, YchkOrientation, sliceConverter.GetSlice(SS, BBs)) - 80 * ZchkOrientation);
+                NeckChk1 = sliceConverter.GetSlice(SS, SIZlocation);
+                NeckChk2 = 0;
             }
-
-            if (detectTool.BBCalDetect(VVector.Distance(DoubleChkPoint, CompareOrigin), DoubleChkPoint.x, YBaseAxis, ZBaseAxis) != "Error")
+            if (sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS) != null)
             {
-                CalculateBBLocation = detectTool.BBCalDetect(VVector.Distance(DoubleChkPoint, CompareOrigin), DoubleChkPoint.x, YBaseAxis, ZBaseAxis);
-            }
-            else if (sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS) != null)
-            {
-                CalculateBBLocation = detectTool.NeckZDetect(sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS).Value * SI.ZRes + SI.Origin.z, MarkerLocationZ, ZchkOrientation);
+                double DoubleChkPoint_Neck = sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS).Value * SI.ZRes + SI.Origin.z;
+                CalculateBBLocation = detectTool.NeckDetect((DoubleChkPoint_Neck - MarkerLocationZ), HSpace, ZBaseAxis, ZchkOrientation); 
             }
             else if (sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS) == null)
             { CalculateBBLocation = sliceConverter.CTEnough(SIZlocation, MarkerLocationZ, ZchkOrientation); }
@@ -1204,8 +1215,9 @@ namespace CouchInsert
             //The value of YAxis is opposite
             double X = MarkerLocationX - XBaseAxis - Xmin;
             double Y = MarkerLocationY + YchkOrientation * (YBaseAxis - Ymax);
-            if (YchkOrientation == -1) { Y = Y - 67.4; }
+            if (YchkOrientation == -1) { Y = Y + ProneY; }
             double Z = MarkerLocationZ - ZBaseAxis - SC.Image.Origin.z - Zmin;
+            if (ZchkOrientation == -1) { Z = Z + FFZ; }
             //double SSZAdd = Convert.ToInt32((MarkerLocationZZ - ZBaseAxis - ScriptContext.Image.Origin.z) / ScriptContext.Image.ZRes);
             var mapAxis = new Dictionary<string, VVector>()
             {
