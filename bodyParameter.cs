@@ -46,23 +46,6 @@ namespace CouchInsert
             }
         }
 
-        public void PostPhotonBODY(StructureSet SS, VMS.TPS.Common.Model.API.Image SI, double YchkOrientation, double FinalYcenter, double BodyVolume)
-        {
-            //BODY part
-            StructureModifier getStructure = new StructureModifier();
-            Structure BODY = getStructure.FindStructure(SS, "EXTERNAL", "DicomType");
-            Structure Temp = SS.AddStructure("CONTROL", "Temp_ForCouch");
-            VVector[] TempVec = getStructure.GetpseudoLine(FinalYcenter, SI.YSize*YchkOrientation, 0, SI.XSize );
-            for (int i = 0; i < Convert.ToInt32(SI.ZSize); i++)
-            {
-                Temp.AddContourOnImagePlane(TempVec, i);
-            }
-            BODY.SegmentVolume = BODY.SegmentVolume.Sub(Temp.SegmentVolume);
-            SS.RemoveStructure(Temp);
-            if (BODY.Volume > BodyVolume) { System.Windows.Forms.MessageBox.Show("Please Check your BODY carefully", "Confirmation", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
-            BODY.Comment = "Modified by ESAPI";
-        }
-
         public void PostProtonBODY(StructureSet SS, VMS.TPS.Common.Model.API.Image SI, Structure CS, Structure CI, double FinalYcenter, PatientOrientation orientation, double YchkOrientation, double Xcenter)
         {
             StructureModifier getStructure = new StructureModifier();

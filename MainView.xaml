@@ -96,14 +96,14 @@
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" Content="STEP1 : Please Choose one Marker" HorizontalAlignment="Left" Height="28" VerticalAlignment="Center" Foreground="White"  FontWeight="Bold" FontSize="16" Grid.ColumnSpan="3" Margin="5,0,0,0" Width="305"/>
                 <Label Grid.Row="1" Grid.Column="0" Content="Marker Name: "  FontFamily="Segoe UI Light" Foreground="Maroon" FontSize="14" Margin="5,5,5,5" Grid.RowSpan="2"/>
-                <ComboBox Grid.Row="1" Grid.Column="1"  FontFamily="Segoe UI Light" VerticalAlignment="Center" Name="marker" ItemsSource="{Binding MarkerNames}" SelectedValue="{Binding SelectedMarkerName}" FontSize="16" IsEditable="True" IsReadOnly="True" Text="Marker" Margin="5,5,5,5" SelectionChanged="marker_SelectionChanged" FontWeight="Bold">
+                <ComboBox Grid.Row="1" Grid.Column="1"  FontFamily="Segoe UI Light" VerticalAlignment="Center" Name="marker" ItemsSource="{Binding MarkerNames}" SelectedValue="{Binding SelectedMarkerName}" FontSize="16" IsEditable="True" IsReadOnly="True" Margin="5,5,5,5" SelectionChanged="marker_SelectionChanged" FontWeight="Bold">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction Command="{Binding PositionMarkerNameRenewCommand}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </ComboBox>
-                <Button Grid.Row="3" Grid.Column="2" Content="APPLY⏳" HorizontalAlignment="Center"  FontFamily="Segoe UI Light" VerticalAlignment="Center" Cursor="Hand" Command="{Binding ButtonCommand_AddCouch}"/>
+                <Button Grid.Row="3" Grid.Column="2" Content="APPLY⏳" HorizontalAlignment="Center"  FontFamily="Segoe UI Light" VerticalAlignment="Center" Cursor="Hand" Command="{Binding ButtonCommand_AddCouch}" Click="Button_Click_2" IsEnabled="{Binding CanStartProcessingMarkers}"/>
                 <Label Grid.Row="2" Grid.Column="0" Content="STEP2 : Please Check the BB Position w/ marker" Foreground="White" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="4" Margin="5,0,-63,0"/>
                 <Label Grid.Row="3" Grid.Column="0" Content="BB Position: "  FontFamily="Segoe UI Light" Foreground="Maroon"/>
                 <ComboBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding MarkerPositions}"  FontFamily="Segoe UI Light" FontSize="16" SelectedValue="{Binding ShowSelectedMarkerPosition}" SelectionChanged="ComboBox_SelectionChanged" FontWeight="Bold">
@@ -143,7 +143,7 @@
             </Grid>
         </Expander>
 
-        <Label Grid.Row="0" Content="BODY"  FontSize="16" HorizontalAlignment="Left" Margin="35,5,0,0"/>
+        <Label Grid.Row="0" Content="Modify BODY"  FontSize="16" HorizontalAlignment="Left" Margin="35,5,0,0"/>
         <Expander HorizontalAlignment="Left" Margin="150,-28,0,0" Width="443" ExpandDirection="Right">
             <Grid Background="LightCoral" Width="443" >
                 <Grid.ColumnDefinitions>
@@ -184,7 +184,7 @@
             <Label Background="LightPink" Grid.Column="0" Content="☢️PhotonCouch" FontWeight="Bold" FontSize="16" HorizontalAlignment="Left" Margin="5,5,0,0"/>
         </Grid>
 
-        <Label Content="BODY"  HorizontalAlignment="Left" Height="28" VerticalAlignment="Top"  FontSize="16" Margin="35,-160,0,0"/>
+        <Label Content="Modify BODY"  HorizontalAlignment="Left" Height="35" VerticalAlignment="Top"  FontSize="16" Margin="35,-160,0,0"/>
         <Expander HorizontalAlignment="Left" Margin="150,-270,0,0" Height="40" Width="443" ExpandDirection="Right">
             <Grid Background="LightPink" Margin="0,0,0,0" Width="443" >
                 <Grid.ColumnDefinitions>
@@ -198,7 +198,7 @@
                 <Button Grid.Row="1" Content="BODY Mod" Command="{Binding PostPhotonBODYCommand}" FontSize="14" FontWeight="Bold" Cursor="Hand" FontFamily="Segoe UI Light"  Grid.ColumnSpan="2" Margin="240,0,0,0"/>
             </Grid>
         </Expander>
-        <Label Background="LightPink" Content="Add Couch"  HorizontalAlignment="Left" Height="28" VerticalAlignment="Top"  FontSize="16" Margin="35,-130,0,0"/>
+        <Label Background="LightPink" Content="Couch&amp;BODY"  HorizontalAlignment="Left" Height="28" VerticalAlignment="Top"  FontSize="16" Margin="35,-130,0,0"/>
         <Expander HorizontalAlignment="Left" Margin="150,-120,0,0" Width="460" Height="120">
             <Grid Width="493" Margin="10,-20,10,0">
                 <Grid.ColumnDefinitions>

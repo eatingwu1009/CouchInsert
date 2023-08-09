@@ -77,7 +77,7 @@ namespace CouchInsert
             }
             return BBs;
         }
-        public int? FindNeck(int Z1, int Z2, Structure structure)
+        public int? FindNeck(int Z1, int Z2, Structure structure, double zchk)
         {
             int? finalNeck = null;
             double limit1, limit2 = new double();
@@ -108,7 +108,7 @@ namespace CouchInsert
             if (Lists.Count == 0) { finalNeck = null; }
             else
             { finalNeck = Convert.ToInt32(Lists.OrderByDescending(x => x[1]).FirstOrDefault()[0]); }
-            return finalNeck;// else finalNeck = null
+            return finalNeck - Convert.ToInt32( zchk );// else finalNeck = null
         }
 
         public string CTEnough(double SIZlocation, double markerZlocation, double Zchkorientation)

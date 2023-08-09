@@ -62,16 +62,6 @@ namespace CouchInsert
                 NotifyPropertyChanged(nameof(SelectedMarkerName));
             }
         }
-        private string _markerId;
-        public string MarkerId
-        {
-            get => _markerId;
-            set
-            {
-                _markerId = value;
-                NotifyPropertyChanged(nameof(MarkerId));
-            }
-        }
         private string _selectedMarkerPosition;
         public string SelectedMarkerPosition
         {
@@ -417,6 +407,16 @@ namespace CouchInsert
                 NotifyPropertyChanged(nameof(CanStartProcessingChkBBs));
             }
         }
+        private bool _canStartProcessingMarkers;
+        public bool CanStartProcessingMarkers
+        {
+            get => _canStartProcessingMarkers;
+            set
+            {
+                _canStartProcessingMarkers = value;
+                NotifyPropertyChanged(nameof(CanStartProcessingMarkers));
+            }
+        }
         private String _filFolder;
         public String FileFolder
         {
@@ -535,7 +535,8 @@ namespace CouchInsert
             MarkerPositions.Add("H2");
             MarkerPositions.Add("H1");
             MarkerPositions.Add("H0");
-            MarkerId = "Marker"; PositionMarkerNameRenew();
+            if (getStructure.FindStructure(SS, "MARKER", "DicomType") != null) { SelectedMarkerName = getStructure.FindStructure(SS, "MARKER", "DicomType").Id; }
+            PositionMarkerNameRenew();
 
             //TBOXSite
             //string[] Basiclines = File.ReadAllLines(@"\\Vmstbox161\va_data$\ProgramData\Vision\PublishedScripts\PathInformation.csv");
@@ -558,16 +559,18 @@ namespace CouchInsert
 
             UserCS = getStructure.FindStructure(SS, UserCouchCSName, "Id");
             UserCI = getStructure.FindStructure(SS, UserCouchCIName, "Id");
-            ChkBBsStructure();
+            ChkBBsStructure(); ChkMarkersStructure();
         }
 
         public ICommand PositionMarkerNameRenewCommand { get => new Command(PositionMarkerNameRenew); }
         private void PositionMarkerNameRenew()
         {
-            if (SelectedMarkerName != null) MarkerId = SelectedMarkerName;
-            MarkerLocationItem = SS.Structures.Where(s => s.DicomType == "MARKER").ToList().Where(a => a.Id == MarkerId).FirstOrDefault();
-            DetectTool detectTool = new DetectTool();
+            if(SelectedMarkerName != null)
+            {
+                MarkerLocationItem = SS.Structures.Where(s => s.DicomType == "MARKER").ToList().Where(a => a.Id == SelectedMarkerName).FirstOrDefault();
+            }
 
+            DetectTool detectTool = new DetectTool();
             List<string> MarkerNames = new List<string>();
             if (MarkerLocationItem != null)
             {
@@ -594,12 +597,14 @@ namespace CouchInsert
                     { System.Windows.MessageBox.Show("Please Check your Marker Location carefully.\nIt may not located at the center x-plane."); }
                 }
             }
+            ChkMarkersStructure();
         }
 
         public ICommand PositionBBComboBoxRenewCommand { get => new Command(PositionBBComboBoxRenew); }
         private void PositionBBComboBoxRenew()
         {
             SelectedMarkerPosition = ShowSelectedMarkerPosition;
+            ChkMarkersStructure();
         }
 
         public ICommand BBPositionRenewCommand { get => new Command(BBPositionRenew); }
@@ -643,10 +648,26 @@ namespace CouchInsert
         public ICommand ChkBBsStructureCommand { get => new Command(ChkBBsStructure); }
         private void ChkBBsStructure()
         {
-            if (SS.Structures.Where(s => s.Id.Contains("BBsForCouch")).Count() > 1)
+            if (SS.Structures.Where(s => s.Id.Contains("BBsForCouch")).Count() >= 1)
             {
                 CanStartProcessingChkBBs = true;
             }
+            if (SS.Structures.Where(s => s.Id.Contains("BBsForCouch")).Count() == 1)
+            {
+
+                Structure RStructures = SS.Structures.Where(s => s.Id.Contains("BBsForCouch")).FirstOrDefault();
+                NoDeleteID = RStructures.Id;
+            }
+        }
+
+        public ICommand ChkMarkersStructureCommand { get => new Command(ChkMarkersStructure); }
+        private void ChkMarkersStructure()
+        {
+            if (SelectedMarkerName != null && ShowSelectedMarkerPosition != null)
+            {
+                CanStartProcessingMarkers = true;
+            }
+            else { CanStartProcessingMarkers = false; }
         }
 
         public ICommand ButtonCommand_StartChk { get => new Command(StartChk); }
@@ -934,9 +955,8 @@ namespace CouchInsert
             bodyParameter BodyPar = new bodyParameter(); 
             StructureModifier getStructure = new StructureModifier(); 
             bodyParameter AddBODY = new bodyParameter();
-            BodyPar.PostPhotonBODY(SS, SI, YchkOrientation, FinalYcenter, BodyVolume);
             List<VVector> CSVVector = new List<VVector>();
-            string errorCouch = "error";
+            string errorCouch = "";
             if (SS.CanAddCouchStructures(out errorCouch) == true)
             {
                 DialogResult result = System.Windows.Forms.MessageBox.Show("There is no couch for BODY modification", "No-Couch", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1012,7 +1032,6 @@ namespace CouchInsert
                     halcyonHR.ConvertHRType(SS, "CTV");
                     halcyonHR.ConvertHRType(SS, "PTV");
                 }
-
             }
         }
 
@@ -1109,6 +1128,8 @@ namespace CouchInsert
                         CouchInterior.StructureCode = CIcode;
                         if (Halcyon)
                         {
+                            CouchSurface.Id = "HalcyonCouchSurface";
+                            CouchInterior.Id = "HalcyonCouchInterior";
                             CouchInterior.SetAssignedHU(-1000);
                             CouchSurface.SetAssignedHU(-300);
                             CouchInterior.Comment = "NTUCC_Halcyon Couch";
@@ -1116,11 +1137,14 @@ namespace CouchInsert
                         }
                         else
                         {
+                            CouchSurface.Id = "IGRTCouchSurface";
+                            CouchInterior.Id = "IGRTCouchInterior";
                             CouchInterior.SetAssignedHU(-950);
                             CouchSurface.SetAssignedHU(-550);
                             CouchInterior.Comment = "NTUCC_Exact IGRT Couch, medium";
                             CouchSurface.Comment = "NTUCC_Exact IGRT Couch, medium";
-                        } 
+                        }
+                        PostPhotonBODY();
                     }
                     else { System.Windows.MessageBox.Show(errorCouch); }
                     break;
@@ -1158,34 +1182,38 @@ namespace CouchInsert
         public ICommand ButtonCommand_CheckingBB { get => new Command(CheckingBB); }
         private void CheckingBB()
         {
-            DetectTool detectTool = new DetectTool();
-            SliceConverter sliceConverter = new SliceConverter();
-            double BBs = sliceConverter.GetLimitValue("Z", SI, UserCS, ZchkOrientation, 0);
-
             Structure MsgStructure = SS.Structures.Where(s => s.Id.Contains("BBsForCouch")).FirstOrDefault();
+
             if (MsgStructure != null && SS.Structures.Where(s => s.DicomType == "MARKER").FirstOrDefault() != null)
             {
                 string msg = "There are Both BB structure and Marker existed. Please confirm that which way do you prefer to double-check.";
-                msg = msg + "\n\nYes = Use BB structure :\t" + MsgStructure.Id.ToString() + "\nNo = Use Marker :\t\t" + MarkerId;
+                msg = msg + "\n\nYes = Use BB structure :\t" + MsgStructure.Id.ToString() + "\nNo = Use Marker :\t\t" + SelectedMarkerName;
                 DialogResult DoubleChkResult = System.Windows.Forms.MessageBox.Show(msg, "Confirmation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                 if (DoubleChkResult == DialogResult.Yes)
                 {
-                    BBPositionRenew();
+                    BBPositionRenew(); FinalDoubleChk();
                 }
                 else if (DoubleChkResult == DialogResult.No)
                 {
-                    PositionMarkerNameRenew();
+                    PositionMarkerNameRenew(); FinalDoubleChk();
                 }
                 else { CalculateBBLocation = ""; }
             }
             else if (MsgStructure != null)
             {
-                BBPositionRenew();
+                BBPositionRenew(); FinalDoubleChk();
             }
             else
             {
-                PositionMarkerNameRenew();
+                PositionMarkerNameRenew(); FinalDoubleChk();
             }
+        }
+        public ICommand ButtonCommand_FinalDoubleChk { get => new Command(FinalDoubleChk); }
+        private void FinalDoubleChk()
+        {
+            DetectTool detectTool = new DetectTool();
+            SliceConverter sliceConverter = new SliceConverter();
+            double BBs = sliceConverter.GetLimitValue("Z", SI, UserCS, ZchkOrientation, 0);
             VVector CompareOrigin = new VVector(MarkerLocationX, MarkerLocationY, MarkerLocationZ);
             double DoubleChkX1 = sliceConverter.GetLimitValue("X1", SI, UserCS, XchkOrientation, sliceConverter.GetSlice(SS, BBs));
             double DoubleChkX2 = sliceConverter.GetLimitValue("X2", SI, UserCS, XchkOrientation, sliceConverter.GetSlice(SS, BBs));
@@ -1200,16 +1228,17 @@ namespace CouchInsert
                 NeckChk1 = sliceConverter.GetSlice(SS, SIZlocation);
                 NeckChk2 = 0;
             }
-            if (sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS) != null)
+            if (sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS, ZchkOrientation) != null)
             {
-                double DoubleChkPoint_Neck = sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS).Value * SI.ZRes + SI.Origin.z;
-                CalculateBBLocation = detectTool.NeckDetect((DoubleChkPoint_Neck - MarkerLocationZ), HSpace, ZBaseAxis, ZchkOrientation); 
+                double DoubleChkPoint_Neck = sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS, ZchkOrientation).Value * SI.ZRes + SI.Origin.z;
+                CalculateBBLocation = detectTool.NeckDetect((DoubleChkPoint_Neck - MarkerLocationZ), HSpace, ZBaseAxis, ZchkOrientation);
             }
-            else if (sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS) == null)
+            else if (sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS, ZchkOrientation) == null)
             { CalculateBBLocation = sliceConverter.CTEnough(SIZlocation, MarkerLocationZ, ZchkOrientation); }
             else
             { CalculateBBLocation = "Error"; }
         }
+
         public VVector AxisAlignment(VVector Original, string LockBarType, double Xmin, double Ymax, double Zmin, double YchkOrientation, double ZchkOrientation)
         {
             //The value of YAxis is opposite

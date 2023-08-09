@@ -117,7 +117,7 @@ namespace CouchInsert
                         CouchBorder1 = Math.Round(VVector.Distance(Couch3, Couch4) / 10);
                         CouchBorder2 = Math.Round(VVector.Distance(Couch1, Couch2) / 10);
                     }
-                    if (((CouchBorder1 >= 49 && CouchBorder1 <= 54) && (CouchBorder2 >= 47 && CouchBorder2 <= 54) && (chkHeight > -650 && chkBrain2 == true) && BodyfixChk < 0) | (chkBrain == true && chkBrain2 == true)) break;
+                    if (((CouchBorder1 >= 49 && CouchBorder1 <= 54) && (CouchBorder2 >= 47 && CouchBorder2 <= 54) && (chkHeight > -685 && chkBrain2 == true) && BodyfixChk < 0) | (chkBrain == true && chkBrain2 == true)) break;
                     YHU_Diff.RemoveAt(index);
                     YLocation.RemoveAt(index);
                 }
