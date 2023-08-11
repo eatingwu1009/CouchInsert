@@ -650,11 +650,11 @@ namespace CouchInsert
         {
             if (SS.Structures.Where(s => s.Id.Contains("BBsForCouch")).Count() >= 1)
             {
+                CurrentProgress = 30;
                 CanStartProcessingChkBBs = true;
             }
             if (SS.Structures.Where(s => s.Id.Contains("BBsForCouch")).Count() == 1)
             {
-
                 Structure RStructures = SS.Structures.Where(s => s.Id.Contains("BBsForCouch")).FirstOrDefault();
                 NoDeleteID = RStructures.Id;
             }
@@ -1144,7 +1144,6 @@ namespace CouchInsert
                             CouchInterior.Comment = "NTUCC_Exact IGRT Couch, medium";
                             CouchSurface.Comment = "NTUCC_Exact IGRT Couch, medium";
                         }
-                        PostPhotonBODY();
                     }
                     else { System.Windows.MessageBox.Show(errorCouch); }
                     break;

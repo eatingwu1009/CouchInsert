@@ -198,7 +198,7 @@
                 <Button Grid.Row="1" Content="BODY Mod" Command="{Binding PostPhotonBODYCommand}" FontSize="14" FontWeight="Bold" Cursor="Hand" FontFamily="Segoe UI Light"  Grid.ColumnSpan="2" Margin="240,0,0,0"/>
             </Grid>
         </Expander>
-        <Label Background="LightPink" Content="Couch&amp;BODY"  HorizontalAlignment="Left" Height="28" VerticalAlignment="Top"  FontSize="16" Margin="35,-130,0,0"/>
+        <Label Background="LightPink" Content="Add Couch"  HorizontalAlignment="Left" Height="28" VerticalAlignment="Top"  FontSize="16" Margin="35,-130,0,0"/>
         <Expander HorizontalAlignment="Left" Margin="150,-120,0,0" Width="460" Height="120">
             <Grid Width="493" Margin="10,-20,10,0">
                 <Grid.ColumnDefinitions>
