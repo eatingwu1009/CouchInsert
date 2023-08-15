@@ -14,6 +14,7 @@ namespace CouchInsert
 {
     public class DetectTool
     {
+        public string NeckInfo { get; set; }
         public List<VVector> Twopoint(ImageProfile InputProfile)
         {
             List<LineProfile> Twopoint_Temp = new List<LineProfile>();
@@ -94,17 +95,17 @@ namespace CouchInsert
             else return "";
         }
 
-        public String NeckDetect(double distance, double HSpace, double StandardZ, double ZChk)
+        public String NeckDetect(double distance, double HSpace, double ZChk, double Zresult)
         {
             double Ans = double.MaxValue;
             var mapBB = new Dictionary<double, string>()
             {
-                {Math.Round((-69 + StandardZ - 2 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H5"},
-                {Math.Round((-69 + StandardZ - 1 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H4"},
-                {Math.Round((-69 + StandardZ - 0 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H3"},
-                {Math.Round((-69 + StandardZ + 1 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H2"},
-                {Math.Round((-69 + StandardZ + 2 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H1"},
-                {Math.Round((-69 + StandardZ + 3 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H0"},
+                {Math.Round((Zresult - 2 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H5"},
+                {Math.Round((Zresult - 1 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H4"},
+                {Math.Round((Zresult - 0 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H3"},
+                {Math.Round((Zresult + 1 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H2"},
+                {Math.Round((Zresult + 2 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H1"},
+                {Math.Round((Zresult + 3 *  (HSpace)) *ZChk/10,0,MidpointRounding.AwayFromZero) , "H0"},
             };
             string output;
             List<double> Listfor5mm = IsBetween(Convert.ToInt32(Math.Round(distance, 0, MidpointRounding.AwayFromZero)), 5);
@@ -114,6 +115,12 @@ namespace CouchInsert
                 if (mapBB.ContainsKey(Math.Round(temp, 0, MidpointRounding.AwayFromZero)) == true) 
                 { Ans = Convert.ToInt32(Math.Round(temp, 0, MidpointRounding.AwayFromZero)); }
             }
+            NeckInfo = "\n\nH5 : " + Math.Round((Zresult - 2 * (HSpace)) * ZChk / 10, 0, MidpointRounding.AwayFromZero) + "cm"+
+            "\nH4 : " + Math.Round((Zresult - 1 * (HSpace)) * ZChk / 10, 0, MidpointRounding.AwayFromZero) + "cm" +
+            "\nH3 : " + Math.Round((Zresult - 0 * (HSpace)) * ZChk / 10, 0, MidpointRounding.AwayFromZero) + "cm" +
+            "\nH2 : " + Math.Round((Zresult + 1 * (HSpace)) * ZChk / 10, 0, MidpointRounding.AwayFromZero) + "cm" +
+            "\nH1 : " + Math.Round((Zresult + 2 * (HSpace)) * ZChk / 10, 0, MidpointRounding.AwayFromZero) + "cm" +
+            "\nH0 : " + Math.Round((Zresult + 3 * (HSpace)) * ZChk / 10, 0, MidpointRounding.AwayFromZero) + "cm" ;
             return mapBB.TryGetValue(Ans, out output) ? output : "Error";
             //The distance are using absolute value cuz there is no foot side marker
         }

@@ -472,11 +472,15 @@ namespace CouchInsert
         public double YBaseAxis { get; set; }
         public double ZBaseAxis { get; set; }
         public double ProneY { get; set; }
+        public double ProneZ { get; set; }
         public double FFZ { get; set; }
         public double CSHU { get; set; }
         public double CIHU { get; set; }
+        public double DoubleChkZ { get; set; }
+        public double? DoubleChkZResult { get; set; }
         public double XchkOrientation { get; set; }
         public double ZchkOrientation { get; set; }
+        public string NeckInfo { get; set; }
         public PatientOrientation orientation { get; set; }
         public VMS.TPS.Common.Model.API.Image SI { get; set; }
 
@@ -551,11 +555,13 @@ namespace CouchInsert
             YBaseAxis = Double.Parse(sourceAxis[2]);
             ZBaseAxis = Double.Parse(sourceAxis[3]);
             ProneY = Double.Parse(sourceAxis[4]);
-            FFZ= Double.Parse(sourceAxis[5]);
-            CSHU = Double.Parse(sourceAxis[6]);
-            CIHU = Double.Parse(sourceAxis[7]);
-            UserCouchCSName = sourceAxis[8].ToString();
-            UserCouchCIName = sourceAxis[9].ToString();
+            ProneZ = Double.Parse(sourceAxis[5]);
+            FFZ = Double.Parse(sourceAxis[6]);
+            CSHU = Double.Parse(sourceAxis[7]);
+            CIHU = Double.Parse(sourceAxis[8]);
+            UserCouchCSName = sourceAxis[9].ToString();
+            UserCouchCIName = sourceAxis[10].ToString();
+            DoubleChkZ = Double.Parse(sourceAxis[11]);
 
             UserCS = getStructure.FindStructure(SS, UserCouchCSName, "Id");
             UserCI = getStructure.FindStructure(SS, UserCouchCIName, "Id");
@@ -919,6 +925,12 @@ namespace CouchInsert
                     }
                 }
                 UserCS.SegmentVolume = UserCS.SegmentVolume.Sub(UserCI.SegmentVolume);
+                //CI add 1mm margin in Y
+                double Margin_y = 1;
+                AxisAlignedMargins margins = new AxisAlignedMargins(StructureMarginGeometry.Outer, 0, Margin_y, 0, 0, Margin_y, 0);
+                UserCI.SegmentVolume = UserCI.AsymmetricMargin(margins);
+                //CI=CI(OR)CS
+                UserCI.SegmentVolume = UserCI.SegmentVolume.Sub(UserCS.SegmentVolume);
                 UserCI.SetAssignedHU(CIHU); UserCI.Comment = "NTUCC_Proton Couch\nThe couch is created at " + SelectedMarkerPosition + " position.";
                 UserCS.SetAssignedHU(CSHU); UserCS.Comment = "NTUCC_Proton Couch\nThe couch is created at " + SelectedMarkerPosition + " position.";
                 CurrentProgress = 95;
@@ -1206,6 +1218,11 @@ namespace CouchInsert
             {
                 PositionMarkerNameRenew(); FinalDoubleChk();
             }
+            if (DoubleChkZResult != null) 
+            {
+                string NeckInfo1 = "Neck distance = " + DoubleChkZResult + "mm" + NeckInfo;
+                System.Windows.Forms.MessageBox.Show(NeckInfo1); 
+            }
         }
         public ICommand ButtonCommand_FinalDoubleChk { get => new Command(FinalDoubleChk); }
         private void FinalDoubleChk()
@@ -1227,15 +1244,17 @@ namespace CouchInsert
                 NeckChk1 = sliceConverter.GetSlice(SS, SIZlocation);
                 NeckChk2 = 0;
             }
-            if (sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS, ZchkOrientation) != null)
+            if (sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS, YchkOrientation) != null)
             {
-                double DoubleChkPoint_Neck = sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS, ZchkOrientation).Value * SI.ZRes + SI.Origin.z;
-                CalculateBBLocation = detectTool.NeckDetect((DoubleChkPoint_Neck - MarkerLocationZ), HSpace, ZBaseAxis, ZchkOrientation);
+                double DoubleChkPoint_Neck = sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS, YchkOrientation).Value - ZchkOrientation*SI.ZRes*ZchkOrientation;
+                CalculateBBLocation = detectTool.NeckDetect((DoubleChkPoint_Neck - MarkerLocationZ), HSpace, ZchkOrientation, DoubleChkZ);
+                DoubleChkZResult = Math.Round(DoubleChkPoint_Neck - MarkerLocationZ, 0, MidpointRounding.AwayFromZero);
+                NeckInfo = detectTool.NeckInfo;
             }
-            else if (sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS, ZchkOrientation) == null)
-            { CalculateBBLocation = sliceConverter.CTEnough(SIZlocation, MarkerLocationZ, ZchkOrientation); }
+            else if (sliceConverter.FindNeck(NeckChk1, NeckChk2, UserCS, YchkOrientation) == null)
+            { CalculateBBLocation = sliceConverter.CTEnough(SIZlocation, MarkerLocationZ, ZchkOrientation); DoubleChkZResult = null; }
             else
-            { CalculateBBLocation = "Error"; }
+            { CalculateBBLocation = "Error"; DoubleChkZResult = null; }
         }
 
         public VVector AxisAlignment(VVector Original, string LockBarType, double Xmin, double Ymax, double Zmin, double YchkOrientation, double ZchkOrientation)
@@ -1245,7 +1264,8 @@ namespace CouchInsert
             double Y = MarkerLocationY + YchkOrientation * (YBaseAxis - Ymax);
             if (YchkOrientation == -1) { Y = Y + ProneY; }
             double Z = MarkerLocationZ - ZBaseAxis - SC.Image.Origin.z - Zmin;
-            if (ZchkOrientation == -1) { Z = Z + FFZ; }
+            if (ZchkOrientation == -1 && YchkOrientation == 1) { Z = Z + FFZ; }
+            else if (ZchkOrientation == -1 && YchkOrientation == -1) { Z = Z + FFZ + ProneZ; }
             //double SSZAdd = Convert.ToInt32((MarkerLocationZZ - ZBaseAxis - ScriptContext.Image.Origin.z) / ScriptContext.Image.ZRes);
             var mapAxis = new Dictionary<string, VVector>()
             {

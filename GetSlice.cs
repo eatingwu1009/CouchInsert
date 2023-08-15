@@ -77,11 +77,11 @@ namespace CouchInsert
             }
             return BBs;
         }
-        public int? FindNeck(int Z1, int Z2, Structure structure, double zchk)
+        public double? FindNeck(int Z1, int Z2, Structure structure, double Ychk)
         {
-            int? finalNeck = null;
-            double limit1, limit2 = new double();
-            List<double[]> Lists = new List<double[]>(); List<double> Lists2 = new List<double>();
+            double? finalNeck = null;
+            double limit1, limit2, zz = new double();
+            List<double[]> Lists = new List<double[]>(); List<double> Lists2 = new List<double>(); List<double> Lists3 = new List<double>();
             for (int i = Z1; i <= Z2; i++)
             {
                 limit1 = double.MinValue; limit2 = double.MaxValue;
@@ -92,10 +92,13 @@ namespace CouchInsert
                         limit1 = Math.Max(limit1, vector.y);
                         limit2 = Math.Min(limit2, vector.y);
                     }
+                    zz = vectors.FirstOrDefault().z;
                 }
-                double[] element = new double[2];
-                element[0] = Convert.ToDouble(i);
+                double[] element = new double[4];
+                element[0] = zz;
                 element[1] = limit1 - limit2;
+                element[2] = limit1;
+                element[3] = limit2;
                 Lists.Add(element);
             }
             Lists.RemoveAll(item => double.IsInfinity(item[1]));
@@ -105,10 +108,30 @@ namespace CouchInsert
             }
             double mode = Lists2.GroupBy(x => x).OrderByDescending(x => x.Count()).ThenBy(x => x.Key).Select(x => (double)x.Key).FirstOrDefault();
             Lists.RemoveAll(item => item[1].Equals(mode)); Lists.RemoveAll(item => item[1] > mode);
+            //Check Absolute Y value
             if (Lists.Count == 0) { finalNeck = null; }
             else
-            { finalNeck = Convert.ToInt32(Lists.OrderByDescending(x => x[1]).FirstOrDefault()[0]); }
-            return finalNeck - Convert.ToInt32( zchk );// else finalNeck = null
+            {
+                if (Ychk == 1)
+                {
+                    foreach (double[] number in Lists)
+                    {
+                        Lists3.Add(number[2]);
+                    }
+                    double LimitY = Lists3.OrderByDescending(x => x).FirstOrDefault();
+                    finalNeck = Lists.OrderByDescending(x => Math.Abs(x[2] - LimitY)).LastOrDefault()[0];
+                }
+                else if (Ychk == -1)
+                {
+                    foreach (double[] number in Lists)
+                    {
+                        Lists3.Add(number[3]);
+                    }
+                    double LimitY = Lists3.OrderByDescending(x => x).LastOrDefault();
+                    finalNeck = Lists.OrderByDescending(x => Math.Abs(x[3] - LimitY)).LastOrDefault()[0];
+                }
+            }
+            return finalNeck;// else finalNeck = null
         }
 
         public string CTEnough(double SIZlocation, double markerZlocation, double Zchkorientation)
