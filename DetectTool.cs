@@ -115,12 +115,12 @@ namespace CouchInsert
                 if (mapBB.ContainsKey(Math.Round(temp, 0, MidpointRounding.AwayFromZero)) == true) 
                 { Ans = Convert.ToInt32(Math.Round(temp, 0, MidpointRounding.AwayFromZero)); }
             }
-            NeckInfo = "\n\nH5 : " + Math.Round((Zresult - 2 * (HSpace)) * ZChk / 10, 0, MidpointRounding.AwayFromZero) + "cm"+
-            "\nH4 : " + Math.Round((Zresult - 1 * (HSpace)) * ZChk / 10, 0, MidpointRounding.AwayFromZero) + "cm" +
-            "\nH3 : " + Math.Round((Zresult - 0 * (HSpace)) * ZChk / 10, 0, MidpointRounding.AwayFromZero) + "cm" +
-            "\nH2 : " + Math.Round((Zresult + 1 * (HSpace)) * ZChk / 10, 0, MidpointRounding.AwayFromZero) + "cm" +
-            "\nH1 : " + Math.Round((Zresult + 2 * (HSpace)) * ZChk / 10, 0, MidpointRounding.AwayFromZero) + "cm" +
-            "\nH0 : " + Math.Round((Zresult + 3 * (HSpace)) * ZChk / 10, 0, MidpointRounding.AwayFromZero) + "cm" ;
+            NeckInfo = "\n\nH5 : " + (Zresult - 2 * (HSpace)) * ZChk + "mm"+
+            "\nH4 : " + (Zresult - 1 * (HSpace)) * ZChk  + "mm" +
+            "\nH3 : " + (Zresult - 0 * (HSpace)) * ZChk + "mm" +
+            "\nH2 : " + (Zresult + 1 * (HSpace)) * ZChk + "mm" +
+            "\nH1 : " + (Zresult + 2 * (HSpace)) * ZChk + "mm" +
+            "\nH0 : " + (Zresult + 3 * (HSpace)) * ZChk + "mm" ;
             return mapBB.TryGetValue(Ans, out output) ? output : "Error";
             //The distance are using absolute value cuz there is no foot side marker
         }
